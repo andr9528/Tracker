@@ -1,0 +1,4 @@
+[submodule "Tracker.wiki"]
+	path = Tracker.wiki
+	url = https://github.com/andr9528/Tracker.wiki.git
+	branch = master
