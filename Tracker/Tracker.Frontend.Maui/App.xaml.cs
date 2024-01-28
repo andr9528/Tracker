@@ -1,11 +1,12 @@
-﻿namespace Tracker.Frontend.Maui;
-
-public partial class App : Application
+﻿namespace Tracker.Frontend.Maui
 {
-	public App()
-	{
-		InitializeComponent();
+    public partial class App : Application
+    {
+        public App()
+        {
+            InitializeComponent();
 
-		MainPage = new AppShell();
-	}
+            MainPage = new AppShell();
+        }
+    }
 }

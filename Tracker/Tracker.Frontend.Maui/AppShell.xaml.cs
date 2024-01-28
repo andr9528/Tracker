@@ -1,9 +1,10 @@
-﻿namespace Tracker.Frontend.Maui;
-
-public partial class AppShell : Shell
+﻿namespace Tracker.Frontend.Maui
 {
-	public AppShell()
-	{
-		InitializeComponent();
-	}
+    public partial class AppShell : Shell
+    {
+        public AppShell()
+        {
+            InitializeComponent();
+        }
+    }
 }
