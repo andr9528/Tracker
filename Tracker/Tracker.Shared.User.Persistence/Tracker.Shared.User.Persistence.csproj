@@ -7,9 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Enums\Persistence\" />
-    <Folder Include="Interfaces\Dining\" />
-    <Folder Include="Interfaces\Time\" />
+    <ProjectReference Include="..\Tracker.Shared.Models\Tracker.Shared.Models.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

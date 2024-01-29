@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="QueryManagers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tracker.Shared.Models\Tracker.Shared.Models.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>
