@@ -4,10 +4,11 @@ using Tracker.Shared.Persistence;
 
 namespace Tracker.Module.Budget.Persistence.QueryManagers
 {
-    public class PaymentQueryManager : BaseEntityQueryManager<BudgetDatabaseContext, Payment, SearchablePayment>
+    public class
+        CurrencyRateQueryManager : BaseEntityQueryManager<BudgetDatabaseContext, CurrencyRate, SearchableCurrencyRate>
     {
         /// <inheritdoc />
-        public PaymentQueryManager(BudgetDatabaseContext context) : base(context)
+        public CurrencyRateQueryManager(BudgetDatabaseContext context) : base(context)
         {
         }
     }

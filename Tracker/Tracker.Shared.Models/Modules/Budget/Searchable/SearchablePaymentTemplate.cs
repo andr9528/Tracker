@@ -1,7 +1,7 @@
 ﻿using Tracker.Shared.Abstraction.Enums.Budget;
-using Tracker.Shared.Abstraction.Interfaces.Budget;
+using Tracker.Shared.Abstraction.Interfaces.Budget.Searchable;
 
-namespace Tracker.Shared.Models.Modules.Budget
+namespace Tracker.Shared.Models.Modules.Budget.Searchable
 {
     public class SearchablePaymentTemplate : ISearchablePaymentTemplate
     {
@@ -13,6 +13,9 @@ namespace Tracker.Shared.Models.Modules.Budget
 
         /// <inheritdoc />
         public CurrencyCodes Currency { get; set; }
+
+        /// <inheritdoc />
+        public int PaymentTypeId { get; set; }
 
         /// <inheritdoc />
         public int RecurringPaymentId { get; set; }

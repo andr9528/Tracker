@@ -1,4 +1,4 @@
-﻿using Tracker.Shared.Abstraction.Interfaces.Budget;
+﻿using Tracker.Shared.Abstraction.Interfaces.Budget.Searchable;
 
 namespace Tracker.Shared.Models.Modules.Budget
 {

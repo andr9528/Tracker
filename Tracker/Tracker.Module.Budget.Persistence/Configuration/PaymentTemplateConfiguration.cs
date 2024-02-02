@@ -5,15 +5,15 @@ using Tracker.Shared.Persistence;
 
 namespace Tracker.Module.Budget.Persistence.Configuration
 {
-    public class PaymentConfiguration : EntityConfiguration<Payment>
+    public class PaymentTemplateConfiguration : EntityConfiguration<PaymentTemplate>
     {
         /// <inheritdoc />
-        public PaymentConfiguration(DatabaseType databaseType) : base(databaseType)
+        public PaymentTemplateConfiguration(DatabaseType databaseType) : base(databaseType)
         {
         }
 
         /// <inheritdoc />
-        public override void Configure(EntityTypeBuilder<Payment> builder)
+        public override void Configure(EntityTypeBuilder<PaymentTemplate> builder)
         {
             base.Configure(builder);
 

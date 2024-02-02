@@ -1,7 +1,7 @@
 ﻿using Tracker.Shared.Abstraction.Enums.Budget;
-using Tracker.Shared.Abstraction.Interfaces.Budget;
+using Tracker.Shared.Abstraction.Interfaces.Budget.Entity;
 
-namespace Tracker.Shared.Models.Modules.Budget
+namespace Tracker.Shared.Models.Modules.Budget.Entity
 {
     public class PaymentTemplate : IPaymentTemplate
     {
@@ -21,6 +21,9 @@ namespace Tracker.Shared.Models.Modules.Budget
         public CurrencyCodes Currency { get; set; }
 
         /// <inheritdoc />
+        public int PaymentTypeId { get; set; }
+
+        /// <inheritdoc />
         public int RecurringPaymentId { get; set; }
 
         /// <inheritdoc />
@@ -35,15 +38,16 @@ namespace Tracker.Shared.Models.Modules.Budget
         /// <inheritdoc />
         public DateTime UpdatedDateTime { get; set; }
 
+        /// <inheritdoc />
+        public IPaymentType PaymentType { get; set; }
+
         public PaymentTemplate()
         {
-            
         }
 
         private PaymentTemplate(int id)
         {
             this.id = id;
         }
-
     }
 }

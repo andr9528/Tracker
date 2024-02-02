@@ -1,7 +1,7 @@
 ﻿using Tracker.Shared.Abstraction.Enums.Budget;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
-namespace Tracker.Shared.Abstraction.Interfaces.Budget
+namespace Tracker.Shared.Abstraction.Interfaces.Budget.Searchable
 {
     public interface ISearchablePayment : ISearchableCommonPayment, ISearchable
     {

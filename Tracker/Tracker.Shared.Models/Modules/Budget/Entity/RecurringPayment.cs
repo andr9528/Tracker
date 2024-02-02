@@ -1,4 +1,4 @@
-﻿using Tracker.Shared.Abstraction.Interfaces.Budget;
+﻿using Tracker.Shared.Abstraction.Interfaces.Budget.Entity;
 using Tracker.Shared.Abstraction.Interfaces.User;
 
 namespace Tracker.Shared.Models.Modules.Budget

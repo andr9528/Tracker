@@ -1,8 +1,8 @@
 ﻿using Tracker.Shared.Abstraction.Enums.Budget;
-using Tracker.Shared.Abstraction.Interfaces.Budget;
+using Tracker.Shared.Abstraction.Interfaces.Budget.Entity;
 using Tracker.Shared.Abstraction.Interfaces.User;
 
-namespace Tracker.Shared.Models.Modules.Budget
+namespace Tracker.Shared.Models.Modules.Budget.Entity
 {
     public class Payment : IPayment
     {
@@ -22,7 +22,7 @@ namespace Tracker.Shared.Models.Modules.Budget
         public int? RecurringPaymentId { get; set; }
 
         /// <inheritdoc />
-        public int UserId { get; set; }
+        public int CoreUserId { get; set; }
 
         /// <inheritdoc />
         public IRecurringPayment? RecurringPayment { get; set; }
@@ -37,6 +37,9 @@ namespace Tracker.Shared.Models.Modules.Budget
         public CurrencyCodes Currency { get; set; }
 
         /// <inheritdoc />
+        public int PaymentTypeId { get; set; }
+
+        /// <inheritdoc />
         public byte[] Version { get; set; }
 
         /// <inheritdoc />
@@ -45,15 +48,16 @@ namespace Tracker.Shared.Models.Modules.Budget
         /// <inheritdoc />
         public DateTime UpdatedDateTime { get; set; }
 
+        /// <inheritdoc />
+        public IPaymentType PaymentType { get; set; }
+
         public Payment()
         {
-
         }
 
         private Payment(int id)
         {
             this.id = id;
         }
-
     }
 }

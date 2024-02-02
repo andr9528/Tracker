@@ -5,19 +5,17 @@ using Tracker.Shared.Persistence;
 
 namespace Tracker.Module.Budget.Persistence.Configuration
 {
-    public class PaymentConfiguration : EntityConfiguration<Payment>
+    public class CurrencyRateConfiguration : EntityConfiguration<CurrencyRate>
     {
         /// <inheritdoc />
-        public PaymentConfiguration(DatabaseType databaseType) : base(databaseType)
+        public CurrencyRateConfiguration(DatabaseType databaseType) : base(databaseType)
         {
         }
 
         /// <inheritdoc />
-        public override void Configure(EntityTypeBuilder<Payment> builder)
+        public override void Configure(EntityTypeBuilder<CurrencyRate> builder)
         {
             base.Configure(builder);
-
-            builder.HasOne(x => (PaymentType) x.PaymentType).WithOne();
         }
     }
 }

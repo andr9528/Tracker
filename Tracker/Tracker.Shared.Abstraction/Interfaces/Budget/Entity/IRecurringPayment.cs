@@ -1,7 +1,8 @@
-﻿using Tracker.Shared.Abstraction.Interfaces.Persistence;
+﻿using Tracker.Shared.Abstraction.Interfaces.Budget.Searchable;
+using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Abstraction.Interfaces.User;
 
-namespace Tracker.Shared.Abstraction.Interfaces.Budget
+namespace Tracker.Shared.Abstraction.Interfaces.Budget.Entity
 {
     public interface IRecurringPayment : ISearchableRecurringPayment, IEntity
     {

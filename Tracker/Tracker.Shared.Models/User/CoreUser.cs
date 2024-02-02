@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using Tracker.Shared.Abstraction.Interfaces.Budget;
+using Tracker.Shared.Abstraction.Interfaces.Budget.Entity;
 using Tracker.Shared.Abstraction.Interfaces.User;
 using Tracker.Shared.Models.Modules.Budget;
 

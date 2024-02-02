@@ -1,6 +1,6 @@
 ﻿using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
-namespace Tracker.Shared.Abstraction.Interfaces.Budget
+namespace Tracker.Shared.Abstraction.Interfaces.Budget.Searchable
 {
     public interface ISearchableRecurringPayment : ISearchable
     {
