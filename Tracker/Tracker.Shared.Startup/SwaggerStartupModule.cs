@@ -2,32 +2,36 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using Tracker.Shared.Abstraction.Interfaces.Startup;
 
 namespace Tracker.Shared.Startup
 {
     public class SwaggerStartupModule : IStartupModule
     {
+        private readonly string apiTitle;
+
+        public SwaggerStartupModule(string apiTitle = "My API")
+        {
+            this.apiTitle = apiTitle;
+        }
+
         /// <inheritdoc />
         public void ConfigureServices(IServiceCollection services)
         {
             // Register the Swagger generator, defining 1 or more Swagger documents.
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1", });
-            });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = apiTitle, Version = "v1",}); });
+            services.AddSwaggerGenNewtonsoftSupport();
         }
 
         /// <inheritdoc />
         public void ConfigureApplication(IApplicationBuilder app)
         {
             if (app.GetType().FullName != typeof(WebApplication).FullName)
-            {
                 throw new InvalidOperationException(
                     $"Expected application builder supplied to {nameof(SwaggerStartupModule)}.{nameof(ConfigureApplication)} to be of type {nameof(WebApplication)}, but it was of type '{app.GetType().FullName}'");
-            }
 
-            WebApplication castApp = (WebApplication) app;
+            var castApp = (WebApplication) app;
             if (!castApp.Environment.IsDevelopment())
                 return;
 
@@ -38,7 +42,7 @@ namespace Tracker.Shared.Startup
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{apiTitle}");
                 c.RoutePrefix = string.Empty;
             });
         }
