@@ -19,7 +19,7 @@ namespace Tracker.Module.Budget.Api
         public BudgetStartup(IConfiguration config) : base(config)
         {
             AddModule(new ApiStartupModule());
-            AddModule(new SwaggerStartupModule());
+            AddModule(new SwaggerStartupModule("Budget"));
 
             AddModule(new DatabaseContextStartupModule<BudgetDatabaseContext>((options) =>
                 options.UseSqlite(Configuration.GetConnectionString(DATABASE_CONNECTION_STRING_NAME))));

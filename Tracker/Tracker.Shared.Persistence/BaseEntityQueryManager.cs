@@ -2,7 +2,8 @@
 
 namespace Tracker.Shared.Persistence
 {
-    public abstract class BaseEntityQueryManager<TContext, TEntity, TSearchable> : IEntityQueryManager<TEntity, TSearchable>
+    public abstract class
+        BaseEntityQueryManager<TContext, TEntity, TSearchable> : IEntityQueryManager<TEntity, TSearchable>
         where TContext : BaseDatabaseContext where TEntity : class, IEntity where TSearchable : class, ISearchable
     {
         protected readonly TContext context;
