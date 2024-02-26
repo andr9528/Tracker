@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\Budget\Dto\" />
+  </ItemGroup>
+
 </Project>

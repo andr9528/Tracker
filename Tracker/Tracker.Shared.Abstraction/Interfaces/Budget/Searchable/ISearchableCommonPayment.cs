@@ -1,11 +1,9 @@
 ﻿using Tracker.Shared.Abstraction.Enums.Budget;
+using Tracker.Shared.Abstraction.Interfaces.Budget.Dto;
 
 namespace Tracker.Shared.Abstraction.Interfaces.Budget.Searchable
 {
-    public interface ISearchableCommonPayment
+    public interface ISearchableCommonPayment : ICommonPaymentDto
     {
-        double Amount { get; set; }
-        CurrencyCodes Currency { get; set; }
-        int PaymentTypeId { get; set; }
     }
 }

@@ -3,8 +3,11 @@
 namespace Tracker.Shared.Persistence
 {
     public abstract class
-        BaseEntityQueryManager<TContext, TEntity, TSearchable> : IEntityQueryManager<TEntity, TSearchable>
-        where TContext : BaseDatabaseContext where TEntity : class, IEntity where TSearchable : class, ISearchable
+        BaseEntityQueryManager<TContext, TEntity, TSearchable, TDto> : IEntityQueryManager<TEntity, TSearchable, TDto>
+        where TContext : BaseDatabaseContext
+        where TEntity : class, IEntity
+        where TSearchable : class, ISearchable
+        where TDto : class, IDto
     {
         protected readonly TContext context;
 
@@ -13,14 +16,16 @@ namespace Tracker.Shared.Persistence
             this.context = context;
         }
 
+        protected abstract TEntity BuildEntity(TDto dto);
+
         /// <inheritdoc />
-        public async Task<TEntity> AddEntity(TEntity entity)
+        public async Task<TEntity> AddEntity(TDto dto)
         {
-            throw new NotImplementedException();
+            return context.Add(BuildEntity(dto)).Entity;
         }
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TEntity>> AddEntities(IEnumerable<TEntity> entities)
+        public async Task<IEnumerable<TEntity>> AddEntities(IEnumerable<TDto> dtos)
         {
             throw new NotImplementedException();
         }

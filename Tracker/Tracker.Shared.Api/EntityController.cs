@@ -5,12 +5,13 @@ using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
 namespace Tracker.Shared.Api
 {
-    public abstract class EntityController<TEntity, TSearchable> : ControllerBase where TEntity : class, IEntity
+    public abstract class EntityController<TEntity, TSearchable, TDto> : ControllerBase where TEntity : class, IEntity
         where TSearchable : class, ISearchable, new()
+        where TDto : class, IDto
     {
-        private readonly IEntityQueryManager<TEntity, TSearchable> manager;
+        private readonly IEntityQueryManager<TEntity, TSearchable, TDto> manager;
 
-        protected EntityController(IEntityQueryManager<TEntity, TSearchable> manager)
+        protected EntityController(IEntityQueryManager<TEntity, TSearchable, TDto> manager)
         {
             this.manager = manager;
         }
@@ -61,7 +62,7 @@ namespace Tracker.Shared.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSingle([FromBody] TEntity entity)
+        public async Task<IActionResult> AddSingle([FromBody] TDto entity)
         {
             try
             {
@@ -76,7 +77,7 @@ namespace Tracker.Shared.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddMultiple([FromBody] IEnumerable<TEntity> entities)
+        public async Task<IActionResult> AddMultiple([FromBody] IEnumerable<TDto> entities)
         {
             try
             {

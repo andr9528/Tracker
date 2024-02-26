@@ -2,7 +2,7 @@
 
 namespace Tracker.Shared.Abstraction.Interfaces.User
 {
-    public interface ISearchableCoreUser : ICoreUserDto, ISearchable
+    public interface ICoreUserDto : IDto
     {
     }
 }

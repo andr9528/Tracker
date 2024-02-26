@@ -1,20 +1,22 @@
 ﻿namespace Tracker.Shared.Abstraction.Interfaces.Persistence
 {
-    public interface IEntityQueryManager<TEntity, TSearchable> where TEntity : class, IEntity where TSearchable : class, ISearchable
+    public interface IEntityQueryManager<TEntity, TSearchable, TDto> where TEntity : class, IEntity
+        where TSearchable : class, ISearchable
+        where TDto : class, IDto
     {
         /// <summary>
         /// Add one <typeparamref name="TEntity"/> to the database.
         /// </summary>
-        /// <param name="entity">The <typeparamref name="TEntity"/> to be added.</param>
+        /// <param name="dto">The data for a(n) <typeparamref name="TEntity"/> to be added.</param>
         /// <returns>The newly added <typeparamref name="TEntity"/>.</returns>
-        Task<TEntity> AddEntity(TEntity entity);
+        Task<TEntity> AddEntity(TDto dto);
 
         /// <summary>
         /// Add multiple <typeparamref name="TEntity"/> to the database.
         /// </summary>
-        /// <param name="entities">The <typeparamref name="TEntity"/> to be added.</param>
+        /// <param name="dtos">The data for a(n) <typeparamref name="TEntity"/> to be added.</param>
         /// <returns>All the newly added <typeparamref name="TEntity"/>.</returns>
-        Task<IEnumerable<TEntity>> AddEntities(IEnumerable<TEntity> entities);
+        Task<IEnumerable<TEntity>> AddEntities(IEnumerable<TDto> dtos);
 
         /// <summary>
         /// Get the first <typeparamref name="TEntity"/> matching properties defined in supplied <typeparamref name="TSearchable"></typeparamref>.
@@ -57,6 +59,5 @@
         /// <param name="id">Id of the <typeparamref name="TEntity"/> to delete.</param>
         /// <returns>Nothing.</returns>
         Task DeleteEntityById(int id);
-
     }
 }

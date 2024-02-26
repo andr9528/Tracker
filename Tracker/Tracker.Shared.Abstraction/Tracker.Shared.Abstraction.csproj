@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Enums\Persistence\" />
+    <Folder Include="Interfaces\Budget\Dto\" />
     <Folder Include="Interfaces\Dining\" />
     <Folder Include="Interfaces\Time\" />
   </ItemGroup>

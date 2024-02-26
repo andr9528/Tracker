@@ -1,11 +1,9 @@
-﻿using Tracker.Shared.Abstraction.Interfaces.Persistence;
+﻿using Tracker.Shared.Abstraction.Interfaces.Budget.Dto;
+using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
 namespace Tracker.Shared.Abstraction.Interfaces.Budget.Searchable
 {
-    public interface ISearchablePaymentType : ISearchable
+    public interface ISearchablePaymentType : IPaymentTypeDto, ISearchable
     {
-        string Name { get; set; }
-        string Description { get; set; }
-
     }
 }
