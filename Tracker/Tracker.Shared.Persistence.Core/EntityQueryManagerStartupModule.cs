@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Abstraction.Interfaces.Startup;
 
-namespace Tracker.Shared.Persistence
+namespace Tracker.Shared.Persistence.Core
 {
     public class EntityQueryManagerStartupModule<TQuery, TEntity, TSearchable, TDto> : IStartupModule
         where TQuery : class, IEntityQueryManager<TEntity, TSearchable, TDto>

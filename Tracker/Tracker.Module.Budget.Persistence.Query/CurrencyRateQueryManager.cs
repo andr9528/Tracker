@@ -5,7 +5,7 @@ using Tracker.Shared.Persistence;
 
 namespace Tracker.Module.Budget.Persistence.Query
 {
-    public class CurrencyRateQueryManager : BaseEntityQueryManager<TrackerDatabaseContext, CurrencyRate,
+    public class CurrencyRateQueryManager : BaseBudgetQueryManager<CurrencyRate,
         SearchableCurrencyRate, CurrencyRateDto>
     {
         /// <inheritdoc />
@@ -22,14 +22,14 @@ namespace Tracker.Module.Budget.Persistence.Query
         /// <inheritdoc />
         protected override IQueryable<CurrencyRate> GetBaseQuery()
         {
-            throw new NotImplementedException();
+            return GetContextSegment().CurrencyRates.AsQueryable();
         }
 
         /// <inheritdoc />
         protected override IQueryable<CurrencyRate> AddQueryArguments(
             SearchableCurrencyRate searchable, IQueryable<CurrencyRate> query)
         {
-            throw new NotImplementedException();
+            return query;
         }
     }
 }

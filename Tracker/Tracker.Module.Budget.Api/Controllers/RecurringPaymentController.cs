@@ -7,7 +7,7 @@ using Tracker.Shared.Models.Modules.Budget.Dto;
 
 namespace Tracker.Module.Budget.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route(Constants.ROUTE_TEMPLATE)]
     [ApiController]
     public class
         RecurringPaymentController : EntityController<RecurringPayment, SearchableRecurringPayment, RecurringPaymentDto>

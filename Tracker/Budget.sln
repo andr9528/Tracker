@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tracker.Shared.Persistence"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Module.Budget.Persistence.Query", "Tracker.Module.Budget.Persistence.Query\Tracker.Module.Budget.Persistence.Query.csproj", "{0E5E8030-3724-4A48-868D-70BB17BAEBBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Shared.User.Persistence.Query", "Tracker.Shared.User.Persistence.Query\Tracker.Shared.User.Persistence.Query.csproj", "{F5B45BD1-204E-47A8-A97E-65B585C9B57A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{0E5E8030-3724-4A48-868D-70BB17BAEBBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E5E8030-3724-4A48-868D-70BB17BAEBBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E5E8030-3724-4A48-868D-70BB17BAEBBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5B45BD1-204E-47A8-A97E-65B585C9B57A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5B45BD1-204E-47A8-A97E-65B585C9B57A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5B45BD1-204E-47A8-A97E-65B585C9B57A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5B45BD1-204E-47A8-A97E-65B585C9B57A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -102,6 +108,7 @@ Global
 		{E439232F-687D-4617-A4EE-2BFCB58060FC} = {BA630E35-A0D3-4059-AFE7-270336556F07}
 		{3940F8C8-AE40-44A8-9360-17C3D679B974} = {20A17EB8-DBB7-4BF4-9DB4-6A79D23434E6}
 		{0E5E8030-3724-4A48-868D-70BB17BAEBBC} = {BA630E35-A0D3-4059-AFE7-270336556F07}
+		{F5B45BD1-204E-47A8-A97E-65B585C9B57A} = {20A17EB8-DBB7-4BF4-9DB4-6A79D23434E6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F2EF5AEB-7466-4A18-8568-8277821419A4}

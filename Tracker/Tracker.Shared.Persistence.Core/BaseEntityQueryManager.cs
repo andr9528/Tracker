@@ -1,6 +1,6 @@
 ﻿using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
-namespace Tracker.Shared.Persistence
+namespace Tracker.Shared.Persistence.Core
 {
     public abstract class
         BaseEntityQueryManager<TContext, TEntity, TSearchable, TDto> : IEntityQueryManager<TEntity, TSearchable, TDto>
@@ -34,7 +34,7 @@ namespace Tracker.Shared.Persistence
         /// <inheritdoc />
         public async Task<TEntity> GetEntity(TSearchable searchable)
         {
-            throw new NotImplementedException();
+            return BuildQuery(searchable).ToList().First();
         }
 
         private IQueryable<TEntity> BuildQuery(TSearchable searchable)
@@ -55,7 +55,7 @@ namespace Tracker.Shared.Persistence
         /// <inheritdoc />
         public async Task<IEnumerable<TEntity>> GetEntities(TSearchable searchable)
         {
-            throw new NotImplementedException();
+            return BuildQuery(searchable).ToList();
         }
 
         /// <inheritdoc />

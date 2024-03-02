@@ -9,6 +9,7 @@ using Tracker.Shared.Models.Modules.Budget.Entity;
 using Tracker.Shared.Models.Modules.Budget.Searchable;
 using Tracker.Shared.Models.User;
 using Tracker.Shared.Persistence;
+using Tracker.Shared.Persistence.Core;
 using Tracker.Shared.Startup;
 using Tracker.Shared.User.Persistence;
 

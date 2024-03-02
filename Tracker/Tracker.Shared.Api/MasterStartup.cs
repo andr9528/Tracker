@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Tracker.Module.Budget.Api;
 using Tracker.Shared.Models.User;
 using Tracker.Shared.Persistence;
+using Tracker.Shared.Persistence.Core;
 using Tracker.Shared.Startup;
-using Tracker.Shared.User.Persistence;
+using Tracker.Shared.User.Persistence.Query;
 
 namespace Tracker.Shared.Api
 {
@@ -19,8 +21,9 @@ namespace Tracker.Shared.Api
                 options.UseSqlite(Configuration.GetConnectionString(DATABASE_CONNECTION_STRING_NAME))));
 
             AddModule(
-                new EntityQueryManagerStartupModule<CoreUserQueryManager<TrackerDatabaseContext>, CoreUser,
-                    SearchableCoreUser, CoreUserDto>());
+                new EntityQueryManagerStartupModule<CoreUserQueryManager, CoreUser, SearchableCoreUser, CoreUserDto>());
+
+            AddModule(new BudgetStartup(config));
         }
     }
 }

@@ -9,7 +9,7 @@ using Tracker.Shared.Models.Modules.Budget.Searchable;
 
 namespace Tracker.Module.Budget.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route(Constants.ROUTE_TEMPLATE)]
     [ApiController]
     public class PaymentController : EntityController<Payment, SearchablePayment, PaymentDto>
     {

@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Tracker.Shared.Abstraction.Enums.Persistence;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
-namespace Tracker.Shared.Persistence
+namespace Tracker.Shared.Persistence.Core
 {
     public abstract class BaseDatabaseContext : DbContext
     {
         private readonly DbContextOptions options;
         protected readonly ICollection<IContextSegment> segments;
 
-        protected BaseDatabaseContext([NotNullAttribute] DbContextOptions options) : base(options)
+        protected BaseDatabaseContext([NotNull] DbContextOptions options) : base(options)
         {
             this.options = options;
             segments = new List<IContextSegment>();
@@ -24,7 +24,9 @@ namespace Tracker.Shared.Persistence
 
         public IContextSegment GetContextSegment(ContextSegmentType segmentType)
         {
-            return segments.First(x => x.SegmentType == segmentType);
+            return segments.FirstOrDefault(x => x.SegmentType == segmentType) ??
+                   throw new NullReferenceException(
+                       $"Expected a context segment for '{segmentType}' to exist, but null was returned");
         }
 
         public override int SaveChanges()

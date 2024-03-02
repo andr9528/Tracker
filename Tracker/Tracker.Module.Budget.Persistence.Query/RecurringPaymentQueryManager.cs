@@ -1,11 +1,12 @@
-﻿using Tracker.Shared.Models.Modules.Budget;
+﻿using Tracker.Shared.Abstraction.Enums.Persistence;
+using Tracker.Shared.Models.Modules.Budget;
 using Tracker.Shared.Models.Modules.Budget.Dto;
 using Tracker.Shared.Persistence;
 
 namespace Tracker.Module.Budget.Persistence.Query
 {
-    public class RecurringPaymentQueryManager : BaseEntityQueryManager<TrackerDatabaseContext, RecurringPayment,
-        SearchableRecurringPayment, RecurringPaymentDto>
+    public class RecurringPaymentQueryManager : BaseBudgetQueryManager<RecurringPayment, SearchableRecurringPayment,
+        RecurringPaymentDto>
     {
         /// <inheritdoc />
         public RecurringPaymentQueryManager(TrackerDatabaseContext context) : base(context)
@@ -21,14 +22,14 @@ namespace Tracker.Module.Budget.Persistence.Query
         /// <inheritdoc />
         protected override IQueryable<RecurringPayment> GetBaseQuery()
         {
-            throw new NotImplementedException();
+            return GetContextSegment().RecurringPayments.AsQueryable();
         }
 
         /// <inheritdoc />
         protected override IQueryable<RecurringPayment> AddQueryArguments(
             SearchableRecurringPayment searchable, IQueryable<RecurringPayment> query)
         {
-            throw new NotImplementedException();
+            return query;
         }
     }
 }

@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tracker.Shared.Abstraction.Enums.Persistence;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
-using Tracker.Shared.Persistence.Converters;
+using Tracker.Shared.Persistence.Core.Converters;
 
-namespace Tracker.Shared.Persistence
+namespace Tracker.Shared.Persistence.Core
 {
-    public abstract class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : class, IEntity
+    public abstract class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
+        where TEntity : class, IEntity
     {
         private readonly DatabaseType databaseType;
 
@@ -39,10 +40,7 @@ namespace Tracker.Shared.Persistence
 
         protected void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<object>(x =>
-            {
-
-            });
+            modelBuilder.Entity<object>(x => { });
         }
     }
 }

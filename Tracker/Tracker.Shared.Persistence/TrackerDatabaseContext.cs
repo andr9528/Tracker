@@ -3,6 +3,7 @@ using Tracker.Shared.Abstraction.Enums.Persistence;
 using Tracker.Shared.Models.User;
 using Tracker.Shared.User.Persistence;
 using Tracker.Module.Budget.Persistence;
+using Tracker.Shared.Persistence.Core;
 
 namespace Tracker.Shared.Persistence
 {

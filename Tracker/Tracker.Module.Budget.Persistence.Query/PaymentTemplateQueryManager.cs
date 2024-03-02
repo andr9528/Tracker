@@ -5,7 +5,7 @@ using Tracker.Shared.Persistence;
 
 namespace Tracker.Module.Budget.Persistence.Query
 {
-    public class PaymentTemplateQueryManager : BaseEntityQueryManager<TrackerDatabaseContext, PaymentTemplate,
+    public class PaymentTemplateQueryManager : BaseBudgetQueryManager<PaymentTemplate,
         SearchablePaymentTemplate, PaymentTemplateDto>
     {
         /// <inheritdoc />
@@ -22,14 +22,14 @@ namespace Tracker.Module.Budget.Persistence.Query
         /// <inheritdoc />
         protected override IQueryable<PaymentTemplate> GetBaseQuery()
         {
-            throw new NotImplementedException();
+            return GetContextSegment().PaymentTemplates.AsQueryable();
         }
 
         /// <inheritdoc />
         protected override IQueryable<PaymentTemplate> AddQueryArguments(
             SearchablePaymentTemplate searchable, IQueryable<PaymentTemplate> query)
         {
-            throw new NotImplementedException();
+            return query;
         }
     }
 }

@@ -4,6 +4,7 @@ using Tracker.Shared.Models.Modules.Budget;
 using Tracker.Shared.Models.Modules.Budget.Entity;
 using Tracker.Shared.Models.User;
 using Tracker.Shared.Persistence;
+using Tracker.Shared.Persistence.Core;
 
 namespace Tracker.Shared.User.Persistence
 {

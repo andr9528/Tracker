@@ -3,10 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tracker.Shared.Abstraction.Interfaces.Startup;
 
-namespace Tracker.Shared.Persistence
+namespace Tracker.Shared.Persistence.Core
 {
-    public class DatabaseContextStartupModule<TContext> : IStartupModule
-        where TContext : BaseDatabaseContext
+    public class DatabaseContextStartupModule<TContext> : IStartupModule where TContext : BaseDatabaseContext
     {
         public delegate void SetupOptionsDelegate(DbContextOptionsBuilder options);
 
@@ -16,7 +15,7 @@ namespace Tracker.Shared.Persistence
 
         public DatabaseContextStartupModule(SetupOptionsDelegate setup, bool migrateOnStartup = true)
         {
-            if (typeof(TContext) is { IsAbstract: true, })
+            if (typeof(TContext) is {IsAbstract: true,})
                 throw new ArgumentException($"Invalid type argument supplied to '{nameof(TContext)}'");
 
             this.migrateOnStartup = migrateOnStartup;
