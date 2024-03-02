@@ -16,13 +16,14 @@ namespace Tracker.Shared.Persistence
             this.context = context;
         }
 
-        protected abstract TEntity BuildEntity(TDto dto);
 
         /// <inheritdoc />
         public async Task<TEntity> AddEntity(TDto dto)
         {
-            return context.Add(BuildEntity(dto)).Entity;
+            return context.Add(BuildEntity(dto)).Entity; // <-- Incorrect retrieval of the supposed result
         }
+
+        protected abstract TEntity BuildEntity(TDto dto);
 
         /// <inheritdoc />
         public async Task<IEnumerable<TEntity>> AddEntities(IEnumerable<TDto> dtos)
@@ -35,6 +36,21 @@ namespace Tracker.Shared.Persistence
         {
             throw new NotImplementedException();
         }
+
+        private IQueryable<TEntity> BuildQuery(TSearchable searchable)
+        {
+            IQueryable<TEntity> query = GetBaseQuery();
+
+            if (searchable.Id != default)
+                query = query.Where(x => x.Id == searchable.Id);
+
+            query = AddQueryArguments(searchable, query);
+
+            return query;
+        }
+
+        protected abstract IQueryable<TEntity> GetBaseQuery();
+        protected abstract IQueryable<TEntity> AddQueryArguments(TSearchable searchable, IQueryable<TEntity> query);
 
         /// <inheritdoc />
         public async Task<IEnumerable<TEntity>> GetEntities(TSearchable searchable)

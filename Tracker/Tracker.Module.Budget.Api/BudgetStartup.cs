@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Tracker.Module.Budget.Persistence;
-using Tracker.Module.Budget.Persistence.QueryManagers;
+using Tracker.Module.Budget.Persistence.Query;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Models.Modules.Budget;
 using Tracker.Shared.Models.Modules.Budget.Dto;
@@ -15,15 +16,8 @@ namespace Tracker.Module.Budget.Api
 {
     public class BudgetStartup : ModularStartup
     {
-        private const string DATABASE_CONNECTION_STRING_NAME = "mainDb";
-
         public BudgetStartup(IConfiguration config) : base(config)
         {
-            AddModule(new ApiStartupModule());
-            AddModule(new SwaggerStartupModule("Budget"));
-
-            AddModule(new DatabaseContextStartupModule<BudgetDatabaseContext>((options) =>
-                options.UseSqlite(Configuration.GetConnectionString(DATABASE_CONNECTION_STRING_NAME))));
             AddModule(
                 new EntityQueryManagerStartupModule<PaymentQueryManager, Payment, SearchablePayment, PaymentDto>());
             AddModule(
@@ -38,9 +32,6 @@ namespace Tracker.Module.Budget.Api
             AddModule(
                 new EntityQueryManagerStartupModule<CurrencyRateQueryManager, CurrencyRate, SearchableCurrencyRate,
                     CurrencyRateDto>());
-            AddModule(
-                new EntityQueryManagerStartupModule<CoreUserQueryManager<BudgetDatabaseContext>, CoreUser,
-                    SearchableCoreUser, CoreUserDto>());
         }
     }
 }

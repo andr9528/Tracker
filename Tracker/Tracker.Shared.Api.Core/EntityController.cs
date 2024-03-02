@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Tracker.Shared.Abstraction.Interfaces.Budget.Entity;
-using Tracker.Shared.Abstraction.Interfaces.Budget.Searchable;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
-namespace Tracker.Shared.Api
+namespace Tracker.Shared.Api.Core
 {
     public abstract class EntityController<TEntity, TSearchable, TDto> : ControllerBase where TEntity : class, IEntity
         where TSearchable : class, ISearchable, new()

@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Tracker.Shared.Abstraction.Enums.Persistence;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
 namespace Tracker.Shared.Persistence
@@ -8,10 +9,22 @@ namespace Tracker.Shared.Persistence
     public abstract class BaseDatabaseContext : DbContext
     {
         private readonly DbContextOptions options;
+        protected readonly ICollection<IContextSegment> segments;
 
         protected BaseDatabaseContext([NotNullAttribute] DbContextOptions options) : base(options)
         {
             this.options = options;
+            segments = new List<IContextSegment>();
+        }
+
+        protected void AddContextSegment(IContextSegment segment)
+        {
+            segments.Add(segment);
+        }
+
+        public IContextSegment GetContextSegment(ContextSegmentType segmentType)
+        {
+            return segments.First(x => x.SegmentType == segmentType);
         }
 
         public override int SaveChanges()
@@ -48,7 +61,8 @@ namespace Tracker.Shared.Persistence
             {
                 ((IEntity) entityEntry.Entity).UpdatedDateTime = DateTime.Now;
 
-                if (entityEntry.State == EntityState.Added) ((IEntity) entityEntry.Entity).CreatedDateTime = DateTime.Now;
+                if (entityEntry.State == EntityState.Added)
+                    ((IEntity) entityEntry.Entity).CreatedDateTime = DateTime.Now;
             }
         }
     }

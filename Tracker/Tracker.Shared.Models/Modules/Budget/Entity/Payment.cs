@@ -1,4 +1,5 @@
 ﻿using Tracker.Shared.Abstraction.Enums.Budget;
+using Tracker.Shared.Abstraction.Interfaces.Budget.Dto;
 using Tracker.Shared.Abstraction.Interfaces.Budget.Entity;
 using Tracker.Shared.Abstraction.Interfaces.User;
 
@@ -58,6 +59,19 @@ namespace Tracker.Shared.Models.Modules.Budget.Entity
         private Payment(int id)
         {
             this.id = id;
+        }
+
+        public static Payment BuildPayment(IPaymentDto dto)
+        {
+            return new Payment
+            {
+                Amount = dto.Amount,
+                Currency = dto.Currency,
+                PaymentTypeId = dto.PaymentTypeId,
+                CoreUserId = dto.CoreUserId,
+                Date = dto.Date,
+                RecurringPaymentId = dto.RecurringPaymentId,
+            };
         }
     }
 }

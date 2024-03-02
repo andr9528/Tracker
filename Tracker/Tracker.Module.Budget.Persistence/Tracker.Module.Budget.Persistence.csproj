@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tracker.Shared.Models\Tracker.Shared.Models.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
     <ProjectReference Include="..\Tracker.Shared.User.Persistence\Tracker.Shared.User.Persistence.csproj" />
   </ItemGroup>
 

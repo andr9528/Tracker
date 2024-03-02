@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tracker.Shared.Abstraction.Interfaces.Budget.Entity;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
-using Tracker.Shared.Api;
+using Tracker.Shared.Api.Core;
 using Tracker.Shared.Models.Modules.Budget.Dto;
 using Tracker.Shared.Models.Modules.Budget.Entity;
 using Tracker.Shared.Models.Modules.Budget.Searchable;

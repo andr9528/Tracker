@@ -1,24 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\Tracker.Module.Budget.Persistence.Query\Tracker.Module.Budget.Persistence.Query.csproj" />
     <ProjectReference Include="..\Tracker.Module.Budget.Persistence\Tracker.Module.Budget.Persistence.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Api\Tracker.Shared.Api.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Api.Core\Tracker.Shared.Api.Core.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Models\Tracker.Shared.Models.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Startup\Tracker.Shared.Startup.csproj" />
   </ItemGroup>
 
