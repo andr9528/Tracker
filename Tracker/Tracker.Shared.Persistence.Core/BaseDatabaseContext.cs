@@ -9,24 +9,10 @@ namespace Tracker.Shared.Persistence.Core
     public abstract class BaseDatabaseContext : DbContext
     {
         private readonly DbContextOptions options;
-        protected readonly ICollection<IContextSegment> segments;
 
         protected BaseDatabaseContext([NotNull] DbContextOptions options) : base(options)
         {
             this.options = options;
-            segments = new List<IContextSegment>();
-        }
-
-        protected void AddContextSegment(IContextSegment segment)
-        {
-            segments.Add(segment);
-        }
-
-        public IContextSegment GetContextSegment(ContextSegmentType segmentType)
-        {
-            return segments.FirstOrDefault(x => x.SegmentType == segmentType) ??
-                   throw new NullReferenceException(
-                       $"Expected a context segment for '{segmentType}' to exist, but null was returned");
         }
 
         public override int SaveChanges()

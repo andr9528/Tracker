@@ -2,8 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tracker.Shared.Abstraction.Interfaces.Startup;
+using Tracker.Shared.Persistence.Core;
 
-namespace Tracker.Shared.Persistence.Core
+namespace Tracker.Shared.Persistence.Startup.Core
 {
     public class DatabaseContextStartupModule<TContext> : IStartupModule where TContext : BaseDatabaseContext
     {

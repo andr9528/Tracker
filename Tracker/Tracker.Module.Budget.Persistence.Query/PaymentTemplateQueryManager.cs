@@ -1,28 +1,24 @@
-﻿using Tracker.Shared.Models.Modules.Budget.Dto;
-using Tracker.Shared.Models.Modules.Budget.Entity;
+﻿using Tracker.Shared.Models.Modules.Budget.Entity;
 using Tracker.Shared.Models.Modules.Budget.Searchable;
 using Tracker.Shared.Persistence;
+using Tracker.Shared.Persistence.Core;
+using Tracker.Shared.Persistence.Segments;
 
 namespace Tracker.Module.Budget.Persistence.Query
 {
-    public class PaymentTemplateQueryManager : BaseBudgetQueryManager<PaymentTemplate,
-        SearchablePaymentTemplate, PaymentTemplateDto>
+    public class PaymentTemplateQueryManager : BaseEntityQueryManager<PaymentTemplate, SearchablePaymentTemplate,
+        IBudgetContextSegment>
     {
         /// <inheritdoc />
-        public PaymentTemplateQueryManager(TrackerDatabaseContext context) : base(context)
+        public PaymentTemplateQueryManager(TrackerDatabaseContext context, IBudgetContextSegment budgetContextSegment) :
+            base(context, budgetContextSegment)
         {
-        }
-
-        /// <inheritdoc />
-        protected override PaymentTemplate BuildEntity(PaymentTemplateDto dto)
-        {
-            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
         protected override IQueryable<PaymentTemplate> GetBaseQuery()
         {
-            return GetContextSegment().PaymentTemplates.AsQueryable();
+            return segment.PaymentTemplates.AsQueryable();
         }
 
         /// <inheritdoc />

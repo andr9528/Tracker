@@ -1,27 +1,22 @@
 ﻿using Tracker.Shared.Models.User;
 using Tracker.Shared.Persistence;
 using Tracker.Shared.Persistence.Core;
+using Tracker.Shared.Persistence.Segments;
 
 namespace Tracker.Shared.User.Persistence.Query
 {
-    public class CoreUserQueryManager : BaseEntityQueryManager<TrackerDatabaseContext, CoreUser, SearchableCoreUser,
-        CoreUserDto>
+    public class CoreUserQueryManager : BaseEntityQueryManager<CoreUser, SearchableCoreUser, IBaselineContextSegment>
     {
         /// <inheritdoc />
-        public CoreUserQueryManager(TrackerDatabaseContext context) : base(context)
+        public CoreUserQueryManager(TrackerDatabaseContext context, IBaselineContextSegment baselineContextSegment) :
+            base(context, baselineContextSegment)
         {
-        }
-
-        /// <inheritdoc />
-        protected override CoreUser BuildEntity(CoreUserDto dto)
-        {
-            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
         protected override IQueryable<CoreUser> GetBaseQuery()
         {
-            return context.CoreUsers.AsQueryable();
+            return segment.CoreUsers.AsQueryable();
         }
 
         /// <inheritdoc />

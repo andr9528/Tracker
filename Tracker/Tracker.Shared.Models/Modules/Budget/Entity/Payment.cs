@@ -60,18 +60,5 @@ namespace Tracker.Shared.Models.Modules.Budget.Entity
         {
             this.id = id;
         }
-
-        public static Payment BuildPayment(IPaymentDto dto)
-        {
-            return new Payment
-            {
-                Amount = dto.Amount,
-                Currency = dto.Currency,
-                PaymentTypeId = dto.PaymentTypeId,
-                CoreUserId = dto.CoreUserId,
-                Date = dto.Date,
-                RecurringPaymentId = dto.RecurringPaymentId,
-            };
-        }
     }
 }
