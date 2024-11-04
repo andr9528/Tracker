@@ -1,10 +1,12 @@
 ﻿using Tracker.Shared.Abstraction.Enums.Budget;
-using Tracker.Shared.Abstraction.Interfaces.Budget.Dto;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
 namespace Tracker.Shared.Abstraction.Interfaces.Budget.Searchable
 {
-    public interface ISearchablePayment : IPaymentDto, ISearchableCommonPayment, ISearchable
+    public interface ISearchablePayment : ISearchableCommonPayment, ISearchable
     {
+        DateOnly Date { get; set; }
+        int? RecurringPaymentId { get; set; }
+        int CoreUserId { get; set; }
     }
 }

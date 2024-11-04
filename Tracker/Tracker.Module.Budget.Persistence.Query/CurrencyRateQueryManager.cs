@@ -1,28 +1,24 @@
-﻿using Tracker.Shared.Models.Modules.Budget.Dto;
-using Tracker.Shared.Models.Modules.Budget.Entity;
+﻿using Tracker.Shared.Models.Modules.Budget.Entity;
 using Tracker.Shared.Models.Modules.Budget.Searchable;
 using Tracker.Shared.Persistence;
+using Tracker.Shared.Persistence.Core;
+using Tracker.Shared.Persistence.Segments;
 
 namespace Tracker.Module.Budget.Persistence.Query
 {
-    public class CurrencyRateQueryManager : BaseBudgetQueryManager<CurrencyRate,
-        SearchableCurrencyRate, CurrencyRateDto>
+    public class CurrencyRateQueryManager : BaseEntityQueryManager<CurrencyRate, SearchableCurrencyRate,
+        IBudgetContextSegment>
     {
         /// <inheritdoc />
-        public CurrencyRateQueryManager(TrackerDatabaseContext context) : base(context)
+        public CurrencyRateQueryManager(TrackerDatabaseContext context, IBudgetContextSegment budgetContextSegment) :
+            base(context, budgetContextSegment)
         {
-        }
-
-        /// <inheritdoc />
-        protected override CurrencyRate BuildEntity(CurrencyRateDto dto)
-        {
-            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
         protected override IQueryable<CurrencyRate> GetBaseQuery()
         {
-            return GetContextSegment().CurrencyRates.AsQueryable();
+            return segment.CurrencyRates.AsQueryable();
         }
 
         /// <inheritdoc />

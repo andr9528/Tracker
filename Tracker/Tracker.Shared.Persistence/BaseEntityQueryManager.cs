@@ -1,32 +1,30 @@
 ﻿using Tracker.Shared.Abstraction.Interfaces.Persistence;
+using Tracker.Shared.Persistence.Core;
 
-namespace Tracker.Shared.Persistence.Core
+namespace Tracker.Shared.Persistence
 {
     public abstract class
-        BaseEntityQueryManager<TContext, TEntity, TSearchable, TDto> : IEntityQueryManager<TEntity, TSearchable, TDto>
-        where TContext : BaseDatabaseContext
-        where TEntity : class, IEntity
-        where TSearchable : class, ISearchable
-        where TDto : class, IDto
+        BaseEntityQueryManager<TEntity, TSearchable, TSegment> : IEntityQueryManager<TEntity, TSearchable>
+        where TEntity : class, IEntity where TSearchable : class, ISearchable where TSegment : IContextSegment
     {
-        protected readonly TContext context;
+        protected readonly BaseDatabaseContext context;
+        protected readonly TSegment segment;
 
-        protected BaseEntityQueryManager(TContext context)
+        protected BaseEntityQueryManager(BaseDatabaseContext context, TSegment segment)
         {
             this.context = context;
+            this.segment = segment;
         }
 
-
         /// <inheritdoc />
-        public async Task<TEntity> AddEntity(TDto dto)
+        public async Task<TEntity> AddEntity(TEntity entity)
         {
-            return context.Add(BuildEntity(dto)).Entity; // <-- Incorrect retrieval of the supposed result
+            return context.Add(entity).Entity; // <-- Incorrect retrieval of the supposed result
         }
 
-        protected abstract TEntity BuildEntity(TDto dto);
 
         /// <inheritdoc />
-        public async Task<IEnumerable<TEntity>> AddEntities(IEnumerable<TDto> dtos)
+        public async Task<IEnumerable<TEntity>> AddEntities(IEnumerable<TEntity> entities)
         {
             throw new NotImplementedException();
         }
