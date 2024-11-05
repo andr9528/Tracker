@@ -1,0 +1,10 @@
+{
+  "background_color": "#ffffff",
+  "description": "Tracker.Frontend.Uno",
+  "display": "standalone",
+  "name": "Tracker.Frontend.Uno",
+  "short_name": "Tracker.Frontend.Uno",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}
