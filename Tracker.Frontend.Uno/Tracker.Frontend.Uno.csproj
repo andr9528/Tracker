@@ -29,7 +29,7 @@
       Toolkit;
       Logging;
       LoggingSerilog;
-      MVUX;
+      Mvvm;
       Configuration;
       Http;
       Serialization;
@@ -43,5 +43,10 @@
     <IsUiAutomationMappingEnabled>True</IsUiAutomationMappingEnabled>
     <DefineConstants>$(DefineConstants);USE_UITESTS</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tracker.Module.Budget.Startup\Tracker.Module.Budget.Startup.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Startup\Tracker.Shared.Startup.csproj" />
+  </ItemGroup>
 
 </Project>
