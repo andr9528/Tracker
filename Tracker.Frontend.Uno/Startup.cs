@@ -1,3 +1,5 @@
+using Tracker.Module.Budget.Presentation;
+using Tracker.Module.Budget.Presentation.ViewModel;
 using Tracker.Module.Budget.Startup;
 using Tracker.Shared.Startup;
 
@@ -74,11 +76,42 @@ public class Startup : ModularStartup
 
     private void RegisterRoutes(IViewRegistry views, IRouteRegistry routes)
     {
-        views.Register(new ViewMap(ViewModel: typeof(ShellViewModel)), new ViewMap<MainPage, MainViewModel>());
+        RegisterViews(views);
 
-        routes.Register(new RouteMap("", views.FindByViewModel<ShellViewModel>(), Nested: new RouteMap[]
+        var budgetRoutes = new RouteMap[]
         {
-            new("Main", views.FindByViewModel<MainViewModel>(), true),
-        }));
+            new(BudgetTabs.BUDGET_TAB_REGION_NAME_ONE, IsDefault: true),
+        };
+
+        var routeLevelThree = new RouteMap[]
+        {
+            new("Budget", views.FindByViewModel<BudgetTabsViewModel>(), Nested: budgetRoutes),
+        };
+        var routeLevelTwo = new RouteMap[]
+        {
+            new("Module", views.FindByViewModel<ModulesNavigationViewModel>(), Nested: routeLevelThree),
+        };
+        var routeLevelOne = new RouteMap("", views.FindByViewModel<ShellViewModel>(), Nested: routeLevelTwo);
+
+        routes.Register(routeLevelOne);
+    }
+
+    private void RegisterViews(IViewRegistry views)
+    {
+        var budgetViewMaps = new List<ViewMap>
+        {
+            new ViewMap<BudgetTabs, BudgetTabsViewModel>(),
+            new ViewMap<PaymentsTab, PaymentsTab>(),
+        };
+
+        var viewMaps = new List<ViewMap>
+        {
+            new ViewMap<Shell, ShellViewModel>(),
+            new ViewMap<ModulesNavigationPage, ModulesNavigationViewModel>(),
+        };
+
+        viewMaps.AddRange(budgetViewMaps);
+
+        views.Register(viewMaps.ToArray());
     }
 }

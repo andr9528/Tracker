@@ -45,6 +45,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tracker.Module.Budget.Presentation\Tracker.Module.Budget.Presentation.csproj" />
     <ProjectReference Include="..\Tracker.Module.Budget.Startup\Tracker.Module.Budget.Startup.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Startup\Tracker.Shared.Startup.csproj" />
   </ItemGroup>
