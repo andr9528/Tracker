@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Uno.Extensions.Navigation.WinUI" />
     <PackageReference Include="Uno.Themes.WinUI.Markup" />
     <PackageReference Include="Uno.Toolkit.WinUI.Markup" />
     <PackageReference Include="Uno.WinUI" />

@@ -2,11 +2,11 @@ namespace Tracker.Frontend.Uno.Presentation;
 
 public sealed partial class ModulesNavigationPage : Page
 {
-    public TrackerModule[] Modules { get; } = new TrackerModule[]
+    public static readonly List<TrackerModule> Modules = new()
     {
-        new("Budget"),
-        new("Dining"),
-        new("Time"),
+        new TrackerModule(TrackerModule.Module.BUDGET),
+        new TrackerModule(TrackerModule.Module.DINING),
+        new TrackerModule(TrackerModule.Module.TIME),
     };
 
     public ModulesNavigationPage()
@@ -21,13 +21,16 @@ public sealed partial class ModulesNavigationPage : Page
         var grid = new Grid();
 
         grid.SafeArea(SafeArea.InsetMask.VisibleBounds);
-        grid.RowDefinitions(GridLength.Auto, GridLength.FromString("*"));
+        grid.RowDefinitions(new GridLength(8, GridUnitType.Star), new GridLength(92, GridUnitType.Star));
+        grid.ColumnDefinitions(new GridLength(10, GridUnitType.Star), new GridLength(90, GridUnitType.Star));
 
-        NavigationBar navBar = BuildNavigationBar(viewModel).Grid(row: 0);
-        Grid navGrid = BuildNavigationGrid(viewModel).Grid(row: 1);
+        NavigationBar navBar = BuildNavigationBar(viewModel).Grid(row: 0, column: 0);
+        ListView navGrid = BuildNavigationListView(viewModel).Grid(row: 1, column: 0);
+        Grid controlGrid = BuildContentControlGrid(viewModel).Grid(row: 0, column: 1, rowSpan: 2);
 
         grid.Children.Add(navBar);
         grid.Children.Add(navGrid);
+        grid.Children.Add(controlGrid);
 
         return grid;
     }
@@ -41,40 +44,29 @@ public sealed partial class ModulesNavigationPage : Page
         return navBar;
     }
 
-    private Grid BuildNavigationGrid(ModulesNavigationViewModel viewModel)
-    {
-        var grid = new Grid();
-
-        grid.ColumnDefinitions(new GridLength(20, GridUnitType.Star), new GridLength(80, GridUnitType.Star));
-
-        ListView listView = BuildNavigationListView(viewModel).Grid(row: 1);
-        Grid controlGrid = BuildContentControlGrid(viewModel).Grid(1);
-
-        grid.Children.Add(listView);
-        grid.Children.Add(controlGrid);
-
-        return grid;
-    }
-
     private ListView BuildNavigationListView(ModulesNavigationViewModel viewModel)
     {
         var listView = new ListView();
 
-        listView.SetBinding(ItemsControl.ItemsSourceProperty, nameof(Modules));
+        var listOptions = Modules.Select(x => new TextBlock()
+        {
+            Text = x.GetModuleAsReadableString(),
+            Margin = new Thickness(10, 0, 0, 0),
+        });
 
-        var textBlockTemplate = new TextBlock();
-        textBlockTemplate.SetBinding(TextBlock.TextProperty, nameof(TrackerModule.Name));
-
-        listView.ItemTemplate = new DataTemplate(() => textBlockTemplate);
+        listView.ItemsSource = listOptions;
+        // Viewmodel is null at this point during setup...
+        //listView.SelectionChanged += viewModel.ListViewOnSelectionChanged;
 
         return listView;
     }
+
 
     private Grid BuildContentControlGrid(ModulesNavigationViewModel viewModel)
     {
         var grid = new Grid
         {
-            Background = new SolidColorBrush(Colors.AliceBlue),
+            Background = new SolidColorBrush(Colors.DarkOrange),
         };
 
         var contentControl = new ContentControl
@@ -84,6 +76,9 @@ public sealed partial class ModulesNavigationPage : Page
             HorizontalContentAlignment = HorizontalAlignment.Stretch,
             VerticalContentAlignment = VerticalAlignment.Stretch,
         };
+        contentControl.Content(x =>
+            x.Binding(() => viewModel.ActiveModule.GetModuleControl())
+                .UpdateSourceTrigger(UpdateSourceTrigger.PropertyChanged));
 
         grid.Children.Add(contentControl);
 

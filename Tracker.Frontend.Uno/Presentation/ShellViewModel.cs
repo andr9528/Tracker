@@ -8,5 +8,11 @@ public class ShellViewModel
     {
         _navigator = navigator;
         // Add code here to initialize or attach event handlers to singleton services
+        _ = Start();
+    }
+
+    private async Task Start()
+    {
+        await _navigator.NavigateViewModelAsync<ModulesNavigationViewModel>(this);
     }
 }

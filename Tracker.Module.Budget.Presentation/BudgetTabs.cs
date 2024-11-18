@@ -1,17 +1,18 @@
 using Microsoft.UI.Xaml.Controls;
 using Tracker.Module.Budget.Presentation.ViewModel;
-using Uno.Toolkit.UI;
+using Uno.Extensions.Navigation.UI;
 
 namespace Tracker.Module.Budget.Presentation;
 
-public sealed partial class BudgetTabs : Page
+public sealed partial class BudgetTabs : UserControl
 {
     public const string BUDGET_TAB_REGION_NAME_ONE = "PaymentsTab";
 
     public BudgetTabs()
     {
-        this.DataContext<BudgetTabsViewModel>((page, vm) => page.NavigationCacheMode(NavigationCacheMode.Required)
-            .Background(Theme.Brushes.Background.Default).Content(BuildContent(vm)));
+        this.DataContext<BudgetTabsViewModel>((userControl, vm) =>
+            userControl.TabNavigation(KeyboardNavigationMode.Cycle).Background(Theme.Brushes.Background.Default)
+                .Content(BuildContent(vm)));
     }
 
     private Grid BuildContent(BudgetTabsViewModel viewModel)
@@ -19,7 +20,7 @@ public sealed partial class BudgetTabs : Page
         var grid = new Grid();
 
         grid.SafeArea(SafeArea.InsetMask.VisibleBounds);
-        grid.RowDefinitions(GridLength.Auto, GridLength.FromString("*"));
+        grid.RowDefinitions(new GridLength(8, GridUnitType.Star), new GridLength(92, GridUnitType.Star));
 
         TabBar tabBar = BuildTabBar(viewModel).Grid(row: 0);
         Grid contentGrid = BuildContentGrid(viewModel).Grid(row: 1);

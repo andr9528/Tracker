@@ -78,20 +78,24 @@ public class Startup : ModularStartup
     {
         RegisterViews(views);
 
+        const string budgetPath = "Budget";
+        const string modulePath = "Module";
+
         var budgetRoutes = new RouteMap[]
         {
-            new(BudgetTabs.BUDGET_TAB_REGION_NAME_ONE, IsDefault: true),
+            new(BudgetTabs.BUDGET_TAB_REGION_NAME_ONE, DependsOn: budgetPath),
         };
 
         var routeLevelThree = new RouteMap[]
         {
-            new("Budget", views.FindByViewModel<BudgetTabsViewModel>(), Nested: budgetRoutes),
+            new(budgetPath, views.FindByViewModel<BudgetTabsViewModel>(), Nested: budgetRoutes, DependsOn: modulePath),
         };
         var routeLevelTwo = new RouteMap[]
         {
-            new("Module", views.FindByViewModel<ModulesNavigationViewModel>(), Nested: routeLevelThree),
+            new(modulePath, views.FindByViewModel<ModulesNavigationViewModel>(), Nested: routeLevelThree),
         };
-        var routeLevelOne = new RouteMap("", views.FindByViewModel<ShellViewModel>(), Nested: routeLevelTwo);
+        var routeLevelOne = new RouteMap("", views.FindByViewModel<ShellViewModel>(), Nested: routeLevelTwo,
+            IsDefault: true);
 
         routes.Register(routeLevelOne);
     }
