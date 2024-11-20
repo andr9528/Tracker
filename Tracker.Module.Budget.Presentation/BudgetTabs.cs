@@ -1,3 +1,4 @@
+using System.Drawing;
 using Microsoft.UI.Xaml.Controls;
 using Tracker.Module.Budget.Presentation.ViewModel;
 using Uno.Extensions.Navigation.UI;
@@ -42,6 +43,7 @@ public sealed partial class BudgetTabs : UserControl
         {
             VerticalAlignment = VerticalAlignment.Top,
             ItemsSource = tabBarItems,
+            Background = new SolidColorBrush(Colors.DarkGray),
         };
 
         return tabBar;

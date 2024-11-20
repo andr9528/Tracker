@@ -25,12 +25,12 @@ public sealed partial class ModulesNavigationPage : Page
         grid.ColumnDefinitions(new GridLength(10, GridUnitType.Star), new GridLength(90, GridUnitType.Star));
 
         NavigationBar navBar = BuildNavigationBar(viewModel).Grid(row: 0, column: 0);
-        ListView navGrid = BuildNavigationListView(viewModel).Grid(row: 1, column: 0);
-        Grid controlGrid = BuildContentControlGrid(viewModel).Grid(row: 0, column: 1, rowSpan: 2);
+        ListView navList = BuildNavigationListView(viewModel).Grid(row: 1, column: 0);
+        Grid contentGrid = BuildContentGrid(viewModel).Grid(row: 0, column: 1, rowSpan: 2);
 
         grid.Children.Add(navBar);
-        grid.Children.Add(navGrid);
-        grid.Children.Add(controlGrid);
+        grid.Children.Add(navList);
+        grid.Children.Add(contentGrid);
 
         return grid;
     }
@@ -47,40 +47,47 @@ public sealed partial class ModulesNavigationPage : Page
     private ListView BuildNavigationListView(ModulesNavigationViewModel viewModel)
     {
         var listView = new ListView();
+        listView.Region(true);
 
-        var listOptions = Modules.Select(x => new TextBlock()
+        var listOptions = Modules.Select(module =>
         {
-            Text = x.GetModuleAsReadableString(),
-            Margin = new Thickness(10, 0, 0, 0),
+            var block = new TextBlock()
+            {
+                Text = module.GetModuleAsReadableString(),
+                Margin = new Thickness(10, 0, 0, 0),
+            };
+            block.Region(name: module.GetModuleAsReadableString());
+
+            return block;
         });
 
         listView.ItemsSource = listOptions;
-        // Viewmodel is null at this point during setup...
-        //listView.SelectionChanged += viewModel.ListViewOnSelectionChanged;
 
         return listView;
     }
 
 
-    private Grid BuildContentControlGrid(ModulesNavigationViewModel viewModel)
+    private Grid BuildContentGrid(ModulesNavigationViewModel viewModel)
     {
         var grid = new Grid
         {
-            Background = new SolidColorBrush(Colors.DarkOrange),
+            Background = new SolidColorBrush(Colors.AliceBlue),
         };
+        grid.Region(true, navigator: "Visibility");
 
-        var contentControl = new ContentControl
+        foreach (TrackerModule module in Modules)
         {
-            HorizontalAlignment = HorizontalAlignment.Stretch,
-            VerticalAlignment = VerticalAlignment.Stretch,
-            HorizontalContentAlignment = HorizontalAlignment.Stretch,
-            VerticalContentAlignment = VerticalAlignment.Stretch,
-        };
-        contentControl.Content(x =>
-            x.Binding(() => viewModel.ActiveModule.GetModuleControl())
-                .UpdateSourceTrigger(UpdateSourceTrigger.PropertyChanged));
+            var contentGrid = new Grid
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Visibility = Visibility.Collapsed,
+            };
+            contentGrid.Region(name: module.GetModuleAsReadableString());
+            contentGrid.Children.Add(module.GetModuleControl());
 
-        grid.Children.Add(contentControl);
+            grid.Children.Add(contentGrid);
+        }
 
         return grid;
     }

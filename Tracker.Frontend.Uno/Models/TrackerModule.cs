@@ -13,14 +13,14 @@ public class TrackerModule
         BUDGET,
     }
 
-    private Module typeModule;
+    private readonly Module typeModule;
 
     public TrackerModule(Module typeModule)
     {
         this.typeModule = typeModule;
     }
 
-    public string GetModuleAsReadableString()
+    public static string GetModuleAsReadableString(Module typeModule)
     {
         var moduleAsString = typeModule.ToString();
         var builder = new StringBuilder();
@@ -36,6 +36,11 @@ public class TrackerModule
         TextInfo textInfo = new CultureInfo("en-GB", false).TextInfo;
 
         return textInfo.ToTitleCase(builtModule);
+    }
+
+    public string GetModuleAsReadableString()
+    {
+        return GetModuleAsReadableString(typeModule);
     }
 
     public UserControl GetModuleControl()

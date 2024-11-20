@@ -78,17 +78,17 @@ public class Startup : ModularStartup
     {
         RegisterViews(views);
 
-        const string budgetPath = "Budget";
+        string budgetPath = TrackerModule.GetModuleAsReadableString(TrackerModule.Module.BUDGET);
         const string modulePath = "Module";
 
         var budgetRoutes = new RouteMap[]
         {
-            new(BudgetTabs.BUDGET_TAB_REGION_NAME_ONE, DependsOn: budgetPath),
+            new(BudgetTabs.BUDGET_TAB_REGION_NAME_ONE),
         };
 
         var routeLevelThree = new RouteMap[]
         {
-            new(budgetPath, views.FindByViewModel<BudgetTabsViewModel>(), Nested: budgetRoutes, DependsOn: modulePath),
+            new(budgetPath, views.FindByViewModel<BudgetTabsViewModel>(), Nested: budgetRoutes),
         };
         var routeLevelTwo = new RouteMap[]
         {
