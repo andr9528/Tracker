@@ -1,3 +1,6 @@
+using Microsoft.UI.Xaml;
+using TextBlock = Microsoft.UI.Xaml.Controls.TextBlock;
+
 namespace Tracker.Frontend.Uno.Presentation;
 
 public sealed partial class ModulesNavigationPage : Page
@@ -47,25 +50,44 @@ public sealed partial class ModulesNavigationPage : Page
     private ListView BuildNavigationListView(ModulesNavigationViewModel viewModel)
     {
         var listView = new ListView();
-        listView.Region(true);
+        //listView.Region(true);
 
         var listOptions = Modules.Select(module =>
         {
             var block = new TextBlock()
             {
                 Text = module.GetModuleAsReadableString(),
-                Margin = new Thickness(10, 0, 0, 0),
+                Padding = new Thickness(10, 0, 10, 0),
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Background = listView.Background,
+                FocusVisualPrimaryBrush = listView.Background,
+                FocusVisualSecondaryBrush = listView.Background,
             };
-            block.Region(name: module.GetModuleAsReadableString());
+            //button.Region(name: module.GetModuleAsReadableString());
+            //button.SetRequest(module.GetModuleAsReadableString());
+            //button.SetData(module.GetModuleControl());
+
+            //button.Command(() => GetModuleCommand(viewModel, module.TypeModule));
+            //button.Style(new Style(typeof(TextBlock)));
 
             return block;
         });
 
+        listView.SelectionChanged += (sender, args) => ListViewOnSelectionChanged(sender, args, viewModel);
         listView.ItemsSource = listOptions;
 
         return listView;
     }
 
+    private void ListViewOnSelectionChanged(
+        object sender, SelectionChangedEventArgs e, ModulesNavigationViewModel viewModel)
+    {
+        Console.WriteLine($"Listview Selection Changed Called");
+        viewModel.ListViewOnSelectionChanged(sender, e);
+        // Not Fired...
+        Console.WriteLine($"View Model Called");
+    }
 
     private Grid BuildContentGrid(ModulesNavigationViewModel viewModel)
     {
@@ -83,6 +105,7 @@ public sealed partial class ModulesNavigationPage : Page
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Visibility = Visibility.Collapsed,
             };
+            contentGrid.Visibility(() => GetModuleVisibility(viewModel, module.TypeModule));
             contentGrid.Region(name: module.GetModuleAsReadableString());
             contentGrid.Children.Add(module.GetModuleControl());
 
@@ -90,5 +113,16 @@ public sealed partial class ModulesNavigationPage : Page
         }
 
         return grid;
+    }
+
+    private Visibility GetModuleVisibility(ModulesNavigationViewModel viewModel, TrackerModule.Module module)
+    {
+        return module switch
+        {
+            TrackerModule.Module.TIME => viewModel.TimeModuleVisibility,
+            TrackerModule.Module.DINING => viewModel.DiningModuleVisibility,
+            TrackerModule.Module.BUDGET => viewModel.BudgetModuleVisibility,
+            _ => viewModel.BudgetModuleVisibility,
+        };
     }
 }

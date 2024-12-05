@@ -1,22 +1,23 @@
-using System.Drawing;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Tracker.Module.Budget.Presentation.ViewModel;
-using Uno.Extensions.Navigation.UI;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Tracker.Module.Time.Presentation.ViewModel;
 
-namespace Tracker.Module.Budget.Presentation;
+namespace Tracker.Module.Time.Presentation;
 
-public sealed partial class BudgetTabs : UserControl
+public sealed partial class TimeTabs : UserControl
 {
-    public const string TAB_REGION_NAME_ONE = "PaymentsTab";
+    public const string TAB_REGION_NAME_ONE = "TimeTabOne";
 
-    public BudgetTabs()
+    public TimeTabs()
     {
-        this.DataContext<BudgetTabsViewModel>((userControl, vm) =>
-            userControl.TabNavigation(KeyboardNavigationMode.Cycle).Background(Theme.Brushes.Background.Default)
-                .Content(BuildContent(vm)));
+        this.DataContext<TimeTabsViewModel>((userControl, vm) => userControl.TabNavigation(KeyboardNavigationMode.Cycle)
+            .Background(Theme.Brushes.Background.Default).Content(BuildContent(vm)));
     }
 
-    private Grid BuildContent(BudgetTabsViewModel viewModel)
+    private Grid BuildContent(TimeTabsViewModel viewModel)
     {
         var grid = new Grid();
 
@@ -32,11 +33,11 @@ public sealed partial class BudgetTabs : UserControl
         return grid;
     }
 
-    private TabBar BuildTabBar(BudgetTabsViewModel viewModel)
+    private TabBar BuildTabBar(TimeTabsViewModel viewModel)
     {
         var tabBarItems = new TabBarItem[]
         {
-            new() {Content = "Payments",},
+            new() {Content = TAB_REGION_NAME_ONE,},
         };
 
         var tabBar = new TabBar
@@ -49,12 +50,12 @@ public sealed partial class BudgetTabs : UserControl
         return tabBar;
     }
 
-    private Grid BuildContentGrid(BudgetTabsViewModel viewModel)
+    private Grid BuildContentGrid(TimeTabsViewModel viewModel)
     {
         var grid = new Grid();
 
         var tabOne = new Grid() {Visibility = Visibility.Collapsed,};
-        tabOne.Children.Add(new PaymentsTab());
+        //tabOne.Children.Add(new PaymentsTab());
 
         grid.Children.Add(tabOne);
 

@@ -1,6 +1,8 @@
 using System.Globalization;
 using System.Text;
 using Tracker.Module.Budget.Presentation;
+using Tracker.Module.Dining.Presentation;
+using Tracker.Module.Time.Presentation;
 
 namespace Tracker.Frontend.Uno.Models;
 
@@ -8,12 +10,14 @@ public class TrackerModule
 {
     public enum Module
     {
-        TIME,
-        DINING,
-        BUDGET,
+        BUDGET = 0,
+        DINING = 1,
+        TIME = 2,
     }
 
     private readonly Module typeModule;
+
+    public Module TypeModule => typeModule;
 
     public TrackerModule(Module typeModule)
     {
@@ -48,7 +52,9 @@ public class TrackerModule
         switch (typeModule)
         {
             case Module.TIME:
+                return new TimeTabs();
             case Module.DINING:
+                return new DiningTabs();
             case Module.BUDGET:
             default:
                 return new BudgetTabs();

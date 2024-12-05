@@ -1,6 +1,10 @@
 using Tracker.Module.Budget.Presentation;
 using Tracker.Module.Budget.Presentation.ViewModel;
 using Tracker.Module.Budget.Startup;
+using Tracker.Module.Dining.Presentation;
+using Tracker.Module.Dining.Presentation.ViewModel;
+using Tracker.Module.Time.Presentation;
+using Tracker.Module.Time.Presentation.ViewModel;
 using Tracker.Shared.Startup;
 
 namespace Tracker.Frontend.Uno;
@@ -47,7 +51,6 @@ public class Startup : ModularStartup
         return configBuilder.EmbeddedSource<App>().Section<AppConfig>();
     }
 
-
     private void ConfigureLogging(HostBuilderContext context, ILoggingBuilder logBuilder)
     {
         // Configure log levels for different categories of logging
@@ -79,16 +82,30 @@ public class Startup : ModularStartup
         RegisterViews(views);
 
         string budgetPath = TrackerModule.GetModuleAsReadableString(TrackerModule.Module.BUDGET);
+        string diningPath = TrackerModule.GetModuleAsReadableString(TrackerModule.Module.DINING);
+        string timePath = TrackerModule.GetModuleAsReadableString(TrackerModule.Module.TIME);
         const string modulePath = "Module";
 
         var budgetRoutes = new RouteMap[]
         {
-            new(BudgetTabs.BUDGET_TAB_REGION_NAME_ONE),
+            new(BudgetTabs.TAB_REGION_NAME_ONE),
+        };
+
+        var diningRoutes = new RouteMap[]
+        {
+            new(DiningTabs.TAB_REGION_NAME_ONE),
+        };
+
+        var timeRoutes = new RouteMap[]
+        {
+            new(TimeTabs.TAB_REGION_NAME_ONE),
         };
 
         var routeLevelThree = new RouteMap[]
         {
             new(budgetPath, views.FindByViewModel<BudgetTabsViewModel>(), Nested: budgetRoutes),
+            new(diningPath, views.FindByViewModel<DiningTabsViewModel>(), Nested: diningRoutes),
+            new(timePath, views.FindByViewModel<TimeTabsViewModel>(), Nested: timeRoutes),
         };
         var routeLevelTwo = new RouteMap[]
         {
@@ -108,6 +125,16 @@ public class Startup : ModularStartup
             new ViewMap<PaymentsTab, PaymentsTab>(),
         };
 
+        var diningViewMaps = new List<ViewMap>
+        {
+            new ViewMap<DiningTabs, DiningTabsViewModel>(),
+        };
+
+        var timeViewMaps = new List<ViewMap>
+        {
+            new ViewMap<TimeTabs, TimeTabsViewModel>(),
+        };
+
         var viewMaps = new List<ViewMap>
         {
             new ViewMap<Shell, ShellViewModel>(),
@@ -115,6 +142,8 @@ public class Startup : ModularStartup
         };
 
         viewMaps.AddRange(budgetViewMaps);
+        viewMaps.AddRange(diningViewMaps);
+        viewMaps.AddRange(timeViewMaps);
 
         views.Register(viewMaps.ToArray());
     }
