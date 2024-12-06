@@ -14,11 +14,10 @@ public sealed partial class ModulesNavigationPage : Page
 
     public ModulesNavigationPage()
     {
-        var viewModel = new ModulesNavigationViewModel();
+        DataContext ??= (Application.Current as App).Host.Services.GetRequiredService<ModulesNavigationViewModel>();
 
-        this.DataContext(viewModel,
-            (page, vm) => page.NavigationCacheMode(NavigationCacheMode.Required)
-                .Background(Theme.Brushes.Background.Default).Content(BuildContent(vm)));
+        this.NavigationCacheMode(NavigationCacheMode.Required).Background(Theme.Brushes.Background.Default).Content(
+            BuildContent((ModulesNavigationViewModel) DataContext));
     }
 
     private Grid BuildContent(ModulesNavigationViewModel viewModel)
@@ -60,8 +59,6 @@ public sealed partial class ModulesNavigationPage : Page
     {
         var view = new ListView();
 
-        view.Region(true);
-
         var options = Modules.Select(module =>
         {
             var item = new TextBlock()
@@ -74,12 +71,6 @@ public sealed partial class ModulesNavigationPage : Page
                 FocusVisualPrimaryBrush = view.Background,
                 FocusVisualSecondaryBrush = view.Background,
             };
-            item.Region(name: module.GetModuleAsReadableString());
-            //item.SetRequest(module.GetModuleAsReadableString());
-            //item.SetData(module.GetModuleControl());
-
-            //item.Command(() => GetModuleCommand(viewModel, module.TypeModule));
-            //item.Style(new Style(typeof(TextBlock)));
 
             return item;
         });
@@ -93,10 +84,7 @@ public sealed partial class ModulesNavigationPage : Page
     private void ListViewOnSelectionChanged(
         object sender, SelectionChangedEventArgs e, ModulesNavigationViewModel viewModel)
     {
-        Console.WriteLine($"Listview Selection Changed Called");
         viewModel.ListViewOnSelectionChanged(sender, e);
-        // Not Fired...
-        Console.WriteLine($"View Model Called");
     }
 
     private Grid BuildContentGrid(ModulesNavigationViewModel viewModel)
@@ -105,7 +93,8 @@ public sealed partial class ModulesNavigationPage : Page
         {
             Background = new SolidColorBrush(Colors.AliceBlue),
         };
-        grid.Region(true, navigator: "Visibility");
+
+        Dictionary<TrackerModule.Module, Grid> contentGrids = new();
 
         foreach (TrackerModule module in Modules)
         {
@@ -115,24 +104,14 @@ public sealed partial class ModulesNavigationPage : Page
                 VerticalAlignment = VerticalAlignment.Stretch,
                 Visibility = Visibility.Collapsed,
             };
-            contentGrid.Visibility(() => GetModuleVisibility(viewModel, module.TypeModule));
-            contentGrid.Region(name: module.GetModuleAsReadableString());
             contentGrid.Children.Add(module.GetModuleControl());
 
+            contentGrids.Add(module.TypeModule, contentGrid);
             grid.Children.Add(contentGrid);
         }
 
-        return grid;
-    }
+        viewModel.SetContentGridsDictionary(contentGrids);
 
-    private Visibility GetModuleVisibility(ModulesNavigationViewModel viewModel, TrackerModule.Module module)
-    {
-        return module switch
-        {
-            TrackerModule.Module.TIME => viewModel.TimeModuleVisibility,
-            TrackerModule.Module.DINING => viewModel.DiningModuleVisibility,
-            TrackerModule.Module.BUDGET => viewModel.BudgetModuleVisibility,
-            _ => viewModel.BudgetModuleVisibility,
-        };
+        return grid;
     }
 }
