@@ -1,21 +1,19 @@
-using Tracker.Module.Budget.Presentation.ViewModel;
 using Uno.Extensions.Equality;
 
 namespace Tracker.Frontend.Uno.Presentation;
 
 public partial class ModulesNavigationViewModel : ObservableObject
 {
-    private readonly INavigator _navigator;
+    //private readonly INavigator _navigator;
 
     [ObservableProperty] private TrackerModule.Module activeModule;
-
     [ObservableProperty] private Visibility budgetModuleVisibility;
     [ObservableProperty] private Visibility diningModuleVisibility;
     [ObservableProperty] private Visibility timeModuleVisibility;
 
-    public ModulesNavigationViewModel(IOptions<AppConfig> appInfo, INavigator navigator)
+    public ModulesNavigationViewModel()
     {
-        _navigator = navigator;
+        //_navigator = navigator;
         Title = "Tracker";
 
         SetActiveModule(ModulesNavigationPage.Modules[0].TypeModule);

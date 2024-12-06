@@ -14,25 +14,34 @@ public sealed partial class ModulesNavigationPage : Page
 
     public ModulesNavigationPage()
     {
-        this.DataContext<ModulesNavigationViewModel>((page, vm) =>
-            page.NavigationCacheMode(NavigationCacheMode.Required).Background(Theme.Brushes.Background.Default)
-                .Content(BuildContent(vm)));
+        var viewModel = new ModulesNavigationViewModel();
+
+        this.DataContext(viewModel,
+            (page, vm) => page.NavigationCacheMode(NavigationCacheMode.Required)
+                .Background(Theme.Brushes.Background.Default).Content(BuildContent(vm)));
     }
 
     private Grid BuildContent(ModulesNavigationViewModel viewModel)
     {
         var grid = new Grid();
 
-        grid.SafeArea(SafeArea.InsetMask.VisibleBounds);
-        grid.RowDefinitions(new GridLength(8, GridUnitType.Star), new GridLength(92, GridUnitType.Star));
-        grid.ColumnDefinitions(new GridLength(10, GridUnitType.Star), new GridLength(90, GridUnitType.Star));
+        const int rowOneHeight = 8;
+        const int rowTwoHeight = 100 - rowOneHeight;
+        const int columnOneWidth = 10;
+        const int columnTwoWidth = 100 - columnOneWidth;
 
-        NavigationBar navBar = BuildNavigationBar(viewModel).Grid(row: 0, column: 0);
-        ListView navList = BuildNavigationListView(viewModel).Grid(row: 1, column: 0);
+        grid.SafeArea(SafeArea.InsetMask.VisibleBounds);
+        grid.RowDefinitions(new GridLength(rowOneHeight, GridUnitType.Star),
+            new GridLength(rowTwoHeight, GridUnitType.Star));
+        grid.ColumnDefinitions(new GridLength(columnOneWidth, GridUnitType.Star),
+            new GridLength(columnTwoWidth, GridUnitType.Star));
+
+        NavigationBar navigationBar = BuildNavigationBar(viewModel).Grid(row: 0, column: 0);
+        ListView navigation = BuildNavigationListView(viewModel).Grid(row: 1, column: 0);
         Grid contentGrid = BuildContentGrid(viewModel).Grid(row: 0, column: 1, rowSpan: 2);
 
-        grid.Children.Add(navBar);
-        grid.Children.Add(navList);
+        grid.Children.Add(navigationBar);
+        grid.Children.Add(navigation);
         grid.Children.Add(contentGrid);
 
         return grid;
@@ -49,35 +58,36 @@ public sealed partial class ModulesNavigationPage : Page
 
     private ListView BuildNavigationListView(ModulesNavigationViewModel viewModel)
     {
-        var listView = new ListView();
-        //listView.Region(true);
+        var view = new ListView();
 
-        var listOptions = Modules.Select(module =>
+        view.Region(true);
+
+        var options = Modules.Select(module =>
         {
-            var block = new TextBlock()
+            var item = new TextBlock()
             {
                 Text = module.GetModuleAsReadableString(),
                 Padding = new Thickness(10, 0, 10, 0),
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Background = listView.Background,
-                FocusVisualPrimaryBrush = listView.Background,
-                FocusVisualSecondaryBrush = listView.Background,
+                Background = view.Background,
+                FocusVisualPrimaryBrush = view.Background,
+                FocusVisualSecondaryBrush = view.Background,
             };
-            //button.Region(name: module.GetModuleAsReadableString());
-            //button.SetRequest(module.GetModuleAsReadableString());
-            //button.SetData(module.GetModuleControl());
+            item.Region(name: module.GetModuleAsReadableString());
+            //item.SetRequest(module.GetModuleAsReadableString());
+            //item.SetData(module.GetModuleControl());
 
-            //button.Command(() => GetModuleCommand(viewModel, module.TypeModule));
-            //button.Style(new Style(typeof(TextBlock)));
+            //item.Command(() => GetModuleCommand(viewModel, module.TypeModule));
+            //item.Style(new Style(typeof(TextBlock)));
 
-            return block;
+            return item;
         });
 
-        listView.SelectionChanged += (sender, args) => ListViewOnSelectionChanged(sender, args, viewModel);
-        listView.ItemsSource = listOptions;
+        view.SelectionChanged += (sender, args) => ListViewOnSelectionChanged(sender, args, viewModel);
+        view.ItemsSource = options;
 
-        return listView;
+        return view;
     }
 
     private void ListViewOnSelectionChanged(
