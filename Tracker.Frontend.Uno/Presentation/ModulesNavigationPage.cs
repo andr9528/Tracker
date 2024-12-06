@@ -5,12 +5,15 @@ namespace Tracker.Frontend.Uno.Presentation;
 
 public sealed partial class ModulesNavigationPage : Page
 {
-    public static readonly List<TrackerModule> Modules = new()
+    private readonly List<TrackerModule> modules = new()
     {
         new TrackerModule(TrackerModule.Module.BUDGET),
         new TrackerModule(TrackerModule.Module.DINING),
         new TrackerModule(TrackerModule.Module.TIME),
     };
+
+    private TrackerModule.Module activeModule;
+    private Dictionary<TrackerModule.Module, Grid> contentGrids = new();
 
     public ModulesNavigationPage()
     {
@@ -19,6 +22,8 @@ public sealed partial class ModulesNavigationPage : Page
         this.NavigationCacheMode(NavigationCacheMode.Required).Background(Theme.Brushes.Background.Default).Content(
             BuildContent((ModulesNavigationViewModel) DataContext));
     }
+
+    #region UI
 
     private Grid BuildContent(ModulesNavigationViewModel viewModel)
     {
@@ -59,7 +64,7 @@ public sealed partial class ModulesNavigationPage : Page
     {
         var view = new ListView();
 
-        var options = Modules.Select(module =>
+        var options = modules.Select(module =>
         {
             var item = new TextBlock()
             {
@@ -75,16 +80,10 @@ public sealed partial class ModulesNavigationPage : Page
             return item;
         });
 
-        view.SelectionChanged += (sender, args) => ListViewOnSelectionChanged(sender, args, viewModel);
+        view.SelectionChanged += ListViewOnSelectionChanged;
         view.ItemsSource = options;
 
         return view;
-    }
-
-    private void ListViewOnSelectionChanged(
-        object sender, SelectionChangedEventArgs e, ModulesNavigationViewModel viewModel)
-    {
-        viewModel.ListViewOnSelectionChanged(sender, e);
     }
 
     private Grid BuildContentGrid(ModulesNavigationViewModel viewModel)
@@ -96,7 +95,7 @@ public sealed partial class ModulesNavigationPage : Page
 
         Dictionary<TrackerModule.Module, Grid> contentGrids = new();
 
-        foreach (TrackerModule module in Modules)
+        foreach (TrackerModule module in modules)
         {
             var contentGrid = new Grid
             {
@@ -110,8 +109,42 @@ public sealed partial class ModulesNavigationPage : Page
             grid.Children.Add(contentGrid);
         }
 
-        viewModel.SetContentGridsDictionary(contentGrids);
+        SetContentGridsDictionary(contentGrids);
 
         return grid;
     }
+
+    #endregion
+
+    #region Logic
+
+    private void SetContentGridsDictionary(Dictionary<TrackerModule.Module, Grid> contentGrids)
+    {
+        this.contentGrids = contentGrids;
+        SetActiveModule(modules[0].TypeModule);
+    }
+
+    private void SetActiveModule(TrackerModule.Module module)
+    {
+        activeModule = module;
+
+        foreach (var grid in contentGrids)
+        {
+            grid.Value.Visibility = Visibility.Collapsed;
+        }
+
+        contentGrids[activeModule].Visibility = Visibility.Visible;
+
+        Console.WriteLine($"Collapsed all grids except {activeModule}");
+    }
+
+    private void ListViewOnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var listView = (ListView) sender;
+        TrackerModule trackerModule = modules[listView.SelectedIndex];
+
+        SetActiveModule(trackerModule.TypeModule);
+    }
+
+    #endregion
 }
