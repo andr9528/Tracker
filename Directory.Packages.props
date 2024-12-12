@@ -32,7 +32,7 @@
     <PackageVersion Include="Uno.Themes.WinUI.Markup" Version="5.3.1" />
     <PackageVersion Include="Uno.Toolkit.WinUI.Markup" Version="6.3.6" />
     <PackageVersion Include="Uno.UITest.Helpers" Version="1.1.0-dev.70" />
-    <PackageVersion Include="Uno.WinUI" Version="5.5.66" />
+    <PackageVersion Include="Uno.WinUI" Version="5.5.87" />
     <PackageVersion Include="Xamarin.UITest" Version="4.4.1" />
   </ItemGroup>
 </Project>
