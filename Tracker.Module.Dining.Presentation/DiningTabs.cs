@@ -13,53 +13,58 @@ public sealed partial class DiningTabs : UserControl
 
     public DiningTabs()
     {
+        var ui = new DiningTabsUi();
+
         this.DataContext<DiningTabsViewModel>((userControl, vm) =>
             userControl.TabNavigation(KeyboardNavigationMode.Cycle).Background(Theme.Brushes.Background.Default)
-                .Content(BuildContent(vm)));
+                .Content(ui.BuildContent(vm)));
     }
 
-    private Grid BuildContent(DiningTabsViewModel viewModel)
+    private class DiningTabsUi
     {
-        var grid = new Grid();
-
-        grid.SafeArea(SafeArea.InsetMask.VisibleBounds);
-        grid.RowDefinitions(new GridLength(8, GridUnitType.Star), new GridLength(92, GridUnitType.Star));
-
-        TabBar tabBar = BuildTabBar(viewModel).Grid(row: 0);
-        Grid contentGrid = BuildContentGrid(viewModel).Grid(row: 1);
-
-        grid.Children.Add(tabBar);
-        grid.Children.Add(contentGrid);
-
-        return grid;
-    }
-
-    private TabBar BuildTabBar(DiningTabsViewModel viewModel)
-    {
-        var tabBarItems = new TabBarItem[]
+        internal Grid BuildContent(DiningTabsViewModel viewModel)
         {
-            new() {Content = TAB_REGION_NAME_ONE,},
-        };
+            var grid = new Grid();
 
-        var tabBar = new TabBar
+            grid.SafeArea(SafeArea.InsetMask.VisibleBounds);
+            grid.RowDefinitions(new GridLength(8, GridUnitType.Star), new GridLength(92, GridUnitType.Star));
+
+            TabBar tabBar = BuildTabBar().Grid(row: 0);
+            Grid contentGrid = BuildContentGrid().Grid(row: 1);
+
+            grid.Children.Add(tabBar);
+            grid.Children.Add(contentGrid);
+
+            return grid;
+        }
+
+        private TabBar BuildTabBar()
         {
-            VerticalAlignment = VerticalAlignment.Top,
-            ItemsSource = tabBarItems,
-            Background = new SolidColorBrush(Colors.DarkGray),
-        };
+            var tabBarItems = new TabBarItem[]
+            {
+                new() {Content = TAB_REGION_NAME_ONE,},
+            };
 
-        return tabBar;
-    }
+            var tabBar = new TabBar
+            {
+                VerticalAlignment = VerticalAlignment.Top,
+                ItemsSource = tabBarItems,
+                Background = new SolidColorBrush(Colors.DarkGray),
+            };
 
-    private Grid BuildContentGrid(DiningTabsViewModel viewModel)
-    {
-        var grid = new Grid();
+            return tabBar;
+        }
 
-        var tabOne = new Grid() {Visibility = Visibility.Collapsed,};
-        //tabOne.Children.Add(new PaymentsTab());
+        private Grid BuildContentGrid()
+        {
+            var grid = new Grid();
 
-        grid.Children.Add(tabOne);
+            var tabOne = new Grid() {Visibility = Visibility.Collapsed,};
+            //tabOne.Children.Add(new PaymentsTab());
 
-        return grid;
+            grid.Children.Add(tabOne);
+
+            return grid;
+        }
     }
 }

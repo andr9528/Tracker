@@ -13,52 +13,57 @@ public sealed partial class TimeTabs : UserControl
 
     public TimeTabs()
     {
+        var ui = new TimeTabsUi();
+
         this.DataContext<TimeTabsViewModel>((userControl, vm) => userControl.TabNavigation(KeyboardNavigationMode.Cycle)
-            .Background(Theme.Brushes.Background.Default).Content(BuildContent(vm)));
+            .Background(Theme.Brushes.Background.Default).Content(ui.BuildContent(vm)));
     }
 
-    private Grid BuildContent(TimeTabsViewModel viewModel)
+    private class TimeTabsUi
     {
-        var grid = new Grid();
-
-        grid.SafeArea(SafeArea.InsetMask.VisibleBounds);
-        grid.RowDefinitions(new GridLength(8, GridUnitType.Star), new GridLength(92, GridUnitType.Star));
-
-        TabBar tabBar = BuildTabBar(viewModel).Grid(row: 0);
-        Grid contentGrid = BuildContentGrid(viewModel).Grid(row: 1);
-
-        grid.Children.Add(tabBar);
-        grid.Children.Add(contentGrid);
-
-        return grid;
-    }
-
-    private TabBar BuildTabBar(TimeTabsViewModel viewModel)
-    {
-        var tabBarItems = new TabBarItem[]
+        internal Grid BuildContent(TimeTabsViewModel viewModel)
         {
-            new() {Content = TAB_REGION_NAME_ONE,},
-        };
+            var grid = new Grid();
 
-        var tabBar = new TabBar
+            grid.SafeArea(SafeArea.InsetMask.VisibleBounds);
+            grid.RowDefinitions(new GridLength(8, GridUnitType.Star), new GridLength(92, GridUnitType.Star));
+
+            TabBar tabBar = BuildTabBar().Grid(row: 0);
+            Grid contentGrid = BuildContentGrid().Grid(row: 1);
+
+            grid.Children.Add(tabBar);
+            grid.Children.Add(contentGrid);
+
+            return grid;
+        }
+
+        private TabBar BuildTabBar()
         {
-            VerticalAlignment = VerticalAlignment.Top,
-            ItemsSource = tabBarItems,
-            Background = new SolidColorBrush(Colors.DarkGray),
-        };
+            var tabBarItems = new TabBarItem[]
+            {
+                new() {Content = TAB_REGION_NAME_ONE,},
+            };
 
-        return tabBar;
-    }
+            var tabBar = new TabBar
+            {
+                VerticalAlignment = VerticalAlignment.Top,
+                ItemsSource = tabBarItems,
+                Background = new SolidColorBrush(Colors.DarkGray),
+            };
 
-    private Grid BuildContentGrid(TimeTabsViewModel viewModel)
-    {
-        var grid = new Grid();
+            return tabBar;
+        }
 
-        var tabOne = new Grid() {Visibility = Visibility.Collapsed,};
-        //tabOne.Children.Add(new PaymentsTab());
+        private Grid BuildContentGrid()
+        {
+            var grid = new Grid();
 
-        grid.Children.Add(tabOne);
+            var tabOne = new Grid() {Visibility = Visibility.Collapsed,};
+            //tabOne.Children.Add(new PaymentsTab());
 
-        return grid;
+            grid.Children.Add(tabOne);
+
+            return grid;
+        }
     }
 }
