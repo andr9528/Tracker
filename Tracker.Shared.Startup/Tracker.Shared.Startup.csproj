@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -13,11 +13,22 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="Uno.Extensions.Hosting.WinUI" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Services\Tracker.Shared.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modules\" />
   </ItemGroup>
 
 </Project>

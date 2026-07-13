@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -15,11 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tracker.Module.Budget.Persistence\Tracker.Module.Budget.Persistence.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Models\Tracker.Shared.Models.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.User.Persistence\Tracker.Shared.User.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

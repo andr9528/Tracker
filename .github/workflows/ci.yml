@@ -16,7 +16,7 @@ env:
 
 jobs:
   smoke_test:
-    name: Smoke Test (Debug Build of Tracker.Frontend.Uno)
+    name: Smoke Test (Debug Build of Tracker.Frontend)
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,17 +27,36 @@ jobs:
         timeout-minutes: ${{ fromJSON(env.STEP_TIMEOUT_MINUTES) }}
         uses: "./.github/steps/install_dependencies"
 
+      - name: Install Uno Workloads
+        shell: pwsh
+        run: |
+          dotnet tool install -g uno.check
+          ("all ".Split(' ') | ForEach-Object {
+            $target = $_.Replace("_win", "").Replace("_macos", "")
+            if (![string]::IsNullOrEmpty($target)) {
+              echo "target: $target"
+              uno-check -v --ci --non-interactive --fix --target $target --skip vswin --skip vsmac --skip xcode --skip vswinworkloads --skip androidemulator --skip dotnetnewunotemplates
+              echo "uno-check finished for target: $target "
+            }
+          })
+
       # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.3.1
 
-      - name: Build Tracker.Frontend.Uno (Debug)
+      - name: Build Tracker.Frontend (Debug)
         shell: pwsh
-        run: msbuild ./Tracker.Frontend.Uno/Tracker.Frontend.Uno.csproj /r
+        run: msbuild ./Tracker.Frontend/Tracker.Frontend.csproj /r
 
   unit_test:
     name: Unit Tests
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+
     steps:
       - uses: actions/checkout@v3
         with:
@@ -47,14 +66,30 @@ jobs:
         timeout-minutes: ${{ fromJSON(env.STEP_TIMEOUT_MINUTES) }}
         uses: "./.github/steps/install_dependencies"
 
-      # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.3.1
-
-      - name: Build Tracker.Frontend.Uno.Tests (Release)
-        shell: pwsh
-        run: msbuild ./Tracker.Frontend.Uno.Tests/Tracker.Frontend.Uno.Tests.csproj /p:Configuration=Release /p:OverrideTargetFramework=net8.0 /r
+      - name: Build Tracker.Tests (Release)
+        shell: bash
+        run: dotnet build ./Tracker.Tests/Tracker.Tests.csproj /p:Configuration=Release /p:OverrideTargetFramework=net10.0 /r
 
       - name: Run Unit Tests
-        shell: pwsh
-        run: dotnet test ./Tracker.Frontend.Uno.Tests/Tracker.Frontend.Uno.Tests.csproj --no-build -c Release --logger GitHubActions --blame-crash --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+        shell: bash
+        run: dotnet test --project ./Tracker.Tests/Tracker.Tests.csproj --no-build -c Release --results-directory ./TestResults -- --coverage --report-trx
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ./TestResults/*.trx
+
+      - name: Publish test results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action/linux@v2
+        with:
+          files: ./TestResults/**/*.trx
+
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: ./TestResults/*.coverage

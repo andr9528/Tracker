@@ -1,21 +1,21 @@
-<Project Sdk="Uno.Sdk">
+﻿<Project Sdk="Uno.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0-browserwasm;net8.0</TargetFrameworks>
+    <TargetFrameworks>net10.0-desktop;net10.0</TargetFrameworks>
 
     <OutputType>Exe</OutputType>
     <UnoSingleProject>true</UnoSingleProject>
 
     <!-- Display name -->
-    <ApplicationTitle>Tracker.Frontend.Uno</ApplicationTitle>
+    <ApplicationTitle>Tracker.Frontend</ApplicationTitle>
     <!-- App Identifier -->
-    <ApplicationId>com.companyname.Tracker.Frontend.Uno</ApplicationId>
+    <ApplicationId>com.companyname.Tracker.Frontend</ApplicationId>
     <!-- Versions -->
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
     <ApplicationVersion>1</ApplicationVersion>
     <!-- Package Publisher -->
     <ApplicationPublisher>andre</ApplicationPublisher>
     <!-- Package Description -->
-    <Description>Tracker.Frontend.Uno powered by Uno Platform.</Description>
+    <Description>Tracker.Frontend powered by Uno Platform.</Description>
 
     <!--
       UnoFeatures let's you quickly add and manage implicit package references based on the features you want to use.
@@ -36,6 +36,7 @@
       Localization;
       Navigation;
       ThemeService;
+      SkiaRenderer;
     </UnoFeatures>
   </PropertyGroup>
 
@@ -45,11 +46,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tracker.Module.Budget.Presentation\Tracker.Module.Budget.Presentation.csproj" />
     <ProjectReference Include="..\Tracker.Module.Budget.Startup\Tracker.Module.Budget.Startup.csproj" />
     <ProjectReference Include="..\Tracker.Module.Dining.Presentation\Tracker.Module.Dining.Presentation.csproj" />
     <ProjectReference Include="..\Tracker.Module.Time.Presentation\Tracker.Module.Time.Presentation.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Frontend\Tracker.Shared.Frontend.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Services\Tracker.Shared.Services.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Startup\Tracker.Shared.Startup.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Presentation\" />
   </ItemGroup>
 
 </Project>

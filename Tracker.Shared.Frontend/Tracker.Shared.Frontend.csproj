@@ -32,4 +32,25 @@
     <!-- <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.22621.28" />
     <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.22621.28" /> -->
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Abstraction\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" />
+    <PackageReference Include="Uno.Extensions.Core" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tracker.Shared.Extensions\Tracker.Shared.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+  <Compile Update="Pieces\**\*.*.cs">
+    <DependentUpon>$([System.String]::Copy('%(Filename)').Split('.')[0]).cs</DependentUpon>
+  </Compile>
+</ItemGroup>
 </Project>
