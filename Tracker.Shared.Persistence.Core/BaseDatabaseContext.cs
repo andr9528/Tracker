@@ -1,56 +1,56 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Tracker.Shared.Abstraction.Enums.Persistence;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
-namespace Tracker.Shared.Persistence.Core
+namespace Tracker.Shared.Persistence.Core;
+
+public abstract class BaseDatabaseContext<TContext> : DbContext where TContext : DbContext
 {
-    public abstract class BaseDatabaseContext : DbContext
+    private readonly DbContextOptions options;
+
+    protected BaseDatabaseContext([NotNull] DbContextOptions<TContext> options) : base(options)
     {
-        private readonly DbContextOptions options;
+        this.options = options;
+    }
 
-        protected BaseDatabaseContext([NotNull] DbContextOptions options) : base(options)
+    public override int SaveChanges()
+    {
+        UpdateDatetime();
+        return base.SaveChanges();
+    }
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        UpdateDatetime();
+        return base.SaveChanges(acceptAllChangesOnSuccess);
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        UpdateDatetime();
+        return base.SaveChangesAsync(cancellationToken);
+    }
+
+    public override Task<int> SaveChangesAsync(
+        bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    {
+        UpdateDatetime();
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+    }
+
+    private void UpdateDatetime()
+    {
+        var entries = ChangeTracker.Entries()
+            .Where(e => e is {Entity: IEntity, State: EntityState.Added or EntityState.Modified,});
+
+        foreach (EntityEntry entityEntry in entries)
         {
-            this.options = options;
-        }
+            ((IEntity) entityEntry.Entity).UpdatedDateTime = DateTime.UtcNow;
 
-        public override int SaveChanges()
-        {
-            UpdateDatetimes();
-            return base.SaveChanges();
-        }
-
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
-        {
-            UpdateDatetimes();
-            return base.SaveChanges(acceptAllChangesOnSuccess);
-        }
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            UpdateDatetimes();
-            return base.SaveChangesAsync(cancellationToken);
-        }
-
-        public override Task<int> SaveChangesAsync(
-            bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            UpdateDatetimes();
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        }
-
-        private void UpdateDatetimes()
-        {
-            var entries = ChangeTracker.Entries()
-                .Where(e => e.Entity is IEntity && e.State is EntityState.Added or EntityState.Modified);
-
-            foreach (EntityEntry entityEntry in entries)
+            if (entityEntry.State == EntityState.Added)
             {
-                ((IEntity) entityEntry.Entity).UpdatedDateTime = DateTime.Now;
-
-                if (entityEntry.State == EntityState.Added)
-                    ((IEntity) entityEntry.Entity).CreatedDateTime = DateTime.Now;
+                ((IEntity) entityEntry.Entity).CreatedDateTime = DateTime.UtcNow;
             }
         }
     }

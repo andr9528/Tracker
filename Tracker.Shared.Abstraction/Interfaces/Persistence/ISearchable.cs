@@ -1,7 +1,9 @@
-﻿namespace Tracker.Shared.Abstraction.Interfaces.Persistence
+﻿namespace Tracker.Shared.Abstraction.Interfaces.Persistence;
+
+/// <summary>
+/// Interfaces inheriting from this interface are searchable by their Id property, and their own properties, when used in.
+/// </summary>
+public interface ISearchable
 {
-    public interface ISearchable
-    {
-        int Id { get; set; }
-    }
+    int Id { get; set; }
 }

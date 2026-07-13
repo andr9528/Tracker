@@ -1,46 +1,39 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Tracker.Shared.Abstraction.Enums.Persistence;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Persistence.Core.Converters;
 
-namespace Tracker.Shared.Persistence.Core
+namespace Tracker.Shared.Persistence.Core;
+
+public abstract class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : class, IEntity
 {
-    public abstract class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
-        where TEntity : class, IEntity
+    private readonly DatabaseType type;
+
+    protected EntityConfiguration(DatabaseType type)
     {
-        private readonly DatabaseType databaseType;
+        this.type = type;
+    }
 
-        protected EntityConfiguration(DatabaseType databaseType)
+    /// <inheritdoc />
+    public virtual void Configure(EntityTypeBuilder<TEntity> builder)
+    {
+        Type type = typeof(TEntity);
+        var idName = $"{type.Name}Id";
+
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.Id).HasColumnName(idName);
+
+        switch (this.type)
         {
-            this.databaseType = databaseType;
-        }
+            case DatabaseType.SQLITE:
+                builder.Property(x => x.Version).IsRowVersion().HasConversion(new SqliteTimestampConverter())
+                    .HasColumnType("BLOB").HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-        public virtual void Configure(EntityTypeBuilder<TEntity> builder)
-        {
-            Type type = typeof(TEntity);
-            var idName = $"{type.Name}Id";
-
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).HasColumnName(idName);
-
-            switch (databaseType)
-            {
-                case DatabaseType.SQlite:
-                    builder.Property(x => x.Version).IsRowVersion().HasConversion(new SqliteTimestampConverter())
-                        .HasColumnType("BLOB").HasDefaultValueSql("CURRENT_TIMESTAMP");
-                    break;
-                case DatabaseType.MS_SQL:
-                    builder.Property(x => x.Version).IsRowVersion();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        protected void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<object>(x => { });
+                break;
+            case DatabaseType.POSTGRESQL or DatabaseType.MS_SQL:
+                builder.Property(x => x.Version).IsRowVersion();
+                break;
         }
     }
 }
