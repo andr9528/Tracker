@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Tracker.Module.Budget.Model.Entity;
 using Tracker.Shared.Abstraction.Enums.Persistence;
-using Tracker.Shared.Models.Modules.Budget;
-using Tracker.Shared.Models.Modules.Budget.Entity;
 using Tracker.Shared.Persistence;
 using Tracker.Shared.Persistence.Core;
 
