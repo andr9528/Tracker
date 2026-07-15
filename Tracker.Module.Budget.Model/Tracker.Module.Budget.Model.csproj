@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Tracker.Module.Budget.Abstraction\Tracker.Module.Budget.Abstraction.csproj" />
   </ItemGroup>
 

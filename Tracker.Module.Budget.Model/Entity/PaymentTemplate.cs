@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Tracker.Module.Budget.Abstraction.Entity;
 using Tracker.Module.Budget.Abstraction.Enums;
 
@@ -45,6 +46,7 @@ public class PaymentTemplate : IPaymentTemplate
     {
     }
 
+    [JsonConstructor]
     private PaymentTemplate(int id)
     {
         this.id = id;

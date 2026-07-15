@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Tracker.Module.Budget.Abstraction.Entity;
 
 namespace Tracker.Module.Budget.Model.Entity;
@@ -37,6 +38,7 @@ public class RecurringPayment : IRecurringPayment
     /// <inheritdoc />
     public ICollection<IPayment> Payments { get; set; }
 
+    [JsonConstructor]
     public RecurringPayment(int id)
     {
         this.id = id;

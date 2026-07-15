@@ -1,5 +1,6 @@
 using Tracker.Module.Budget.Abstraction.Entity;
 using Tracker.Module.Budget.Abstraction.Enums;
+using Newtonsoft.Json;
 
 namespace Tracker.Module.Budget.Model.Entity;
 
@@ -39,6 +40,7 @@ public class CurrencyRate : ICurrencyRate
     {
     }
 
+    [JsonConstructor]
     private CurrencyRate(int id)
     {
         this.id = id;

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Tracker.Module.Budget.Abstraction.Entity;
 
 namespace Tracker.Module.Budget.Model.Entity;
@@ -32,6 +33,7 @@ public class PaymentType : IPaymentType
     {
     }
 
+    [JsonConstructor]
     private PaymentType(int id)
     {
         this.id = id;
