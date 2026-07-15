@@ -5,8 +5,14 @@ namespace Tracker.Module.Budget.Model.Searchable;
 
 public class SearchableCurrencyRate : ISearchableCurrencyRate
 {
+    #region Implementation of ISearchable
+
     /// <inheritdoc />
     public int Id { get; set; }
+
+    #endregion
+
+    #region Implementation of ISearchableCurrencyRate
 
     /// <inheritdoc />
     public CurrencyCodes FromCurrency { get; set; }
@@ -19,4 +25,6 @@ public class SearchableCurrencyRate : ISearchableCurrencyRate
 
     /// <inheritdoc />
     public DateOnly Date { get; set; }
+
+    #endregion
 }

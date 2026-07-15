@@ -5,8 +5,14 @@ namespace Tracker.Module.Budget.Model.Searchable;
 
 public class SearchablePaymentTemplate : ISearchablePaymentTemplate
 {
+    #region Implementation of ISearchable
+
     /// <inheritdoc />
     public int Id { get; set; }
+
+    #endregion
+
+    #region Implementation of ISearchableCommonPayment
 
     /// <inheritdoc />
     public double Amount { get; set; }
@@ -17,6 +23,12 @@ public class SearchablePaymentTemplate : ISearchablePaymentTemplate
     /// <inheritdoc />
     public int PaymentTypeId { get; set; }
 
+    #endregion
+
+    #region Implementation of ISearchablePaymentTemplate
+
     /// <inheritdoc />
     public int RecurringPaymentId { get; set; }
+
+    #endregion
 }

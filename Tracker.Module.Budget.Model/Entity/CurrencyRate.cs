@@ -1,12 +1,18 @@
+using Newtonsoft.Json;
 using Tracker.Module.Budget.Abstraction.Entity;
 using Tracker.Module.Budget.Abstraction.Enums;
-using Newtonsoft.Json;
 
 namespace Tracker.Module.Budget.Model.Entity;
 
 public class CurrencyRate : ICurrencyRate
 {
+    #region Fields
+
     private readonly int id;
+
+    #endregion
+
+    #region Implementation of ISearchable
 
     /// <inheritdoc />
     public int Id
@@ -14,6 +20,10 @@ public class CurrencyRate : ICurrencyRate
         get => id;
         set => throw new InvalidOperationException($"{nameof(Id)} cannot be changed");
     }
+
+    #endregion
+
+    #region Implementation of ISearchableCurrencyRate
 
     /// <inheritdoc />
     public CurrencyCodes FromCurrency { get; set; }
@@ -27,6 +37,10 @@ public class CurrencyRate : ICurrencyRate
     /// <inheritdoc />
     public DateOnly Date { get; set; }
 
+    #endregion
+
+    #region Implementation of IEntity
+
     /// <inheritdoc />
     public byte[] Version { get; set; }
 
@@ -35,6 +49,10 @@ public class CurrencyRate : ICurrencyRate
 
     /// <inheritdoc />
     public DateTime UpdatedDateTime { get; set; }
+
+    #endregion
+
+    #region Constructors
 
     public CurrencyRate()
     {
@@ -45,4 +63,6 @@ public class CurrencyRate : ICurrencyRate
     {
         this.id = id;
     }
+
+    #endregion
 }

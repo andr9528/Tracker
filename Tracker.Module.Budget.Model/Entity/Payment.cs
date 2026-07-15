@@ -6,7 +6,13 @@ namespace Tracker.Module.Budget.Model.Entity;
 
 public class Payment : IPayment
 {
+    #region Fields
+
     private readonly int id;
+
+    #endregion
+
+    #region Implementation of ISearchable
 
     /// <inheritdoc />
     public int Id
@@ -15,14 +21,26 @@ public class Payment : IPayment
         set => throw new InvalidOperationException($"{nameof(Id)} cannot be changed");
     }
 
+    #endregion
+
+    #region Implementation of ISearchablePayment
+
     /// <inheritdoc />
     public DateOnly Date { get; set; }
 
     /// <inheritdoc />
     public int? RecurringPaymentId { get; set; }
 
+    #endregion
+
+    #region Implementation of IPayment
+
     /// <inheritdoc />
     public IRecurringPayment? RecurringPayment { get; set; }
+
+    #endregion
+
+    #region Implementation of ISearchableCommonPayment
 
     /// <inheritdoc />
     public double Amount { get; set; }
@@ -33,6 +51,10 @@ public class Payment : IPayment
     /// <inheritdoc />
     public int PaymentTypeId { get; set; }
 
+    #endregion
+
+    #region Implementation of IEntity
+
     /// <inheritdoc />
     public byte[] Version { get; set; }
 
@@ -42,8 +64,16 @@ public class Payment : IPayment
     /// <inheritdoc />
     public DateTime UpdatedDateTime { get; set; }
 
+    #endregion
+
+    #region Implementation of ICommonPayment
+
     /// <inheritdoc />
     public IPaymentType PaymentType { get; set; }
+
+    #endregion
+
+    #region Constructors
 
     public Payment()
     {
@@ -54,4 +84,6 @@ public class Payment : IPayment
     {
         this.id = id;
     }
+
+    #endregion
 }
