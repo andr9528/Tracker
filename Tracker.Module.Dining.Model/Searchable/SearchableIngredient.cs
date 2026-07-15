@@ -16,8 +16,5 @@ public class SearchableIngredient : ISearchableIngredient
     /// <inheritdoc />
     public string Name { get; set; }
 
-    /// <inheritdoc />
-    public bool InStock { get; set; }
-
     #endregion
 }

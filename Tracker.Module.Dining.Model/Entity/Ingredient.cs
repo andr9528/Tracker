@@ -27,9 +27,6 @@ public class Ingredient : IIngredient
     /// <inheritdoc />
     public string Name { get; set; }
 
-    /// <inheritdoc />
-    public bool InStock { get; set; }
-
     #endregion
 
     #region Implementation of IEntity
@@ -49,6 +46,9 @@ public class Ingredient : IIngredient
 
     /// <inheritdoc />
     public ICollection<IDishIngredient> DishIngredients { get; set; }
+
+    /// <inheritdoc />
+    public bool InStock { get; set; }
 
     #endregion
 

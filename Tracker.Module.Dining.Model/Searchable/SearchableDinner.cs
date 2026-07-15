@@ -20,18 +20,6 @@ public class SearchableDinner : ISearchableDinner
     public string? Notes { get; set; }
 
     /// <inheritdoc />
-    public bool IsTakeAway { get; set; }
-
-    /// <inheritdoc />
-    public bool HasLeftovers { get; set; }
-
-    /// <inheritdoc />
-    public bool LeftoversEnoughForDinner { get; set; }
-
-    /// <inheritdoc />
-    public bool IsLeftovers { get; set; }
-
-    /// <inheritdoc />
     public int DishId { get; set; }
 
     #endregion

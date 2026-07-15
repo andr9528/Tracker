@@ -6,4 +6,6 @@ namespace Tracker.Module.Dining.Abstraction.Entity;
 public interface IIngredient : ISearchableIngredient, IEntity
 {
     ICollection<IDishIngredient> DishIngredients { get; set; }
+    bool InStock { get; set; }
+
 }
