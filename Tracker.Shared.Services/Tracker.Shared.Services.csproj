@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tracker.Module.Budget.Persistence\Tracker.Module.Budget.Persistence.csproj" />
-    <ProjectReference Include="..\Tracker.Module.Dining.Persistence\Tracker.Module.Dinner.Persistence.csproj" />
+    <ProjectReference Include="..\Tracker.Module.Dining.Persistence\Tracker.Module.Dining.Persistence.csproj" />
     <ProjectReference Include="..\Tracker.Module.Time.Persistence\Tracker.Module.Time.Persistence.csproj" />
   </ItemGroup>
 

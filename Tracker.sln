@@ -42,7 +42,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Module.Budget.Persi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Module.Budget.Presentation", "Tracker.Module.Budget.Presentation\Tracker.Module.Budget.Presentation.csproj", "{66B298E9-A773-48B0-B19E-23772AD0B3B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Module.Dinner.Persistence", "Tracker.Module.Dining.Persistence\Tracker.Module.Dinner.Persistence.csproj", "{CC28EEEF-CCD9-3E26-B9A1-2EA0E68D2BBB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Module.Dining.Persistence", "Tracker.Module.Dining.Persistence\Tracker.Module.Dining.Persistence.csproj", "{CC28EEEF-CCD9-3E26-B9A1-2EA0E68D2BBB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Module.Time.Persistence", "Tracker.Module.Time.Persistence\Tracker.Module.Time.Persistence.csproj", "{AFB02BAD-FCC6-8E6A-5882-90A8E65C8249}"
 EndProject
