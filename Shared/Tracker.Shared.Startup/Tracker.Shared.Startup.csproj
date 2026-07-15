@@ -21,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Budget\Tracker.Module.Budget.Persistence\Tracker.Module.Budget.Persistence.csproj" />
+    <ProjectReference Include="..\..\Dining\Tracker.Module.Dining.Persistence\Tracker.Module.Dining.Persistence.csproj" />
+    <ProjectReference Include="..\..\Time\Tracker.Module.Time.Persistence\Tracker.Module.Time.Persistence.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />

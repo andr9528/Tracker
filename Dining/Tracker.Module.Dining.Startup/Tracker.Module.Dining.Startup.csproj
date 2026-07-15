@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Tracker.Shared.Startup\Tracker.Shared.Startup.csproj" />
+    <ProjectReference Include="..\Tracker.Module.Dining.Model\Tracker.Module.Dining.Model.csproj" />
+    <ProjectReference Include="..\Tracker.Module.Dining.Persistence\Tracker.Module.Dining.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -46,14 +46,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tracker.Module.Budget.Startup\Tracker.Module.Budget.Startup.csproj" />
-    <ProjectReference Include="..\Tracker.Module.Dining.Presentation\Tracker.Module.Dining.Presentation.csproj" />
-    <ProjectReference Include="..\Tracker.Module.Dining.Startup\Tracker.Module.Dining.Startup.csproj" />
-    <ProjectReference Include="..\Tracker.Module.Time.Presentation\Tracker.Module.Time.Presentation.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Frontend\Tracker.Shared.Frontend.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Services\Tracker.Shared.Services.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Startup\Tracker.Shared.Startup.csproj" />
+    <ProjectReference Include="..\Budget\Tracker.Module.Budget.Startup\Tracker.Module.Budget.Startup.csproj" />
+    <ProjectReference Include="..\Dining\Tracker.Module.Dining.Presentation\Tracker.Module.Dining.Presentation.csproj" />
+    <ProjectReference Include="..\Dining\Tracker.Module.Dining.Startup\Tracker.Module.Dining.Startup.csproj" />
+    <ProjectReference Include="..\Time\Tracker.Module.Time.Presentation\Tracker.Module.Time.Presentation.csproj" />
+    <ProjectReference Include="..\Shared\Tracker.Shared.Frontend\Tracker.Shared.Frontend.csproj" />
+    <ProjectReference Include="..\Shared\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
+    <ProjectReference Include="..\Shared\Tracker.Shared.Services\Tracker.Shared.Services.csproj" />
+    <ProjectReference Include="..\Shared\Tracker.Shared.Startup\Tracker.Shared.Startup.csproj" />
   </ItemGroup>
 
   <ItemGroup>

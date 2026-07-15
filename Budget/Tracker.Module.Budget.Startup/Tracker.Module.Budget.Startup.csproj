@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tracker.Module.Budget.Persistence\Tracker.Module.Budget.Persistence.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Startup\Tracker.Shared.Startup.csproj" />
+    <ProjectReference Include="..\..\Shared\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
+    <ProjectReference Include="..\..\Shared\Tracker.Shared.Startup\Tracker.Shared.Startup.csproj" />
   </ItemGroup>
 
 </Project>
