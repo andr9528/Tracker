@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tracker.Module.Dining.Model\Tracker.Module.Dining.Model.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
+    <ProjectReference Include="..\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
   </ItemGroup>
 
 </Project>

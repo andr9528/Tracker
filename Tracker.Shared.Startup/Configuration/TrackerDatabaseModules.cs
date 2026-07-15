@@ -1,5 +1,5 @@
 using Tracker.Module.Budget.Persistence;
-using Tracker.Module.Dinner.Persistence;
+using Tracker.Module.Dining.Persistence;
 using Tracker.Module.Time.Persistence;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
