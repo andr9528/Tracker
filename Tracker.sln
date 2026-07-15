@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Module.Dining.Abstr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Module.Dining.Model", "Tracker.Module.Dining.Model\Tracker.Module.Dining.Model.csproj", "{4727772B-D8C8-4F9B-8944-13D8AAFFCE5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Module.Dining.Startup", "Tracker.Module.Dining.Startup\Tracker.Module.Dining.Startup.csproj", "{2AFFC57C-2C3C-4E49-ABC9-9C6B18569D0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +146,10 @@ Global
 		{4727772B-D8C8-4F9B-8944-13D8AAFFCE5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4727772B-D8C8-4F9B-8944-13D8AAFFCE5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4727772B-D8C8-4F9B-8944-13D8AAFFCE5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AFFC57C-2C3C-4E49-ABC9-9C6B18569D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AFFC57C-2C3C-4E49-ABC9-9C6B18569D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AFFC57C-2C3C-4E49-ABC9-9C6B18569D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AFFC57C-2C3C-4E49-ABC9-9C6B18569D0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -171,6 +177,7 @@ Global
 		{F61B215E-DD2E-4287-86E6-2927A88C7A22} = {881ED950-F9CF-4A11-902E-4E52F718C1C5}
 		{F37EFF57-6CCA-4FA7-83AE-830885ED1962} = {587F4172-1A53-4F80-8470-D216C5476841}
 		{4727772B-D8C8-4F9B-8944-13D8AAFFCE5C} = {587F4172-1A53-4F80-8470-D216C5476841}
+		{2AFFC57C-2C3C-4E49-ABC9-9C6B18569D0B} = {587F4172-1A53-4F80-8470-D216C5476841}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {03BF2203-899D-4783-BD4B-B67969D7A79A}

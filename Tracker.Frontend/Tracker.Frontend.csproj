@@ -48,6 +48,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Tracker.Module.Budget.Startup\Tracker.Module.Budget.Startup.csproj" />
     <ProjectReference Include="..\Tracker.Module.Dining.Presentation\Tracker.Module.Dining.Presentation.csproj" />
+    <ProjectReference Include="..\Tracker.Module.Dining.Startup\Tracker.Module.Dining.Startup.csproj" />
     <ProjectReference Include="..\Tracker.Module.Time.Presentation\Tracker.Module.Time.Presentation.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Frontend\Tracker.Shared.Frontend.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />

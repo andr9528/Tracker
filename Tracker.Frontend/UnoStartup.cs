@@ -4,6 +4,7 @@ using Microsoft.UI.Dispatching;
 using Tracker.Frontend.Models;
 using Tracker.Frontend.Services;
 using Tracker.Module.Budget.Startup;
+using Tracker.Module.Dining.Startup;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Persistence;
@@ -37,6 +38,7 @@ public class UnoStartup : ModularStartup<IApplicationBuilder>
             configurationService.ConfigureDatabaseOptions));
 
         AddModule(new BudgetStartup<IApplicationBuilder>());
+        AddModule(new DiningStartup<IApplicationBuilder>());
     }
 
     /// <inheritdoc />
