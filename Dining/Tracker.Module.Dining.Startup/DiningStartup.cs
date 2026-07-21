@@ -1,7 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
+using Tracker.Module.Dining.Abstraction.Services;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Module.Dining.Persistence.Query;
+using Tracker.Module.Dining.Services;
+using Tracker.Module.Dining.Services.Import;
 using Tracker.Shared.Startup;
 using Tracker.Shared.Startup.Modules;
 
@@ -26,6 +29,9 @@ public class DiningStartup<TApplicationBuilder> : ModularStartup<TApplicationBui
 
         // Register any pages that should be possible to navigate to from the left side menu.
         //services.AddSingleton<IPageRegion, SomePageRegionDefinition>();
+
+        services.AddSingleton<DiningSpreadsheetReader>();
+        services.AddSingleton<IDiningImportService, DiningExcelImportService>();
     }
 
     /// <inheritdoc />
