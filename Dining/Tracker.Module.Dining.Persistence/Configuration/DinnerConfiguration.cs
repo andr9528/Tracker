@@ -21,6 +21,8 @@ namespace Tracker.Module.Dining.Persistence.Configuration
             builder.HasOne(x => (Dish) x.Dish)
                 .WithMany(x => (ICollection<Dinner>) x.Dinners)
                 .HasForeignKey(x => x.DishId);
+
+            builder.HasIndex(x => x.Date).IsUnique();
         }
     }
 }
