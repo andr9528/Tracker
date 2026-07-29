@@ -32,4 +32,15 @@
     <!-- <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" RuntimeFrameworkVersion="10.0.22621.28" />
     <FrameworkReference Update="Microsoft.Windows.SDK.NET.Ref" TargetingPackVersion="10.0.22621.28" /> -->
   </ItemGroup>
+
+  <ItemGroup>
+  <Compile Update="**\*.*.cs">
+    <DependentUpon>$([System.String]::Copy('%(Filename)').Split('.')[0]).cs</DependentUpon>
+  </Compile>
+</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\Tracker.Shared.Frontend\Tracker.Shared.Frontend.csproj" />
+    <ProjectReference Include="..\Tracker.Module.Dining.Model\Tracker.Module.Dining.Model.csproj" />
+  </ItemGroup>
 </Project>
