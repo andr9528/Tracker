@@ -10,4 +10,7 @@ public class ComplexSearchableIngredient : IComplexSearchable<SearchableIngredie
 
     public string? Name { get; set; }
     public bool? InStock { get; set; }
+
+    public int? MinimumDishCount { get; set; }
+    public int? MaximumDishCount { get; set; }
 }

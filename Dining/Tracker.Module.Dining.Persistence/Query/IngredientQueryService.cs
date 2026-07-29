@@ -36,6 +36,16 @@ public class IngredientQueryService
             query = query.Where(x => x.InStock == searchable.InStock.Value);
         }
 
+        if (searchable.MinimumDishCount.HasValue)
+        {
+            query = query.Where(x => x.DishIngredients.Count >= searchable.MinimumDishCount.Value);
+        }
+
+        if (searchable.MaximumDishCount.HasValue)
+        {
+            query = query.Where(x => x.DishIngredients.Count <= searchable.MaximumDishCount.Value);
+        }
+
         return query;
     }
 
@@ -49,7 +59,7 @@ public class IngredientQueryService
     /// <inheritdoc />
     protected override IQueryable<Ingredient> GetBaseQuery()
     {
-        return context.Set<Ingredient>();
+        return context.Set<Ingredient>().Include(x => x.DishIngredients);
     }
 
     /// <inheritdoc />
