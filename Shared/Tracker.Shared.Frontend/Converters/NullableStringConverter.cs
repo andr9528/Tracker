@@ -2,7 +2,7 @@ using Microsoft.UI.Xaml.Data;
 
 namespace Tracker.Shared.Frontend.Converters;
 
-internal sealed class NullableStringConverter(string nullText) : IValueConverter
+public sealed class NullableStringConverter(string nullText) : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

@@ -2,14 +2,14 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Tracker.Shared.Frontend.Pieces;
 
-internal sealed partial class NullableBooleanOptionBar
+public sealed partial class NullableBooleanOptionBar
 {
-    internal sealed partial class NullableBooleanOptionBarViewModel : ObservableObject
+    public sealed partial class NullableBooleanOptionBarViewModel : ObservableObject
     {
         public NullableBooleanOptionBarArguments Arguments { get; }
-        internal event EventHandler? SelectionChanged;
+        public event EventHandler? SelectionChanged;
 
-        [ObservableProperty] private bool? selectedValue = null;
+        [ObservableProperty] private bool? selectedValue;
 
         [ObservableProperty] private string header = string.Empty;
 
@@ -17,12 +17,13 @@ internal sealed partial class NullableBooleanOptionBar
 
         public RadioButton NoButton { get; set; } = null!;
 
-        public RadioButton AnyButton { get; set; } = null!;
+        public RadioButton EitherButton { get; set; } = null!;
 
         public NullableBooleanOptionBarViewModel(NullableBooleanOptionBarArguments arguments)
         {
             Arguments = arguments;
             Header = arguments.Header;
+            SelectedValue = arguments.InitialValue;
         }
 
         partial void OnSelectedValueChanged(bool? value)

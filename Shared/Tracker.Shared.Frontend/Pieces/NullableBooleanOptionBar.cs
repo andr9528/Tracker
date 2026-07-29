@@ -2,9 +2,9 @@ using Tracker.Shared.Frontend.Factory;
 
 namespace Tracker.Shared.Frontend.Pieces;
 
-internal sealed partial class NullableBooleanOptionBar : Border
+public sealed partial class NullableBooleanOptionBar : Border
 {
-    internal NullableBooleanOptionBarViewModel ViewModel =>
+    public NullableBooleanOptionBarViewModel ViewModel =>
         (NullableBooleanOptionBarViewModel) DataContext;
 
     private NullableBooleanOptionBarUi Ui { get; }
@@ -23,5 +23,5 @@ internal sealed partial class NullableBooleanOptionBar : Border
         Child = Ui.CreateContentGrid();
     }
 
-    internal sealed record NullableBooleanOptionBarArguments(string Header);
+    public sealed record NullableBooleanOptionBarArguments(string Header, bool? InitialValue = null);
 }

@@ -1,6 +1,6 @@
 namespace Tracker.Shared.Frontend.Pieces;
 
-internal sealed partial class NullableBooleanOptionBar
+public sealed partial class NullableBooleanOptionBar
 {
     internal sealed class NullableBooleanOptionBarLogic
     {
@@ -21,7 +21,7 @@ internal sealed partial class NullableBooleanOptionBar
             ViewModel.SelectedValue = false;
         }
 
-        internal void AnyClicked(object sender, RoutedEventArgs e)
+        internal void EitherClicked(object sender, RoutedEventArgs e)
         {
             ViewModel.SelectedValue = null;
         }

@@ -2,7 +2,7 @@ using Microsoft.UI.Xaml.Data;
 
 namespace Tracker.Shared.Frontend.Converters;
 
-internal sealed class BooleanConverter : IValueConverter
+public sealed class BooleanConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

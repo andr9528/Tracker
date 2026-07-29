@@ -3,7 +3,7 @@ using Microsoft.UI.Xaml.Data;
 
 namespace Tracker.Shared.Frontend.Converters;
 
-internal sealed class CheckedToBackgroundBrushConverter : IValueConverter
+public sealed class CheckedToBackgroundBrushConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {

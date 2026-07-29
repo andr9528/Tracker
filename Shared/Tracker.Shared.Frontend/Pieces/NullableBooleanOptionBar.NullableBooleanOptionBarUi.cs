@@ -4,7 +4,7 @@ using Tracker.Shared.Frontend.Factory;
 
 namespace Tracker.Shared.Frontend.Pieces;
 
-internal sealed partial class NullableBooleanOptionBar
+public sealed partial class NullableBooleanOptionBar
 {
     internal sealed partial class NullableBooleanOptionBarUi(
         NullableBooleanOptionBarLogic logic,
@@ -42,7 +42,9 @@ internal sealed partial class NullableBooleanOptionBar
 
             grid.Children.Add(CreateYesButton().SetColumn(0));
             grid.Children.Add(CreateNoButton().SetColumn(1));
-            grid.Children.Add(CreateAnyButton().SetColumn(2));
+            grid.Children.Add(CreateEitherButton().SetColumn(2));
+
+            SetInitialSelection();
 
             return grid;
         }
@@ -63,13 +65,30 @@ internal sealed partial class NullableBooleanOptionBar
             return ViewModel.NoButton;
         }
 
-        private RadioButton CreateAnyButton()
+        private RadioButton CreateEitherButton()
         {
-            ViewModel.AnyButton = ButtonFactory.CreateNullableBooleanOptionButton("Either");
-            ViewModel.AnyButton.Click += Logic.AnyClicked;
-            ViewModel.AnyButton.IsChecked = true;
+            ViewModel.EitherButton = ButtonFactory.CreateNullableBooleanOptionButton("Either");
+            ViewModel.EitherButton.Click += Logic.EitherClicked;
 
-            return ViewModel.AnyButton;
+            return ViewModel.EitherButton;
+        }
+
+        private void SetInitialSelection()
+        {
+            switch (ViewModel.SelectedValue)
+            {
+                case true:
+                    ViewModel.YesButton.IsChecked = true;
+                    break;
+
+                case false:
+                    ViewModel.NoButton.IsChecked = true;
+                    break;
+
+                default:
+                    ViewModel.EitherButton.IsChecked = true;
+                    break;
+            }
         }
     }
 }
