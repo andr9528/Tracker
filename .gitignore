@@ -404,3 +404,4 @@ solution-config.props
 # Publish Profiles
 !**/Properties/PublishProfiles/*.pubxml
 /.run/
+/Budget/Receipts/*
