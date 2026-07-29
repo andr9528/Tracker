@@ -7,6 +7,38 @@ namespace Tracker.Shared.Frontend.Factory;
 
 public static class ButtonFactory
 {
+    public static Button CreateButton(
+        string text, RoutedEventHandler clicked, HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center)
+    {
+        Button button = CreateBaseButton(text, horizontalAlignment);
+
+        button.Click += clicked;
+
+        return button;
+    }
+
+    private static Button CreateBaseButton(string text, HorizontalAlignment horizontalAlignment)
+    {
+        return new Button
+        {
+            Content = text,
+            Padding = new Thickness(20, 8, 20, 8),
+            HorizontalAlignment = horizontalAlignment,
+            VerticalAlignment = VerticalAlignment.Center,
+        };
+    }
+
+    public static Button CreateButton(
+        string text, Func<object, RoutedEventArgs, Task> clicked,
+        HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center)
+    {
+        Button button = CreateBaseButton(text, horizontalAlignment);
+
+        button.Click += async (sender, args) => await clicked(sender, args);
+
+        return button;
+    }
+
     public static HyperlinkButton BuildHyperlinkButton(string url)
     {
         Uri.TryCreate(url, UriKind.Absolute, out Uri? uri);

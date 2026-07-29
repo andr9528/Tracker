@@ -56,12 +56,7 @@ public static class SimplePieceFactory
     public static Grid CreateSaveCancelButtonGrid(
         Func<object, RoutedEventArgs, Task> saveClicked, RoutedEventHandler cancelClicked)
     {
-        Grid grid = GridFactory.CreateDefaultGrid();
-
-        grid.HorizontalAlignment = HorizontalAlignment.Right;
-        grid.VerticalAlignment = VerticalAlignment.Center;
-        grid.ColumnSpacing = 8;
-        grid.DefineColumns(new GridLength(1, GridUnitType.Star), GridLength.Auto, GridLength.Auto);
+        Grid grid = CreateActionButtonGrid(2);
 
         Button saveButton = CreateSaveButton(saveClicked);
         Button cancelButton = CreateCancelButton(cancelClicked);
@@ -72,30 +67,14 @@ public static class SimplePieceFactory
         return grid;
     }
 
-    public static Button CreateSaveButton(Func<object, RoutedEventArgs, Task> saveClicked)
+    private static Button CreateSaveButton(Func<object, RoutedEventArgs, Task> saveClicked)
     {
-        Button saveButton = new()
-        {
-            Content = "Save",
-            Padding = new Thickness(20, 8, 20, 8),
-        };
-
-        saveButton.Click += async (sender, args) => await saveClicked(sender, args);
-
-        return saveButton;
+        return ButtonFactory.CreateButton("Save", saveClicked);
     }
 
-    public static Button CreateCancelButton(RoutedEventHandler cancelClicked)
+    private static Button CreateCancelButton(RoutedEventHandler cancelClicked)
     {
-        Button cancelButton = new()
-        {
-            Content = "Cancel",
-            Padding = new Thickness(20, 8, 20, 8),
-        };
-
-        cancelButton.Click += cancelClicked;
-
-        return cancelButton;
+        return ButtonFactory.CreateButton("Cancel", cancelClicked);
     }
 
     public static Grid CreateLeftButtonGrid(string buttonText, RoutedEventHandler clicked)
@@ -103,20 +82,14 @@ public static class SimplePieceFactory
         Grid grid = GridFactory.CreateDefaultGrid()
             .DefineColumns(GridLength.Auto, new GridLength(1, GridUnitType.Star));
 
-        Button button = new()
-        {
-            Content = buttonText,
-            HorizontalAlignment = HorizontalAlignment.Left,
-        };
-
-        button.Click += clicked;
+        Button button = ButtonFactory.CreateButton(buttonText, clicked, HorizontalAlignment.Left);
 
         grid.Children.Add(button.SetColumn(0));
 
         return grid;
     }
 
-    internal static Grid CreateFilterHeader()
+    public static Grid CreateFilterHeader()
     {
         Grid grid = GridFactory.CreateDefaultGrid();
 
@@ -143,6 +116,52 @@ public static class SimplePieceFactory
 
         grid.Children.Add(header);
         grid.Children.Add(divider);
+
+        return grid;
+    }
+
+    public static Grid CreateRightButtonGrid(string buttonText, RoutedEventHandler clicked)
+    {
+        Grid grid = GridFactory.CreateDefaultGrid();
+
+        grid.DefineColumns(new GridLength(1, GridUnitType.Star), GridLength.Auto);
+
+        Button button = ButtonFactory.CreateButton(buttonText, clicked, HorizontalAlignment.Right);
+
+        grid.Children.Add(button.SetColumn(1));
+
+        return grid;
+    }
+
+    public static Grid CreateThreeButtonGrid(
+        string leftButtonText, RoutedEventHandler leftButtonClicked, string middleButtonText,
+        RoutedEventHandler middleButtonClicked, string rightButtonText, RoutedEventHandler rightButtonClicked)
+    {
+        Grid grid = CreateActionButtonGrid(3);
+
+        grid.Children.Add(ButtonFactory.CreateButton(leftButtonText, leftButtonClicked).SetColumn(1));
+
+        grid.Children.Add(ButtonFactory.CreateButton(middleButtonText, middleButtonClicked).SetColumn(2));
+
+        grid.Children.Add(ButtonFactory.CreateButton(rightButtonText, rightButtonClicked).SetColumn(3));
+
+        return grid;
+    }
+
+    private static Grid CreateActionButtonGrid(int buttonCount)
+    {
+        Grid grid = GridFactory.CreateDefaultGrid();
+
+        grid.HorizontalAlignment = HorizontalAlignment.Stretch;
+        grid.VerticalAlignment = VerticalAlignment.Center;
+        grid.ColumnSpacing = 8;
+
+        grid.DefineColumns(new GridLength(1, GridUnitType.Star));
+
+        for (var index = 0; index < buttonCount; index++)
+        {
+            grid.DefineColumns(GridLength.Auto);
+        }
 
         return grid;
     }
