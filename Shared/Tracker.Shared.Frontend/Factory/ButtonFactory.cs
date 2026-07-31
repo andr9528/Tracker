@@ -17,11 +17,11 @@ public static class ButtonFactory
         return button;
     }
 
-    private static Button CreateBaseButton(string text, HorizontalAlignment horizontalAlignment)
+    private static Button CreateBaseButton(object content, HorizontalAlignment horizontalAlignment)
     {
         return new Button
         {
-            Content = text,
+            Content = content,
             Padding = new Thickness(20, 8, 20, 8),
             HorizontalAlignment = horizontalAlignment,
             VerticalAlignment = VerticalAlignment.Center,
@@ -37,6 +37,70 @@ public static class ButtonFactory
         button.Click += async (sender, args) => await clicked(sender, args);
 
         return button;
+    }
+
+    public static Button CreateButton(
+        Symbol symbol, string text, RoutedEventHandler clicked,
+        HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center)
+    {
+        Button button = CreateBaseButton(CreateButtonContent(symbol, text), horizontalAlignment);
+
+        button.Click += clicked;
+
+        return button;
+    }
+
+    public static Button CreateButton(
+        string text, Symbol trailingSymbol, RoutedEventHandler clicked,
+        HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center)
+    {
+        Button button = CreateBaseButton(CreateButtonContent(text, trailingSymbol), horizontalAlignment);
+
+        button.Click += clicked;
+
+        return button;
+    }
+
+    private static StackPanel CreateButtonContent(Symbol symbol, string text)
+    {
+        return new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = 10,
+            Children =
+            {
+                new SymbolIcon(symbol)
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                },
+                new TextBlock
+                {
+                    Text = text,
+                    VerticalAlignment = VerticalAlignment.Center,
+                },
+            },
+        };
+    }
+
+    private static StackPanel CreateButtonContent(string text, Symbol trailingSymbol)
+    {
+        return new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            Spacing = 10,
+            Children =
+            {
+                new TextBlock
+                {
+                    Text = text,
+                    VerticalAlignment = VerticalAlignment.Center,
+                },
+                new SymbolIcon(trailingSymbol)
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                },
+            },
+        };
     }
 
     public static HyperlinkButton BuildHyperlinkButton(string url)
