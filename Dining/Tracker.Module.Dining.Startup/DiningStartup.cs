@@ -33,6 +33,7 @@ public class DiningStartup<TApplicationBuilder> : ModularStartup<TApplicationBui
         services.AddSingleton<DiningSpreadsheetReader>();
 
         services.AddSingleton<IDiningImportService, DiningExcelImportService>();
+        services.AddSingleton<IStatisticsService, StatisticsService>();
         services.AddSingleton<IPageRegion, DiningHomepageRegionDefinition>();
     }
 

@@ -59,7 +59,8 @@ public class IngredientQueryService
     /// <inheritdoc />
     protected override IQueryable<Ingredient> GetBaseQuery()
     {
-        return context.Set<Ingredient>().Include(x => x.DishIngredients);
+        return context.Set<Ingredient>().Include(x => x.DishIngredients).ThenInclude(x => x.Dish)
+            .ThenInclude(x => x.Dinners);
     }
 
     /// <inheritdoc />

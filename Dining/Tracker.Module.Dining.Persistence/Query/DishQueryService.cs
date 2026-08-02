@@ -44,7 +44,7 @@ public class DishQueryService
     /// <inheritdoc />
     protected override IQueryable<Dish> GetBaseQuery()
     {
-        return context.Set<Dish>();
+        return context.Set<Dish>().Include(x => x.Dinners);
     }
 
     /// <inheritdoc />
