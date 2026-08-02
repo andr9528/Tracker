@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Tracker.Module.Dining.Abstraction.Services;
 using Tracker.Module.Dining.Model.ComplexSearchable;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
@@ -16,7 +17,10 @@ public sealed class DiningArgumentsFactory(
     IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService,
     IUiDispatcher uiDispatcher,
     ILoggerFactory loggerFactory,
-    INavigationService navigationService) : BaseArgumentsFactory
+    INavigationService navigationService,
+    IDiningImportService diningImportService,
+    IStatisticsService statisticsService,
+    IMainWindowAccessor accessor) : BaseArgumentsFactory
 {
     internal IngredientsGrid.IngredientsGridArguments CreateIngredientsGridArguments(int selectedIngredientId = 0)
     {
@@ -33,6 +37,7 @@ public sealed class DiningArgumentsFactory(
 
     internal DiningHomepage.DiningHomepageArguments CreateDiningHomepageArguments()
     {
-        return new DiningHomepage.DiningHomepageArguments(navigationService, this);
+        return new DiningHomepage.DiningHomepageArguments(navigationService, statisticsService, loggerFactory, this);
+    }
     }
 }

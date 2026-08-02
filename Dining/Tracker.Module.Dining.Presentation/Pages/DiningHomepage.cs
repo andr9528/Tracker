@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+using Tracker.Module.Dining.Abstraction.Services;
 using Tracker.Shared.Frontend.Abstraction;
 
 namespace Tracker.Module.Dining.Presentation.Pages;
@@ -17,10 +19,14 @@ internal sealed partial class DiningHomepage : Page
         var ui = new DiningHomepageUi(logic, ViewModel);
 
         Content = ui.CreateContentGrid();
+
+        Loaded += logic.PageLoaded;
     }
 
     internal record DiningHomepageArguments(
         INavigationService NavigationService,
+        IStatisticsService StatisticsService,
+        ILoggerFactory LoggerFactory,
         DiningArgumentsFactory ArgumentsFactory)
     {
     }
