@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Tracker.Frontend.Styles;
+using WinRT.Interop;
 
 namespace Tracker.Frontend;
 
@@ -76,5 +77,6 @@ public partial class App : Application
         Startup.FlushStartupLogs();
         // Ensure the current window is active
         mainWindow.Activate();
+        Startup.MainWindow = mainWindow;
     }
 }

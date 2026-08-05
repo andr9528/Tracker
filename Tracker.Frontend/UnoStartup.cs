@@ -16,7 +16,7 @@ using Tracker.Shared.Startup.Modules;
 
 namespace Tracker.Frontend;
 
-public class UnoStartup : ModularStartup<IApplicationBuilder>
+public class UnoStartup : ModularStartup<IApplicationBuilder>, IMainWindowAccessor
 {
     public IHost? Host { get; private set; }
 
@@ -50,6 +50,7 @@ public class UnoStartup : ModularStartup<IApplicationBuilder>
         base.ConfigureModuleServices(services);
 
         services.AddSingleton(configurationService);
+        services.AddSingleton<IMainWindowAccessor>(this);
         services.AddSingleton<INavigationService, NavigationService>();
 
         foreach (IDatabaseModule module in TrackerDatabaseModules.Create())
@@ -86,4 +87,11 @@ public class UnoStartup : ModularStartup<IApplicationBuilder>
     {
         serviceCollection.AddSingleton(new JsonSerializerOptions {IncludeFields = true,});
     }
+
+    #region Implementation of IMainWindowAccessor
+
+    /// <inheritdoc />
+    public Window MainWindow { get; set; }
+
+    #endregion
 }

@@ -5,7 +5,7 @@ namespace Tracker.Frontend;
 internal class Program
 {
     [STAThread]
-    public static async Task Main(string[] args)
+    public static void Main(string[] args)
     {
 
         var host = UnoPlatformHostBuilder.Create()
@@ -16,6 +16,6 @@ internal class Program
             .UseWin32()
             .Build();
 
-        await host.RunAsync();
+        host.RunAsync().GetAwaiter().GetResult();
     }
 }
