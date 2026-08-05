@@ -19,24 +19,34 @@ internal sealed partial class DiningHomepage
         {
             try
             {
-                ViewModel.MostEatenDish = await ViewModel.Arguments.StatisticsService.GetMostEatenDish();
-                ViewModel.LeastEatenDish = await ViewModel.Arguments.StatisticsService.GetLeastEatenDish();
+                var mostEatenDishes = await ViewModel.Arguments.StatisticsService.GetMostEatenDishes();
+
+                var leastEatenDishes = await ViewModel.Arguments.StatisticsService.GetLeastEatenDishes();
+
                 ViewModel.UniqueDishesEaten = await ViewModel.Arguments.StatisticsService.GetUniqueDishesEaten();
+
                 ViewModel.MostRecentlyAddedDish =
                     await ViewModel.Arguments.StatisticsService.GetMostRecentlyAddedDish();
 
                 var ingredients = await ViewModel.Arguments.StatisticsService.GetMostUsedIngredients();
 
-                ViewModel.MostUsedIngredients.Clear();
-
-                foreach (IngredientUsageStatistic ingredient in ingredients)
-                {
-                    ViewModel.MostUsedIngredients.Add(ingredient);
-                }
+                ReplaceCollection(ViewModel.MostEatenDishes, mostEatenDishes);
+                ReplaceCollection(ViewModel.LeastEatenDishes, leastEatenDishes);
+                ReplaceCollection(ViewModel.MostUsedIngredients, ingredients);
             }
             catch (Exception exe)
             {
-                logger.LogError(exe, $"Failed to retrieve Statistics data.");
+                logger.LogError(exe, "Failed to retrieve Statistics data.");
+            }
+        }
+
+        private void ReplaceCollection<T>(ICollection<T> destination, IEnumerable<T> source)
+        {
+            destination.Clear();
+
+            foreach (T item in source)
+            {
+                destination.Add(item);
             }
         }
 

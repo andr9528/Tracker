@@ -54,24 +54,100 @@ internal sealed partial class DiningHomepage
 
         private void PlaceStatisticsCards(Grid grid)
         {
-            grid.Children.Add(CreateDishStatisticCard("Most Eaten Dish",
-                    nameof(DiningHomepageViewModel.MostEatenDishName),
-                    nameof(DiningHomepageViewModel.MostEatenDishDetails))
-                .SetRow(1).SetColumn(1));
+            grid.Children.Add(CreateDishStatisticsCard(
+                "Top 3 Most Eaten Dishes", nameof(DiningHomepageViewModel.MostEatenDishes)).SetRow(1).SetColumn(1));
 
             grid.Children.Add(
                 CreateSingleValueStatisticCard("Unique Dishes Eaten", nameof(DiningHomepageViewModel.UniqueDishesEaten))
                     .SetRow(2).SetColumn(0));
 
-            grid.Children.Add(CreateDishStatisticCard("Least Eaten Dish",
-                nameof(DiningHomepageViewModel.LeastEatenDishName),
-                nameof(DiningHomepageViewModel.LeastEatenDishDetails)).SetRow(2).SetColumn(1));
+            grid.Children.Add(CreateDishStatisticsCard(
+                "Top 3 Least Eaten Dishes", nameof(DiningHomepageViewModel.LeastEatenDishes)).SetRow(2).SetColumn(1));
 
             grid.Children.Add(CreateMostUsedIngredientsCard().SetRow(3).SetColumn(0));
 
             grid.Children.Add(CreateDishStatisticCard("Most Recently Added Dish",
                 nameof(DiningHomepageViewModel.MostRecentlyAddedDishName),
                 nameof(DiningHomepageViewModel.MostRecentlyAddedDishDetails)).SetRow(3).SetColumn(1));
+        }
+
+        private Border CreateDishStatisticsCard(string heading, string itemsSourceBindingPath)
+        {
+            Grid content = new()
+            {
+                RowSpacing = 12,
+            };
+
+            content.DefineRows(GridLength.Auto, GridLength.Auto);
+
+            content.Children.Add(CreateStatisticHeading(heading).SetRow(0));
+
+            content.Children.Add(CreateDishStatisticsList(itemsSourceBindingPath).SetRow(1));
+
+            return CreateStatisticCardBorder(content);
+        }
+
+        private ItemsControl CreateDishStatisticsList(string itemsSourceBindingPath)
+        {
+            ItemsControl itemsControl = new()
+            {
+                ItemTemplate = new DataTemplate(() =>
+                {
+                    Grid row = new()
+                    {
+                        RowSpacing = 4,
+                        Margin = new Thickness(0, 4),
+                    };
+
+                    row.DefineRows(GridLength.Auto, GridLength.Auto);
+
+                    row.Children.Add(CreateDishName().SetRow(0));
+                    row.Children.Add(CreateDishDetails().SetRow(1));
+
+                    return row;
+                }),
+            };
+
+            itemsControl.SetBinding(ItemsControl.ItemsSourceProperty, new Binding
+            {
+                Path = new PropertyPath(itemsSourceBindingPath),
+                Mode = BindingMode.OneWay,
+            });
+
+            return itemsControl;
+        }
+
+        private TextBlock CreateDishName()
+        {
+            TextBlock textBlock = TextBlockFactory.CreateBlackText();
+
+            textBlock.FontSize = 18;
+            textBlock.FontWeight = Microsoft.UI.Text.FontWeights.SemiBold;
+            textBlock.TextWrapping = TextWrapping.Wrap;
+
+            textBlock.SetBinding(TextBlock.TextProperty, new Binding
+            {
+                Path = new PropertyPath(nameof(DishEatingStatistic.DishName)),
+                Mode = BindingMode.OneWay,
+            });
+
+            return textBlock;
+        }
+
+        private TextBlock CreateDishDetails()
+        {
+            TextBlock textBlock = TextBlockFactory.CreateBlackText();
+
+            textBlock.FontSize = 14;
+            textBlock.TextWrapping = TextWrapping.Wrap;
+
+            textBlock.SetBinding(TextBlock.TextProperty, new Binding
+            {
+                Path = new PropertyPath(nameof(DishEatingStatistic.Details)),
+                Mode = BindingMode.OneWay,
+            });
+
+            return textBlock;
         }
 
         private Border CreateMostUsedIngredientsCard()

@@ -11,19 +11,19 @@ public sealed class StatisticsService(
     IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService) : IStatisticsService
 {
     /// <inheritdoc />
-    public async Task<DishEatingStatistic?> GetMostEatenDish()
+    public async Task<IReadOnlyCollection<DishEatingStatistic>> GetMostEatenDishes()
     {
         var statistics = await GetDishEatingStatistics();
 
-        return statistics.OrderByDescending(x => x.DinnerCount).ThenByDescending(x => x.LastEaten).FirstOrDefault();
+        return statistics.OrderByDescending(x => x.DinnerCount).ThenByDescending(x => x.LastEaten).Take(3).ToArray();
     }
 
     /// <inheritdoc />
-    public async Task<DishEatingStatistic?> GetLeastEatenDish()
+    public async Task<IReadOnlyCollection<DishEatingStatistic>> GetLeastEatenDishes()
     {
         var statistics = await GetDishEatingStatistics();
 
-        return statistics.OrderBy(x => x.DinnerCount).ThenBy(x => x.LastEaten).FirstOrDefault();
+        return statistics.OrderBy(x => x.DinnerCount).ThenBy(x => x.LastEaten).Take(3).ToArray();
     }
 
     /// <inheritdoc />
@@ -57,12 +57,16 @@ public sealed class StatisticsService(
     {
         var dishes = await dishQueryService.GetAllEntities();
 
-        return dishes.Where(x => x.Dinners.Count != 0).Select(CreateDishEatingStatistic).ToArray();
+        return dishes.Select(CreateDishEatingStatistic).Where(x => x is not null).Cast<DishEatingStatistic>().ToArray();
     }
 
-    private DishEatingStatistic CreateDishEatingStatistic(Dish dish)
+    private DishEatingStatistic? CreateDishEatingStatistic(Dish dish)
     {
-        return new DishEatingStatistic(dish.Id, dish.Name, dish.Dinners.Count, dish.Dinners.Max(x => x.Date));
+        var includedDinners = dish.Dinners.Where(x => !x.IsEatenOut).ToArray();
+
+        return includedDinners.Length == 0
+            ? null
+            : new DishEatingStatistic(dish.Id, dish.Name, includedDinners.Length, includedDinners.Max(x => x.Date));
     }
 
     private IngredientUsageStatistic CreateIngredientUsageStatistic(Ingredient ingredient)

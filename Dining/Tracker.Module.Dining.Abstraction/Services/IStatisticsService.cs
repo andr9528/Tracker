@@ -5,18 +5,18 @@ namespace Tracker.Module.Dining.Abstraction.Services;
 public interface IStatisticsService
 {
     /// <summary>
-    /// Gets the dish with the most registered dinners.
+    /// Gets the dishes with the most registered dinners.
     /// If several dishes have the same number of dinners,
     /// the most recently eaten dish is returned.
     /// </summary>
-    Task<DishEatingStatistic?> GetMostEatenDish();
+    Task<IReadOnlyCollection<DishEatingStatistic>> GetMostEatenDishes();
 
     /// <summary>
-    /// Gets the dish with the fewest registered dinners.
+    /// Gets the dishes with the fewest registered dinners.
     /// If several dishes have the same number of dinners,
     /// the dish eaten least recently is returned.
     /// </summary>
-    Task<DishEatingStatistic?> GetLeastEatenDish();
+    Task<IReadOnlyCollection<DishEatingStatistic>> GetLeastEatenDishes();
 
     /// <summary>
     /// Gets the number of registered dishes.
