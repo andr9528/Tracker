@@ -39,5 +39,9 @@ public sealed class DiningArgumentsFactory(
     {
         return new DiningHomepage.DiningHomepageArguments(navigationService, statisticsService, loggerFactory, this);
     }
+
+    internal DiningImportPage.DiningImportPageArguments CreateDiningImportPageArguments()
+    {
+        return new DiningImportPage.DiningImportPageArguments(diningImportService, loggerFactory, accessor);
     }
 }

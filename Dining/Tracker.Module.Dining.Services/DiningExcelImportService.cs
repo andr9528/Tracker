@@ -4,18 +4,23 @@ using Tracker.Module.Dining.Abstraction.Services;
 using Tracker.Module.Dining.Model.ComplexSearchable;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
-using Tracker.Module.Dining.Persistence.Query;
 using Tracker.Module.Dining.Services.Import;
+using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
 namespace Tracker.Module.Dining.Services;
 
 public sealed class DiningExcelImportService : IDiningImportService
 {
     private readonly DiningSpreadsheetReader spreadsheetReader;
-    private readonly DinnerQueryService dinnerQueryService;
-    private readonly DishQueryService dishQueryService;
-    private readonly IngredientQueryService ingredientQueryService;
-    private readonly DishIngredientQueryService dishIngredientQueryService;
+
+    private readonly IEntityQueryService<Dinner, SearchableDinner> dinnerQueryService;
+
+    private readonly IEntityQueryService<Dish, SearchableDish> dishQueryService;
+
+    private readonly IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService;
+
+    private readonly IEntityQueryService<DishIngredient, SearchableDishIngredient> dishIngredientQueryService;
+
     private readonly ILogger<DiningExcelImportService> logger;
 
     private readonly Dictionary<string, Dish> dishes = new(StringComparer.OrdinalIgnoreCase);
@@ -25,9 +30,11 @@ public sealed class DiningExcelImportService : IDiningImportService
     private readonly HashSet<DishIngredientKey> dishIngredients = [];
 
     public DiningExcelImportService(
-        DiningSpreadsheetReader spreadsheetReader, DinnerQueryService dinnerQueryService,
-        DishQueryService dishQueryService, IngredientQueryService ingredientQueryService,
-        DishIngredientQueryService dishIngredientQueryService, ILogger<DiningExcelImportService> logger)
+        DiningSpreadsheetReader spreadsheetReader, IEntityQueryService<Dinner, SearchableDinner> dinnerQueryService,
+        IEntityQueryService<Dish, SearchableDish> dishQueryService,
+        IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService,
+        IEntityQueryService<DishIngredient, SearchableDishIngredient> dishIngredientQueryService,
+        ILogger<DiningExcelImportService> logger)
     {
         this.spreadsheetReader = spreadsheetReader;
         this.dinnerQueryService = dinnerQueryService;

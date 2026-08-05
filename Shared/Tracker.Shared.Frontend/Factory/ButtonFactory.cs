@@ -51,6 +51,17 @@ public static class ButtonFactory
     }
 
     public static Button CreateButton(
+        Symbol symbol, string text, Func<object, RoutedEventArgs, Task> clicked,
+        HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center)
+    {
+        Button button = CreateBaseButton(CreateButtonContent(symbol, text), horizontalAlignment);
+
+        button.Click += async (sender, args) => await clicked(sender, args);
+
+        return button;
+    }
+
+    public static Button CreateButton(
         string text, Symbol trailingSymbol, RoutedEventHandler clicked,
         HorizontalAlignment horizontalAlignment = HorizontalAlignment.Center)
     {
