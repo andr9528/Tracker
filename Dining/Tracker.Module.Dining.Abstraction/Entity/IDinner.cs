@@ -11,4 +11,6 @@ public interface IDinner : ISearchableDinner, IEntity
     bool HasLeftovers { get; set; }
     bool LeftoversEnoughForDinner { get; set; }
     bool IsLeftovers { get; set; }
+    bool IsEatenOut { get; set; }
+    bool IsReadyMadeDish { get; set; }
 }

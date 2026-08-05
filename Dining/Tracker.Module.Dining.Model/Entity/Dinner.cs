@@ -65,6 +65,12 @@ public class Dinner : IDinner
     /// <inheritdoc />
     public bool IsLeftovers { get; set; }
 
+    /// <inheritdoc />
+    public bool IsEatenOut { get; set; }
+
+    /// <inheritdoc />
+    public bool IsReadyMadeDish { get; set; }
+
     #endregion
 
     #region Constructors

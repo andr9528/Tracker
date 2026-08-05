@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tracker.Shared.Persistence;
 
@@ -10,9 +11,11 @@ using Tracker.Shared.Persistence;
 namespace Tracker.Shared.Persistence.Migrations
 {
     [DbContext(typeof(TrackerDatabaseContext))]
-    partial class TrackerDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20260805094626_AddDinnerEatingFlags")]
+    partial class AddDinnerEatingFlags
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
