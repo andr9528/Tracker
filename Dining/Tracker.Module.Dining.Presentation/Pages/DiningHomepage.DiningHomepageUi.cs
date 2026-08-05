@@ -15,7 +15,6 @@ internal sealed partial class DiningHomepage
         : BaseUi<DiningHomepageLogic, DiningHomepageViewModel>(logic, viewModel)
     {
         private const int BUTTONS_MIN_WIDTH = 180;
-        private const int STATISTIC_CARD_MIN_HEIGHT = 160;
 
         protected override void ConfigureGrid(Grid grid)
         {
@@ -23,8 +22,7 @@ internal sealed partial class DiningHomepage
             grid.RowSpacing = 16;
             grid.ColumnSpacing = 24;
 
-            grid.DefineRows(GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto,
-                new GridLength(1, GridUnitType.Star), GridLength.Auto);
+            grid.DefineRows(GridLength.Auto, GridLength.Auto, new GridLength(1, GridUnitType.Star), GridLength.Auto);
 
             grid.DefineColumns(new GridLength(1, GridUnitType.Star), new GridLength(1, GridUnitType.Star));
         }
@@ -32,8 +30,7 @@ internal sealed partial class DiningHomepage
         protected override void AddControlsToGrid(Grid grid)
         {
             PlaceHeader(grid);
-            PlaceNavigation(grid);
-            PlaceStatisticsCards(grid);
+            PlaceContent(grid);
             PlaceButtons(grid);
         }
 
@@ -42,41 +39,71 @@ internal sealed partial class DiningHomepage
             grid.Children.Add(TextBlockFactory.CreateHeader("Dining").SetRow(0).SetColumn(0, 2));
         }
 
-        private void PlaceNavigation(Grid grid)
-        {
-            grid.Children.Add(CreateNavigationSection().SetRow(1).SetColumn(0));
-        }
-
         private void PlaceButtons(Grid grid)
         {
-            grid.Children.Add(CreateMoreStatisticsButton().SetRow(5).SetColumn(1));
+            grid.Children.Add(CreateMoreStatisticsButton().SetRow(3).SetColumn(1));
         }
 
-        private void PlaceStatisticsCards(Grid grid)
+        private void PlaceContent(Grid grid)
         {
-            grid.Children.Add(CreateDishStatisticsCard(
-                "Top 3 Most Eaten Dishes", nameof(DiningHomepageViewModel.MostEatenDishes)).SetRow(1).SetColumn(1));
+            grid.Children.Add(CreateLeftContentGrid().SetRow(1).SetColumn(0));
+
+            grid.Children.Add(CreateRightContentGrid().SetRow(1).SetColumn(1));
+        }
+
+        private Grid CreateLeftContentGrid()
+        {
+            Grid grid = GridFactory.CreateDefaultGrid();
+
+            grid.RowSpacing = 16;
+            grid.ColumnSpacing = 16;
+
+            grid.DefineRows(GridLength.Auto, GridLength.Auto);
+
+            grid.DefineColumns(new GridLength(1, GridUnitType.Star), new GridLength(1, GridUnitType.Star));
+
+            grid.Children.Add(CreateNavigationSection().SetRow(0).SetColumn(0, 2));
+
+            grid.Children.Add(CreateMostUsedIngredientsCard().SetRow(1).SetColumn(0));
+
+            return grid;
+        }
+
+        private Grid CreateRightContentGrid()
+        {
+            Grid grid = GridFactory.CreateDefaultGrid();
+
+            grid.RowSpacing = 16;
+            grid.ColumnSpacing = 16;
+
+            grid.DefineRows(GridLength.Auto, GridLength.Auto);
+
+            grid.DefineColumns(new GridLength(1, GridUnitType.Star), new GridLength(1, GridUnitType.Star));
 
             grid.Children.Add(
-                CreateSingleValueStatisticCard("Unique Dishes Eaten", nameof(DiningHomepageViewModel.UniqueDishesEaten))
-                    .SetRow(2).SetColumn(0));
+                CreateDishStatisticsCard("Top 3 Most Eaten Dishes", nameof(DiningHomepageViewModel.MostEatenDishes))
+                    .SetRow(0).SetColumn(0));
 
-            grid.Children.Add(CreateDishStatisticsCard(
-                "Top 3 Least Eaten Dishes", nameof(DiningHomepageViewModel.LeastEatenDishes)).SetRow(2).SetColumn(1));
-
-            grid.Children.Add(CreateMostUsedIngredientsCard().SetRow(3).SetColumn(0));
+            grid.Children.Add(
+                CreateDishStatisticsCard("Top 3 Least Eaten Dishes", nameof(DiningHomepageViewModel.LeastEatenDishes))
+                    .SetRow(0).SetColumn(1));
 
             grid.Children.Add(CreateDishStatisticCard("Most Recently Added Dish",
                 nameof(DiningHomepageViewModel.MostRecentlyAddedDishName),
-                nameof(DiningHomepageViewModel.MostRecentlyAddedDishDetails)).SetRow(3).SetColumn(1));
+                nameof(DiningHomepageViewModel.MostRecentlyAddedDishDetails)).SetRow(1).SetColumn(0));
+
+            grid.Children.Add(
+                CreateSingleValueStatisticCard("Unique Dishes Eaten", nameof(DiningHomepageViewModel.UniqueDishesEaten))
+                    .SetRow(1).SetColumn(1));
+
+            return grid;
         }
 
         private Border CreateDishStatisticsCard(string heading, string itemsSourceBindingPath)
         {
-            Grid content = new()
-            {
-                RowSpacing = 12,
-            };
+            Grid content = GridFactory.CreateDefaultGrid();
+
+            content.RowSpacing = 12;
 
             content.DefineRows(GridLength.Auto, GridLength.Auto);
 
@@ -93,11 +120,10 @@ internal sealed partial class DiningHomepage
             {
                 ItemTemplate = new DataTemplate(() =>
                 {
-                    Grid row = new()
-                    {
-                        RowSpacing = 4,
-                        Margin = new Thickness(0, 4),
-                    };
+                    Grid row = GridFactory.CreateDefaultGrid();
+
+                    row.RowSpacing = 4;
+                    row.Margin = new Thickness(0, 4);
 
                     row.DefineRows(GridLength.Auto, GridLength.Auto);
 
@@ -152,10 +178,9 @@ internal sealed partial class DiningHomepage
 
         private Border CreateMostUsedIngredientsCard()
         {
-            Grid content = new()
-            {
-                RowSpacing = 12,
-            };
+            Grid content = GridFactory.CreateDefaultGrid();
+
+            content.RowSpacing = 12;
 
             content.DefineRows(GridLength.Auto, GridLength.Auto);
 
@@ -172,19 +197,25 @@ internal sealed partial class DiningHomepage
             {
                 ItemTemplate = new DataTemplate(() =>
                 {
-                    Grid row = new()
+                    Grid content = GridFactory.CreateDefaultGrid();
+
+                    content.RowSpacing = 4;
+
+                    content.DefineRows(GridLength.Auto, GridLength.Auto);
+
+                    content.Children.Add(CreateIngredientName().SetRow(0));
+
+                    content.Children.Add(CreateIngredientUsage().SetRow(1));
+
+                    return new Border
                     {
-                        ColumnSpacing = 12,
+                        BorderBrush = new SolidColorBrush(Colors.LightGray),
+                        BorderThickness = new Thickness(1.5),
+                        CornerRadius = new CornerRadius(6),
+                        Padding = new Thickness(8),
                         Margin = new Thickness(0, 4),
+                        Child = content,
                     };
-
-                    row.DefineColumns(new GridLength(1, GridUnitType.Star), GridLength.Auto);
-
-                    row.Children.Add(CreateIngredientName().SetColumn(0));
-
-                    row.Children.Add(CreateIngredientUsage().SetColumn(1));
-
-                    return row;
                 }),
             };
 
@@ -201,6 +232,7 @@ internal sealed partial class DiningHomepage
         {
             TextBlock textBlock = TextBlockFactory.CreateBlackText();
 
+            textBlock.HorizontalAlignment = HorizontalAlignment.Left;
             textBlock.TextWrapping = TextWrapping.Wrap;
 
             textBlock.SetBinding(TextBlock.TextProperty, new Binding
@@ -222,31 +254,33 @@ internal sealed partial class DiningHomepage
                 Mode = BindingMode.OneWay,
             });
 
-            return new TextBlock
+            TextBlock textBlock = TextBlockFactory.CreateBlackText();
+
+            textBlock.HorizontalAlignment = HorizontalAlignment.Right;
+            textBlock.TextWrapping = TextWrapping.Wrap;
+
+            textBlock.Inlines.Add(new Run
             {
-                Inlines =
-                {
-                    new Run
-                    {
-                        Text = "Used in ",
-                    },
-                    dinnerCount,
-                    new Run
-                    {
-                        Text = " dinners",
-                    },
-                },
-            };
+                Text = "Used in ",
+            });
+
+            textBlock.Inlines.Add(dinnerCount);
+
+            textBlock.Inlines.Add(new Run
+            {
+                Text = " dinners",
+            });
+
+            return textBlock;
         }
 
 
         private Grid CreateNavigationSection()
         {
-            Grid grid = new()
-            {
-                RowSpacing = 16,
-                ColumnSpacing = 16,
-            };
+            Grid grid = GridFactory.CreateDefaultGrid();
+
+            grid.RowSpacing = 16;
+            grid.ColumnSpacing = 16;
 
             grid.DefineColumns(GridLength.Auto, GridLength.Auto, new GridLength(1, GridUnitType.Star));
 
@@ -288,10 +322,9 @@ internal sealed partial class DiningHomepage
 
         private Border CreateDishStatisticCard(string heading, string nameBindingPath, string detailsBindingPath)
         {
-            Grid content = new()
-            {
-                RowSpacing = 8,
-            };
+            Grid content = GridFactory.CreateDefaultGrid();
+
+            content.RowSpacing = 8;
 
             content.DefineRows(GridLength.Auto, GridLength.Auto, GridLength.Auto);
 
@@ -308,10 +341,9 @@ internal sealed partial class DiningHomepage
 
         private Border CreateSingleValueStatisticCard(string heading, string bindingPath)
         {
-            Grid content = new()
-            {
-                RowSpacing = 16,
-            };
+            Grid content = GridFactory.CreateDefaultGrid();
+
+            content.RowSpacing = 16;
 
             content.DefineRows(GridLength.Auto, GridLength.Auto);
 
@@ -332,7 +364,6 @@ internal sealed partial class DiningHomepage
                 BorderThickness = new Thickness(1),
                 CornerRadius = new CornerRadius(12),
                 Padding = new Thickness(24),
-                MinHeight = STATISTIC_CARD_MIN_HEIGHT,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Child = content,
             };
