@@ -188,8 +188,7 @@ internal sealed partial class DiningImportPage
 
             content.Children.Add(CreateResultRow("Dinners created", nameof(ImportResult.CreatedDinners)).SetRow(1));
 
-            content.Children.Add(
-                CreateResultRow("Existing dinners skipped", nameof(ImportResult.SkippedExistingDinners)).SetRow(2));
+            content.Children.Add(CreateResultRow("Dinners Updated", nameof(ImportResult.UpdatedDinners)).SetRow(2));
 
             content.Children.Add(CreateResultRow("Invalid rows skipped", nameof(ImportResult.SkippedInvalidRows))
                 .SetRow(3));

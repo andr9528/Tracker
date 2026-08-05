@@ -44,8 +44,8 @@ public sealed class DiningSpreadsheetReader
         }
 
         return new DiningSpreadsheetRow(row.RowNumber(), date.Value, dishName, ParseBoolean(row.Cell(4)),
-            ParseBoolean(row.Cell(5)), ParseBoolean(row.Cell(6)), ParseBoolean(row.Cell(7)),
-            ParseIngredients(row.Cell(8)), NormalizeOptionalText(row.Cell(9).GetString()));
+            ParseBoolean(row.Cell(5)), ParseBoolean(row.Cell(6)), ParseBoolean(row.Cell(7)), ParseBoolean(row.Cell(8)),
+            ParseBoolean(row.Cell(9)), ParseIngredients(row.Cell(10)), NormalizeOptionalText(row.Cell(11).GetString()));
     }
 
     private DateOnly? ParseDate(IXLCell cell)

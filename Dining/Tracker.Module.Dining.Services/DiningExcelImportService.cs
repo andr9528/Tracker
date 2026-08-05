@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Abstraction.Records;
 using Tracker.Module.Dining.Abstraction.Services;
-using Tracker.Module.Dining.Model.ComplexSearchable;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Module.Dining.Services.Import;
@@ -23,7 +22,7 @@ public sealed class DiningExcelImportService : IDiningImportService
 
     private readonly ILogger<DiningExcelImportService> logger;
 
-    private readonly Dictionary<string, Dish> dishes = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<DishImportKey, Dish> dishes = [];
 
     private readonly Dictionary<string, Ingredient> ingredients = new(StringComparer.OrdinalIgnoreCase);
 
@@ -47,89 +46,130 @@ public sealed class DiningExcelImportService : IDiningImportService
     private async Task<ImportResult> Import(Stream stream)
     {
         ClearImportCaches();
+        await LoadImportCaches();
 
         var counters = new ImportResult();
         var rows = spreadsheetReader.Read(stream, counters);
-        var existingDates = await GetExistingDinnerDates();
-        var dinners = new List<Dinner>();
+        var existingDinners = await GetExistingDinners();
+        var createdDinners = new List<Dinner>();
+        var updatedDinners = new List<Dinner>();
 
         foreach (DiningSpreadsheetRow row in rows)
         {
-            Dinner? dinner = await CreateDinner(row, existingDates, counters);
-
-            if (dinner is not null)
-            {
-                dinners.Add(dinner);
-            }
+            await ImportDinner(row, existingDinners, createdDinners, updatedDinners, counters);
         }
 
-        await AddDinners(dinners);
+        await SaveDinners(createdDinners, updatedDinners);
 
         return counters;
     }
 
-    private async Task<HashSet<DateOnly>> GetExistingDinnerDates()
+    private async Task<Dictionary<DateOnly, Dinner>> GetExistingDinners()
     {
         var existingDinners = await dinnerQueryService.GetAllEntities();
 
-        return existingDinners.Select(x => x.Date).ToHashSet();
+        return existingDinners.ToDictionary(x => x.Date);
     }
 
-    private async Task<Dinner?> CreateDinner(
-        DiningSpreadsheetRow row, HashSet<DateOnly> existingDates, ImportResult counters)
+    private async Task LoadImportCaches()
     {
-        if (!existingDates.Add(row.Date))
-        {
-            LogExistingDinner(row);
-            counters.SkippedExistingDinners++;
+        var existingIngredients = await ingredientQueryService.GetAllEntities();
+        var existingDishes = await dishQueryService.GetAllEntities();
+        var existingDishIngredients = await dishIngredientQueryService.GetAllEntities();
 
-            return null;
+        CacheIngredients(existingIngredients);
+        CacheDishIngredients(existingDishIngredients);
+        CacheDishes(existingDishes, existingDishIngredients);
+    }
+
+    private void CacheIngredients(IEnumerable<Ingredient> existingIngredients)
+    {
+        foreach (Ingredient ingredient in existingIngredients)
+        {
+            ingredients.TryAdd(NormalizeName(ingredient.Name), ingredient);
+        }
+    }
+
+    private void CacheDishIngredients(IEnumerable<DishIngredient> existingDishIngredients)
+    {
+        foreach (DishIngredient dishIngredient in existingDishIngredients)
+        {
+            dishIngredients.Add(new DishIngredientKey(dishIngredient.DishId, dishIngredient.IngredientId));
+        }
+    }
+
+    private void CacheDishes(IEnumerable<Dish> existingDishes, IEnumerable<DishIngredient> existingDishIngredients)
+    {
+        var ingredientIdsByDish = existingDishIngredients.GroupBy(x => x.DishId)
+            .ToDictionary(x => x.Key, x => x.Select(y => y.IngredientId).ToList());
+
+        foreach (Dish dish in existingDishes)
+        {
+            IReadOnlyCollection<int> ingredientIds =
+                ingredientIdsByDish.TryGetValue(dish.Id, out var foundIngredientIds) ? foundIngredientIds : [];
+
+            DishImportKey key = CreateDishImportKey(dish.Name, ingredientIds);
+
+            dishes.TryAdd(key, dish);
+        }
+    }
+
+    private async Task ImportDinner(
+        DiningSpreadsheetRow row, IDictionary<DateOnly, Dinner> existingDinners, ICollection<Dinner> createdDinners,
+        ICollection<Dinner> updatedDinners, ImportResult counters)
+    {
+        var rowIngredients = await FindOrCreateIngredients(row.IngredientNames, counters);
+
+        Dish dish = await FindOrCreateDish(row.DishName, rowIngredients, counters);
+
+        if (existingDinners.TryGetValue(row.Date, out Dinner? existingDinner))
+        {
+            UpdateDinnerEntity(existingDinner, row, dish);
+            updatedDinners.Add(existingDinner);
+            counters.UpdatedDinners++;
+
+            return;
         }
 
-        Dish dish = await FindOrCreateDish(row.DishName, counters);
+        Dinner dinner = CreateDinnerEntity(row, dish);
 
-        await ConnectIngredients(dish, row.IngredientNames, counters);
-
+        existingDinners.Add(row.Date, dinner);
+        createdDinners.Add(dinner);
         counters.CreatedDinners++;
-
-        return CreateDinnerEntity(row, dish);
     }
 
-    private async Task<Dish> FindOrCreateDish(string dishName, ImportResult counters)
+    private async Task<IReadOnlyCollection<Ingredient>> FindOrCreateIngredients(
+        IEnumerable<string> ingredientNames, ImportResult counters)
+    {
+        var foundIngredients = new List<Ingredient>();
+
+        foreach (string ingredientName in ingredientNames)
+        {
+            Ingredient ingredient = await FindOrCreateIngredient(ingredientName, counters);
+
+            foundIngredients.Add(ingredient);
+        }
+
+        return foundIngredients;
+    }
+
+    private async Task<Dish> FindOrCreateDish(
+        string dishName, IReadOnlyCollection<Ingredient> rowIngredients, ImportResult counters)
     {
         string normalizedName = NormalizeName(dishName);
 
-        if (dishes.TryGetValue(normalizedName, out Dish? cachedDish))
+        DishImportKey key = CreateDishImportKey(normalizedName, rowIngredients.Select(x => x.Id));
+
+        if (dishes.TryGetValue(key, out Dish? existingDish))
         {
-            return cachedDish;
-        }
-
-        Dish? existingDish = await FindDish(normalizedName);
-
-        if (existingDish is not null)
-        {
-            dishes.Add(normalizedName, existingDish);
-
             return existingDish;
         }
 
-        return await CreateDish(normalizedName, counters);
+        return await CreateDish(normalizedName, rowIngredients, key, counters);
     }
 
-    private async Task<Dish?> FindDish(string dishName)
-    {
-        var searchable = new ComplexSearchableDish
-        {
-            Searchable = new SearchableDish
-            {
-                Name = dishName,
-            },
-        };
-
-        return await dishQueryService.GetEntityComplex(searchable);
-    }
-
-    private async Task<Dish> CreateDish(string dishName, ImportResult counters)
+    private async Task<Dish> CreateDish(
+        string dishName, IReadOnlyCollection<Ingredient> rowIngredients, DishImportKey key, ImportResult counters)
     {
         var dish = new Dish
         {
@@ -139,19 +179,18 @@ public sealed class DiningExcelImportService : IDiningImportService
         };
 
         await dishQueryService.AddEntity(dish);
+        await ConnectIngredients(dish, rowIngredients, counters);
 
-        dishes.Add(dishName, dish);
+        dishes.Add(key, dish);
         counters.CreatedDishes++;
 
         return dish;
     }
 
-    private async Task ConnectIngredients(Dish dish, IEnumerable<string> ingredientNames, ImportResult counters)
+    private async Task ConnectIngredients(Dish dish, IEnumerable<Ingredient> rowIngredients, ImportResult counters)
     {
-        foreach (string ingredientName in ingredientNames)
+        foreach (Ingredient ingredient in rowIngredients)
         {
-            Ingredient ingredient = await FindOrCreateIngredient(ingredientName, counters);
-
             await FindOrCreateDishIngredient(dish, ingredient, counters);
         }
     }
@@ -160,34 +199,12 @@ public sealed class DiningExcelImportService : IDiningImportService
     {
         string normalizedName = NormalizeName(ingredientName);
 
-        if (ingredients.TryGetValue(normalizedName, out Ingredient? cachedIngredient))
+        if (ingredients.TryGetValue(normalizedName, out Ingredient? existingIngredient))
         {
-            return cachedIngredient;
-        }
-
-        Ingredient? existingIngredient = await FindIngredient(normalizedName);
-
-        if (existingIngredient is not null)
-        {
-            ingredients.Add(normalizedName, existingIngredient);
-
             return existingIngredient;
         }
 
         return await CreateIngredient(normalizedName, counters);
-    }
-
-    private async Task<Ingredient?> FindIngredient(string ingredientName)
-    {
-        var searchable = new ComplexSearchableIngredient
-        {
-            Searchable = new SearchableIngredient
-            {
-                Name = ingredientName,
-            },
-        };
-
-        return await ingredientQueryService.GetEntityComplex(searchable);
     }
 
     private async Task<Ingredient> CreateIngredient(string ingredientName, ImportResult counters)
@@ -216,29 +233,7 @@ public sealed class DiningExcelImportService : IDiningImportService
             return;
         }
 
-        DishIngredient? existing = await FindDishIngredient(dish, ingredient);
-
-        if (existing is not null)
-        {
-            dishIngredients.Add(key);
-            return;
-        }
-
         await CreateDishIngredient(dish, ingredient, key, counters);
-    }
-
-    private async Task<DishIngredient?> FindDishIngredient(Dish dish, Ingredient ingredient)
-    {
-        var searchable = new ComplexSearchableDishIngredient
-        {
-            Searchable = new SearchableDishIngredient
-            {
-                DishId = dish.Id,
-                IngredientId = ingredient.Id,
-            },
-        };
-
-        return await dishIngredientQueryService.GetEntityComplex(searchable);
     }
 
     private async Task CreateDishIngredient(
@@ -258,29 +253,48 @@ public sealed class DiningExcelImportService : IDiningImportService
         counters.CreatedDishIngredients++;
     }
 
-    private async Task AddDinners(IReadOnlyCollection<Dinner> dinners)
+    private async Task SaveDinners(
+        IReadOnlyCollection<Dinner> createdDinners, IReadOnlyCollection<Dinner> updatedDinners)
     {
-        if (dinners.Count == 0)
+        if (createdDinners.Count > 0)
         {
-            return;
+            await dinnerQueryService.AddEntities(createdDinners);
         }
 
-        await dinnerQueryService.AddEntities(dinners);
+        if (updatedDinners.Count > 0)
+        {
+            await dinnerQueryService.UpdateEntities(updatedDinners);
+        }
     }
 
     private Dinner CreateDinnerEntity(DiningSpreadsheetRow row, Dish dish)
     {
-        return new Dinner
+        var dinner = new Dinner
         {
             Date = row.Date,
-            DishId = dish.Id,
-            Dish = dish,
-            Notes = row.Notes,
-            IsTakeAway = row.IsTakeAway,
-            HasLeftovers = row.HasLeftovers,
-            LeftoversEnoughForDinner = row.LeftoversEnoughForDinner,
-            IsLeftovers = row.IsLeftovers,
         };
+
+        ApplySpreadsheetValues(dinner, row, dish);
+
+        return dinner;
+    }
+
+    private void UpdateDinnerEntity(Dinner dinner, DiningSpreadsheetRow row, Dish dish)
+    {
+        ApplySpreadsheetValues(dinner, row, dish);
+    }
+
+    private void ApplySpreadsheetValues(Dinner dinner, DiningSpreadsheetRow row, Dish dish)
+    {
+        dinner.DishId = dish.Id;
+        dinner.Dish = dish;
+        dinner.Notes = row.Notes;
+        dinner.IsEatenOut = row.IsEatenOut;
+        dinner.IsReadyMadeDish = row.IsReadyMadeDish;
+        dinner.IsTakeAway = row.IsTakeAway;
+        dinner.HasLeftovers = row.HasLeftovers;
+        dinner.LeftoversEnoughForDinner = row.LeftoversEnoughForDinner;
+        dinner.IsLeftovers = row.IsLeftovers;
     }
 
     private void ClearImportCaches()
@@ -295,10 +309,13 @@ public sealed class DiningExcelImportService : IDiningImportService
         return name.Trim();
     }
 
-    private void LogExistingDinner(DiningSpreadsheetRow row)
+    private DishImportKey CreateDishImportKey(string dishName, IEnumerable<int> ingredientIds)
     {
-        logger.LogWarning("Skipping spreadsheet row {RowNumber}. " + "A dinner already exists for {DinnerDate}.",
-            row.RowNumber, row.Date);
+        string normalizedName = NormalizeName(dishName).ToUpperInvariant();
+
+        string normalizedIngredientIds = string.Join(',', ingredientIds.Distinct().Order());
+
+        return new DishImportKey(normalizedName, normalizedIngredientIds);
     }
 
     #region Implementation of IDiningImportService
@@ -332,8 +349,9 @@ public sealed class DiningExcelImportService : IDiningImportService
         ImportResult result = await Import(stream);
 
         logger.LogInformation(
-            "Imported {CreatedDinners} dinners, {CreatedDishes} dishes, {CreatedIngredients} ingredients and {CreatedDishIngredients} dish ingredient relations.",
-            result.CreatedDinners, result.CreatedDishes, result.CreatedIngredients, result.CreatedDishIngredients);
+            "Imported {CreatedDinners} new dinners, updated {UpdatedDinners} existing dinners, created {CreatedDishes} dishes, {CreatedIngredients} ingredients and {CreatedDishIngredients} dish ingredient relations.",
+            result.CreatedDinners, result.UpdatedDinners, result.CreatedDishes, result.CreatedIngredients,
+            result.CreatedDishIngredients);
 
         return result;
     }
@@ -341,4 +359,6 @@ public sealed class DiningExcelImportService : IDiningImportService
     #endregion
 
     private readonly record struct DishIngredientKey(int DishId, int IngredientId);
+
+    private readonly record struct DishImportKey(string DishName, string IngredientIds);
 }

@@ -4,7 +4,7 @@ public sealed class ImportResult
 {
     public int CreatedDinners { get; set; }
 
-    public int SkippedExistingDinners { get; set; }
+    public int UpdatedDinners { get; set; }
 
     public int SkippedInvalidRows { get; set; }
 

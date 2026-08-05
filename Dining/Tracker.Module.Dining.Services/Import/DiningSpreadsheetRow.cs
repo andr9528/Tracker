@@ -4,6 +4,8 @@ public sealed record DiningSpreadsheetRow(
     int RowNumber,
     DateOnly Date,
     string DishName,
+    bool IsEatenOut,
+    bool IsReadyMadeDish,
     bool IsTakeAway,
     bool HasLeftovers,
     bool LeftoversEnoughForDinner,
