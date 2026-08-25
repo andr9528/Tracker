@@ -64,4 +64,10 @@ public sealed class DiningArgumentsFactory(
         return new IngredientDetailsPage.IngredientDetailsPageArguments(ingredientId, ingredientQueryService,
             uiDispatcher, loggerFactory, navigationService, this);
     }
+
+    internal IngredientCreationPage.IngredientCreationPageArguments CreateIngredientCreationPageArguments()
+    {
+        return new IngredientCreationPage.IngredientCreationPageArguments(ingredientQueryService, navigationService,
+            loggerFactory, this);
+    }
 }

@@ -1,3 +1,4 @@
+using Tracker.Module.Dining.Model.Entity;
 using Tracker.Shared.Frontend.Core;
 
 namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
@@ -9,12 +10,12 @@ namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
         {
             public void CreateIngredientClicked(object sender, RoutedEventArgs e)
             {
-                //CreateIngredientPage.CreateIngredientPageArguments arguments =
-                //    ViewModel.Arguments.ArgumentsFactory.CreateCreateIngredientPageArguments();
+                IngredientCreationPage.IngredientCreationPageArguments arguments =
+                    ViewModel.Arguments.ArgumentsFactory.CreateIngredientCreationPageArguments();
 
-                //var page = new CreateIngredientPage(arguments);
+                var page = new IngredientCreationPage(arguments);
 
-                //ViewModel.Arguments.NavigationService.NavigateTo(page, nameof(CreateIngredientPage));
+                ViewModel.Arguments.NavigationService.NavigateTo(page, nameof(IngredientCreationPage));
             }
 
             public void ShowDetailsClicked(object sender, RoutedEventArgs e)
