@@ -1,6 +1,7 @@
 using Windows.Storage.Pickers;
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Abstraction.Records;
+using Tracker.Module.Dining.Model.Entity;
 using Tracker.Shared.Frontend.Core;
 using WinRT.Interop;
 
@@ -21,15 +22,9 @@ internal sealed partial class DiningImportPage
         {
             try
             {
-                //LogUnoRuntimeInformation();
-
-                logger.LogInformation("ThreadId={ThreadId}", Environment.CurrentManagedThreadId);
-
                 FileOpenPicker picker = CreateFilePicker();
 
-                logger.LogInformation($"Calling {nameof(picker.PickSingleFileAsync)}().");
                 StorageFile? file = await picker.PickSingleFileAsync();
-                logger.LogInformation("Returned on ThreadId={ThreadId}", Environment.CurrentManagedThreadId);
 
                 if (file is null)
                 {
@@ -52,29 +47,12 @@ internal sealed partial class DiningImportPage
             }
         }
 
-        private void LogUnoRuntimeInformation()
-        {
-            string[] relevantAssemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Select(assembly => assembly.GetName().Name).Where(name =>
-                    name is not null && (name.Contains("Uno", StringComparison.OrdinalIgnoreCase) ||
-                                         name.Contains("Skia", StringComparison.OrdinalIgnoreCase)))
-                .OrderBy(name => name).ToArray()!;
-
-            logger.LogInformation("Runtime framework: {FrameworkDescription}. OS: {OsDescription}.",
-                System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
-                System.Runtime.InteropServices.RuntimeInformation.OSDescription);
-
-            logger.LogInformation("Loaded Uno/Skia assemblies: {Assemblies}.", string.Join(", ", relevantAssemblies));
-        }
-
         public async void ImportClicked(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (!ViewModel.CanImport)
-                {
                     return;
-                }
 
                 BeginImport();
 
@@ -119,9 +97,6 @@ internal sealed partial class DiningImportPage
 
         private FileOpenPicker CreateFilePicker()
         {
-            logger.LogInformation("Creating FileOpenPicker instance on thread {ThreadId}.",
-                Environment.CurrentManagedThreadId);
-
             var picker = new FileOpenPicker
             {
                 SuggestedStartLocation = PickerLocationId.DocumentsLibrary,
@@ -131,28 +106,15 @@ internal sealed partial class DiningImportPage
             picker.FileTypeFilter.Add(".xlsx");
             picker.FileTypeFilter.Add(".xls");
 
-            logger.LogInformation("Retrieving main window.");
-
             Window mainWindow = ViewModel.Arguments.Accessor.MainWindow ??
                                 throw new InvalidOperationException("The main window has not been initialized.");
 
-            logger.LogInformation("Main window type: {WindowType}. Content type: {ContentType}.",
-                mainWindow.GetType().FullName, mainWindow.Content?.GetType().FullName ?? "<null>");
-
             nint windowHandle = WindowNative.GetWindowHandle(mainWindow);
 
-            logger.LogInformation("Retrieved window handle {WindowHandle}.", windowHandle);
-
             if (windowHandle == 0)
-            {
                 throw new InvalidOperationException("The main window returned an invalid native window handle.");
-            }
-
-            logger.LogInformation("Initializing picker with the main window.");
 
             InitializeWithWindow.Initialize(picker, windowHandle);
-
-            logger.LogInformation("Picker initialized successfully.");
 
             return picker;
         }
