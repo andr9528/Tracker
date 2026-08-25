@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Abstraction.Records;
+using Tracker.Module.Dining.Presentation.Pages.Ingredients;
 using Tracker.Shared.Frontend.Core;
 
 namespace Tracker.Module.Dining.Presentation.Pages;
@@ -62,6 +63,12 @@ internal sealed partial class DiningHomepage
 
         public void IngredientsClicked(object sender, RoutedEventArgs e)
         {
+            IngredientsPage.IngredientsPageArguments arguments =
+                ViewModel.Arguments.ArgumentsFactory.CreateIngredientsPageArguments();
+
+            var page = new IngredientsPage(arguments);
+
+            ViewModel.Arguments.NavigationService.NavigateTo(page, nameof(IngredientsPage));
         }
 
         public void DinnersClicked(object sender, RoutedEventArgs e)

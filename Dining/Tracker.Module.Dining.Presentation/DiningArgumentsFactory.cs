@@ -4,6 +4,7 @@ using Tracker.Module.Dining.Model.ComplexSearchable;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Module.Dining.Presentation.Pages;
+using Tracker.Module.Dining.Presentation.Pages.Ingredients;
 using Tracker.Module.Dining.Presentation.Pages.Search;
 using Tracker.Module.Dining.Presentation.Pieces.Ingredients;
 using Tracker.Shared.Abstraction.Enums;
@@ -45,5 +46,10 @@ public sealed class DiningArgumentsFactory(
     internal DiningImportPage.DiningImportPageArguments CreateDiningImportPageArguments()
     {
         return new DiningImportPage.DiningImportPageArguments(diningImportService, loggerFactory, accessor);
+    }
+
+    internal IngredientsPage.IngredientsPageArguments CreateIngredientsPageArguments()
+    {
+        return new IngredientsPage.IngredientsPageArguments(navigationService, this);
     }
 }
