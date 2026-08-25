@@ -6,6 +6,7 @@ using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Module.Dining.Presentation.Pages;
 using Tracker.Module.Dining.Presentation.Pages.Search;
 using Tracker.Module.Dining.Presentation.Pieces.Ingredients;
+using Tracker.Shared.Abstraction.Enums;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Frontend.Core;
@@ -22,10 +23,11 @@ public sealed class DiningArgumentsFactory(
     IStatisticsService statisticsService,
     IMainWindowAccessor accessor) : BaseArgumentsFactory
 {
-    internal IngredientsGrid.IngredientsGridArguments CreateIngredientsGridArguments(int selectedIngredientId = 0)
+    internal IngredientsGrid.IngredientsGridArguments CreateIngredientsGridArguments(
+        GridEntitySource entitySource = GridEntitySource.ALL, int selectedIngredientId = 0)
     {
         return new IngredientsGrid.IngredientsGridArguments(ingredientQueryService, uiDispatcher, loggerFactory, this,
-            selectedIngredientId);
+            entitySource, selectedIngredientId);
     }
 
     internal IngredientAdvancedSearchPage.IngredientAdvancedSearchPageArguments

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
+using Tracker.Shared.Abstraction.Enums;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Frontend.Factory;
@@ -9,9 +10,9 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients;
 
 internal sealed partial class IngredientsGrid : Border, INavigationRefreshable
 {
-    internal IngredientsGridViewModel ViewModel => (IngredientsGridViewModel) DataContext;
-
+    private IngredientsGridViewModel ViewModel => (IngredientsGridViewModel) DataContext;
     private IngredientsGridLogic Logic { get; }
+    public IIngredientsGridApi Api => Logic;
 
     public IngredientsGrid(IngredientsGridArguments arguments)
     {
@@ -34,7 +35,7 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable
         var logger = ViewModel.Arguments.LoggerFactory.CreateLogger<IngredientsGrid>();
         logger.LogInformation("Refreshing Ingredients after Navigation");
 
-        _ = Logic.RefreshIngredients();
+        _ = Api.Refresh();
     }
 
     internal record IngredientsGridArguments(
@@ -42,5 +43,19 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable
         IUiDispatcher UiDispatcher,
         ILoggerFactory LoggerFactory,
         DiningArgumentsFactory ArgumentsFactory,
+        GridEntitySource EntitySource = GridEntitySource.ALL,
         int SelectedIngredientId = 0);
+
+    internal interface IIngredientsGridApi
+    {
+        Ingredient? SelectedIngredient { get; }
+
+        void SetSuppliedIngredients(IEnumerable<Ingredient> ingredients);
+        void AddSuppliedIngredients(IEnumerable<Ingredient> ingredients);
+        void AddSuppliedIngredient(Ingredient ingredient);
+        void RemoveSuppliedIngredient(Ingredient ingredient);
+        void ClearSuppliedIngredients();
+
+        Task Refresh();
+    }
 }
