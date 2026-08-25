@@ -19,6 +19,16 @@ namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
 
             public void ShowDetailsClicked(object sender, RoutedEventArgs e)
             {
+                Ingredient? selectedIngredient = ViewModel.IngredientsGrid.Api.SelectedIngredient;
+
+                if (selectedIngredient == null) return;
+
+                IngredientDetailsPage.IngredientDetailsPageArguments arguments =
+                    ViewModel.Arguments.ArgumentsFactory.CreateIngredientDetailsPageArguments(selectedIngredient.Id);
+
+                var page = new IngredientDetailsPage(arguments);
+
+                ViewModel.Arguments.NavigationService.NavigateTo(page, nameof(IngredientDetailsPage));
             }
         }
     }

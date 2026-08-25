@@ -52,9 +52,16 @@ public sealed class DiningArgumentsFactory(
     {
         return new IngredientsPage.IngredientsPageArguments(navigationService, this);
     }
+
     internal IngredientEditor.IngredientEditorArguments CreateIngredientEditorArguments(
         Ingredient? ingredient = null, bool isReadOnly = true)
     {
         return new IngredientEditor.IngredientEditorArguments(ingredient, isReadOnly);
+    }
+
+    internal IngredientDetailsPage.IngredientDetailsPageArguments CreateIngredientDetailsPageArguments(int ingredientId)
+    {
+        return new IngredientDetailsPage.IngredientDetailsPageArguments(ingredientId, ingredientQueryService,
+            uiDispatcher, loggerFactory, navigationService, this);
     }
 }
