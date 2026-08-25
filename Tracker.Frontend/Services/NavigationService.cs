@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Tracker.Shared.Frontend.Abstraction;
+using Tracker.Shared.Frontend.Abstraction.Attributes;
 
 namespace Tracker.Frontend.Services;
 
@@ -46,21 +47,15 @@ public class NavigationService(IUiDispatcher uiDispatcher, ILogger<NavigationSer
 
     private void PopSkippedPage()
     {
-        if (navigationStack.Count <= 1)
+        while (navigationStack.Count > 1)
         {
-            return;
+            UIElement element = navigationStack.Peek().Element;
+
+            if (!Attribute.IsDefined(element.GetType(), typeof(SkipOnBackNavigationAttribute), true))
+                return;
+
+            navigationStack.Pop();
         }
-
-        UIElement element = navigationStack.Peek().Element;
-
-        return;
-
-        //if (element is not SomeSkippedPage)
-        //{
-        //    return;
-        //}
-
-        navigationStack.Pop();
     }
 
     private TimeSpan UpdateFrameToTopElement()
