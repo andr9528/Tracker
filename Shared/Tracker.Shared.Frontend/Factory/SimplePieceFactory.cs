@@ -67,12 +67,12 @@ public static class SimplePieceFactory
         return grid;
     }
 
-    private static Button CreateSaveButton(Func<object, RoutedEventArgs, Task> saveClicked)
+    public static Button CreateSaveButton(Func<object, RoutedEventArgs, Task> saveClicked)
     {
         return ButtonFactory.CreateButton("Save", saveClicked);
     }
 
-    private static Button CreateCancelButton(RoutedEventHandler cancelClicked)
+    public static Button CreateCancelButton(RoutedEventHandler cancelClicked)
     {
         return ButtonFactory.CreateButton("Cancel", cancelClicked);
     }
