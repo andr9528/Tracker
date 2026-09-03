@@ -14,7 +14,7 @@ internal sealed partial class DiningHomepage
     internal sealed class DiningHomepageUi(DiningHomepageLogic logic, DiningHomepageViewModel viewModel)
         : BaseUi<DiningHomepageLogic, DiningHomepageViewModel>(logic, viewModel)
     {
-        private const int BUTTONS_MIN_WIDTH = 180;
+        private const int BUTTONS_MIN_WIDTH = 200;
 
         protected override void ConfigureGrid(Grid grid)
         {
@@ -282,18 +282,21 @@ internal sealed partial class DiningHomepage
             grid.RowSpacing = 16;
             grid.ColumnSpacing = 16;
 
-            grid.DefineColumns(GridLength.Auto, GridLength.Auto, new GridLength(1, GridUnitType.Star));
+            grid.DefineColumns(GridLength.Auto, GridLength.Auto, GridLength.Auto);
 
             grid.DefineRows(GridLength.Auto, GridLength.Auto);
 
-            grid.Children.Add(CreateNavigationButton(Symbol.Download, "Import Data", Logic.ImportDataClicked).SetRow(0)
+            grid.Children.Add(CreateNavigationButton(Symbol.Calendar, "Dinners", Logic.DinnersClicked).SetRow(0)
                 .SetColumn(0));
 
             grid.Children.Add(CreateNavigationButton(Symbol.List, "Ingredients", Logic.IngredientsClicked).SetRow(0)
                 .SetColumn(1));
 
-            grid.Children.Add(CreateNavigationButton(Symbol.Calendar, "Dinners", Logic.DinnersClicked).SetRow(1)
-                .SetColumn(0));
+            grid.Children.Add(CreateNavigationButton(Symbol.Download, "Import Data", Logic.ImportDataClicked).SetRow(0)
+                .SetColumn(2));
+
+            grid.Children.Add(CreateNavigationButton(Symbol.Document, "Dinner Templates", Logic.DinnerTemplatesClicked)
+                .SetRow(1).SetColumn(0));
 
             grid.Children.Add(CreateNavigationButton(Symbol.AllApps, "Dishes", Logic.DishesClicked).SetRow(1)
                 .SetColumn(1));

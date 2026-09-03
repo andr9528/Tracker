@@ -82,5 +82,9 @@ internal sealed partial class DiningHomepage
         public void MoreStatisticsClicked(object sender, RoutedEventArgs e)
         {
         }
+
+        public void DinnerTemplatesClicked(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }
