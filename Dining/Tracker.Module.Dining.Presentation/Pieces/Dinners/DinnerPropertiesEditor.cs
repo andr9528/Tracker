@@ -42,4 +42,4 @@ internal sealed partial class DinnerPropertiesEditor : Border
         void SetReadOnly(bool isReadOnly);
     }
 }
-}
+

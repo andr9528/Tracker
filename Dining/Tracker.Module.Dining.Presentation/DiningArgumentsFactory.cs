@@ -6,6 +6,8 @@ using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Module.Dining.Presentation.Pages;
 using Tracker.Module.Dining.Presentation.Pages.Ingredients;
 using Tracker.Module.Dining.Presentation.Pages.Search;
+using Tracker.Module.Dining.Presentation.Pages.Templates;
+using Tracker.Module.Dining.Presentation.Pieces.Dinners;
 using Tracker.Module.Dining.Presentation.Pieces.Ingredients;
 using Tracker.Shared.Abstraction.Enums;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
@@ -17,6 +19,7 @@ namespace Tracker.Module.Dining.Presentation;
 
 public sealed class DiningArgumentsFactory(
     IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService,
+    IEntityQueryService<DinnerTemplate, SearchableDinnerTemplate> dinnerTemplateQueryService,
     IUiDispatcher uiDispatcher,
     ILoggerFactory loggerFactory,
     INavigationService navigationService,
@@ -69,5 +72,17 @@ public sealed class DiningArgumentsFactory(
     {
         return new IngredientCreationPage.IngredientCreationPageArguments(ingredientQueryService, navigationService,
             loggerFactory, this);
+    }
+
+    internal DinnerTemplatesGrid.DinnerTemplatesGridArguments CreateDinnerTemplatesGridArguments(
+        GridDisplayMode displayMode = GridDisplayMode.NORMAL, int selectedDinnerTemplateId = 0)
+    {
+        return new DinnerTemplatesGrid.DinnerTemplatesGridArguments(dinnerTemplateQueryService, uiDispatcher,
+            loggerFactory, displayMode, selectedDinnerTemplateId);
+    }
+
+    internal DinnerTemplatesPage.DinnerTemplatesPageArguments CreateDinnerTemplatesPageArguments()
+    {
+        return new DinnerTemplatesPage.DinnerTemplatesPageArguments(navigationService, this);
     }
 }
