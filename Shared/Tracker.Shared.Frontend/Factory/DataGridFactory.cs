@@ -10,7 +10,8 @@ public static class DataGridFactory
 {
     public static DataGrid Create<TColumn>(
         IEnumerable<object> itemsSource, Func<TColumn, string> getBindingPath,
-        Func<TColumn, IValueConverter?>? getColumnConverter = null) where TColumn : struct, Enum
+        Func<TColumn, IValueConverter?>? getColumnConverter = null, Func<TColumn, bool>? includeColumn = null)
+        where TColumn : struct, Enum
     {
         var dataGrid = new DataGrid
         {
@@ -25,6 +26,11 @@ public static class DataGridFactory
 
         foreach (TColumn column in Enum.GetValues<TColumn>())
         {
+            if (includeColumn is not null && !includeColumn(column))
+            {
+                continue;
+            }
+
             string header = column.ToColumnHeader();
             string bindingPath = getBindingPath(column);
             IValueConverter? converter = getColumnConverter?.Invoke(column);
