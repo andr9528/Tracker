@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Module.Dining.Presentation.Pieces.Ingredients;
@@ -56,12 +56,12 @@ namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
 
             private bool IsUserInputValid()
             {
-                return !string.IsNullOrWhiteSpace(ViewModel.IngredientEditor.ViewModel.Name);
+                return !string.IsNullOrWhiteSpace(ViewModel.IngredientEditor.Api.Name);
             }
 
             private Ingredient BuildNewIngredient()
             {
-                IngredientEditor.IngredientEditorViewModel editor = ViewModel.IngredientEditor.ViewModel;
+                IngredientEditor.IIngredientEditorApi editor = ViewModel.IngredientEditor.Api;
 
                 return new Ingredient
                 {

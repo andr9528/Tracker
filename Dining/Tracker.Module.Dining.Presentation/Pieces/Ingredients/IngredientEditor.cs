@@ -5,11 +5,14 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients
 {
     internal sealed partial class IngredientEditor : Border
     {
-        internal IngredientEditorViewModel ViewModel =>
+        private IngredientEditorViewModel ViewModel =>
             (IngredientEditorViewModel) DataContext;
 
         private IngredientEditorLogic Logic { get; }
+
         private IngredientEditorUi Ui { get; }
+
+        public IIngredientEditorApi Api => Logic;
 
         public IngredientEditor(IngredientEditorArguments arguments)
         {
@@ -27,5 +30,19 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients
         }
 
         internal sealed record IngredientEditorArguments(Ingredient? Ingredient = null, bool IsReadOnly = true);
+
+        internal interface IIngredientEditorApi
+        {
+            string Name { get; }
+
+            bool InStock { get; }
+
+            event EventHandler? NameChanged;
+            event EventHandler? InStockChanged;
+
+            void ApplyIngredient(Ingredient ingredient);
+
+            void SetReadOnly(bool isReadOnly);
+        }
     }
 }

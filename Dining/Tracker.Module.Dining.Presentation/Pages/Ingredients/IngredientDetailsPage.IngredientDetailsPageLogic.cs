@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
+using Tracker.Module.Dining.Presentation.Pieces.Ingredients;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Frontend.Core.Details;
@@ -48,8 +49,8 @@ namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
 
             internal void RegisterIngredientEditorEvents()
             {
-                ViewModel.IngredientEditor.ViewModel.NameChanged += IngredientEditorChanged;
-                ViewModel.IngredientEditor.ViewModel.InStockChanged += IngredientEditorChanged;
+                ViewModel.IngredientEditor.Api.NameChanged += IngredientEditorChanged;
+                ViewModel.IngredientEditor.Api.InStockChanged += IngredientEditorChanged;
             }
 
             private void IngredientEditorChanged(object? sender, EventArgs e)
@@ -59,24 +60,21 @@ namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
 
             private void ApplyEditorValuesToIngredient()
             {
+                IngredientEditor.IIngredientEditorApi editor = ViewModel.IngredientEditor.Api;
+
                 logger.LogDebug("Applying ingredient changes. IngredientId={IngredientId}", ViewModel.Ingredient.Id);
 
-                logger.LogDebug("Name: '{OldValue}' -> '{NewValue}'", ViewModel.Ingredient.Name,
-                    ViewModel.IngredientEditor.ViewModel.Name);
+                logger.LogDebug("Name: '{OldValue}' -> '{NewValue}'", ViewModel.Ingredient.Name, editor.Name);
 
-                logger.LogDebug("InStock: '{OldValue}' -> '{NewValue}'", ViewModel.Ingredient.InStock,
-                    ViewModel.IngredientEditor.ViewModel.InStock);
+                logger.LogDebug("InStock: '{OldValue}' -> '{NewValue}'", ViewModel.Ingredient.InStock, editor.InStock);
 
-                ViewModel.Ingredient.Name = ViewModel.IngredientEditor.ViewModel.Name;
-
-                ViewModel.Ingredient.InStock = ViewModel.IngredientEditor.ViewModel.InStock;
+                ViewModel.Ingredient.Name = editor.Name;
+                ViewModel.Ingredient.InStock = editor.InStock;
             }
 
             private void ApplyIngredientToEditor()
             {
-                ViewModel.IngredientEditor.ViewModel.Name = ViewModel.Ingredient.Name;
-
-                ViewModel.IngredientEditor.ViewModel.InStock = ViewModel.Ingredient.InStock;
+                ViewModel.IngredientEditor.Api.ApplyIngredient(ViewModel.Ingredient);
             }
 
             public override async Task DeleteClicked(object sender, RoutedEventArgs e)
@@ -96,7 +94,7 @@ namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
 
             protected override void SetEditorReadOnly(bool isReadOnly)
             {
-                ViewModel.IngredientEditor.ViewModel.IsReadOnly = isReadOnly;
+                ViewModel.IngredientEditor.Api.SetReadOnly(isReadOnly);
             }
 
             protected override async Task SaveChanges()
@@ -115,8 +113,10 @@ namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
 
             protected override void UpdateHasChanges()
             {
-                ViewModel.HasChanges = ViewModel.IngredientEditor.ViewModel.Name != ViewModel.Ingredient.Name ||
-                                       ViewModel.IngredientEditor.ViewModel.InStock != ViewModel.Ingredient.InStock;
+                IngredientEditor.IIngredientEditorApi editor = ViewModel.IngredientEditor.Api;
+
+                ViewModel.HasChanges = editor.Name != ViewModel.Ingredient.Name ||
+                                       editor.InStock != ViewModel.Ingredient.InStock;
 
                 UpdateSaveAndCancelText();
             }
