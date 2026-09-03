@@ -53,6 +53,10 @@ public class Dinner : IDinner
     /// <inheritdoc />
     public IDish Dish { get; set; }
 
+    #endregion
+
+    #region Implementation of ICommonDinnerTemplate
+
     /// <inheritdoc />
     public bool IsTakeAway { get; set; }
 

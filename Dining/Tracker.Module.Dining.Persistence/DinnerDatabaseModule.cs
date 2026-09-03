@@ -10,6 +10,7 @@ public class DinnerDatabaseModule : IDatabaseModule
     public void Configure(ModelBuilder modelBuilder, DatabaseType databaseType)
     {
         modelBuilder.ApplyConfiguration(new DinnerConfiguration(databaseType));
+        modelBuilder.ApplyConfiguration(new DinnerTemplateConfiguration(databaseType));
         modelBuilder.ApplyConfiguration(new DishConfiguration(databaseType));
         modelBuilder.ApplyConfiguration(new DishIngredientConfiguration(databaseType));
         modelBuilder.ApplyConfiguration(new IngredientConfiguration(databaseType));

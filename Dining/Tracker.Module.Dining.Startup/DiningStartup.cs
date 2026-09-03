@@ -18,6 +18,9 @@ public class DiningStartup<TApplicationBuilder> : ModularStartup<TApplicationBui
     {
         AddModule(new EntityQueryServiceStartupModule<DinnerQueryService, Dinner, SearchableDinner>());
         AddModule(
+            new EntityQueryServiceStartupModule<DinnerTemplateQueryService, DinnerTemplate,
+                SearchableDinnerTemplate>());
+        AddModule(
             new EntityQueryServiceStartupModule<DishIngredientQueryService, DishIngredient,
                 SearchableDishIngredient>());
         AddModule(new EntityQueryServiceStartupModule<DishQueryService, Dish, SearchableDish>());

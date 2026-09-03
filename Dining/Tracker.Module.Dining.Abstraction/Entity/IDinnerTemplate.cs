@@ -3,7 +3,6 @@ using Tracker.Shared.Abstraction.Interfaces.Persistence;
 
 namespace Tracker.Module.Dining.Abstraction.Entity;
 
-public interface IDinner : ICommonDinnerTemplate, ISearchableDinner, IEntity
+public interface IDinnerTemplate : ICommonDinnerTemplate, ISearchableDinnerTemplate, IEntity
 {
-    IDish Dish { get; set; }
 }
