@@ -6,6 +6,7 @@ using Tracker.Shared.Frontend.Core;
 using Tracker.Shared.Frontend.Extensions;
 using Tracker.Shared.Frontend.Factory;
 using Tracker.Shared.Frontend.Converters;
+using BooleanConverter = Tracker.Shared.Frontend.Converters.BooleanConverter;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients;
 
@@ -34,13 +35,12 @@ internal sealed partial class IngredientsGrid
 
         private DataGrid CreateIngredientDataGrid()
         {
-            ViewModel.DataGrid =
-                DataGridFactory.Create<IngredientGridColumns>(ViewModel.Ingredients, GetColumnBindingPath,
-                    GetColumnConverter);
+            ViewModel.DataGrid = DataGridFactory.Create<IngredientGridColumns>(ViewModel.IngredientItems,
+                GetColumnBindingPath, GetColumnConverter);
 
             ViewModel.DataGrid.SetBinding(DataGrid.SelectedItemProperty, new Binding
             {
-                Path = new PropertyPath(nameof(IngredientsGridViewModel.SelectedIngredient)),
+                Path = new PropertyPath(nameof(IngredientsGridViewModel.SelectedIngredientItem)),
                 Mode = BindingMode.TwoWay,
             });
 
@@ -64,7 +64,8 @@ internal sealed partial class IngredientsGrid
         {
             return column switch
             {
-                IngredientGridColumns.IN_STOCK => new Shared.Frontend.Converters.BooleanConverter(),
+                IngredientGridColumns.IN_STOCK => new BooleanConverter(),
+                IngredientGridColumns.AVERAGE_DAYS_BETWEEN_USAGE => new TwoDecimalConverter(),
                 var _ => null,
             };
         }
@@ -73,10 +74,11 @@ internal sealed partial class IngredientsGrid
         {
             return column switch
             {
-                IngredientGridColumns.NAME => nameof(Ingredient.Name),
-                IngredientGridColumns.IN_STOCK => nameof(Ingredient.InStock),
-                IngredientGridColumns.DISH_COUNT => $"{nameof(Ingredient.DishIngredients)}.Count",
-                _ => throw new ArgumentOutOfRangeException(nameof(column), column, null),
+                IngredientGridColumns.NAME => nameof(IngredientGridItem.Name),
+                IngredientGridColumns.IN_STOCK => nameof(IngredientGridItem.InStock),
+                IngredientGridColumns.DISH_COUNT => nameof(IngredientGridItem.DishCount),
+                IngredientGridColumns.AVERAGE_DAYS_BETWEEN_USAGE => nameof(IngredientGridItem.AverageDaysBetweenUsage),
+                var _ => throw new ArgumentOutOfRangeException(nameof(column), column, null),
             };
         }
 
@@ -85,6 +87,7 @@ internal sealed partial class IngredientsGrid
             NAME = 0,
             IN_STOCK = 1,
             DISH_COUNT = 2,
+            AVERAGE_DAYS_BETWEEN_USAGE = 3,
         }
     }
 }

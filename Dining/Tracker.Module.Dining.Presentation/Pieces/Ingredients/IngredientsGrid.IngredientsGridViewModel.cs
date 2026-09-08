@@ -20,10 +20,12 @@ internal sealed partial class IngredientsGrid
         [ObservableProperty] private string nameSearchText = string.Empty;
 
         public ComplexSearchableIngredient Searchable { get; } = new();
-        public ObservableCollection<Ingredient> Ingredients { get; } = [];
+        public ObservableCollection<IngredientGridItem> IngredientItems { get; } = [];
 
         [ObservableProperty] private int selectedIngredientId = arguments.SelectedIngredientId;
-        [ObservableProperty] private Ingredient? selectedIngredient;
+        [ObservableProperty] private IngredientGridItem? selectedIngredientItem;
+
+        public Ingredient? SelectedIngredient => SelectedIngredientItem?.Ingredient;
 
         partial void OnNameSearchTextChanged(string value)
         {
@@ -53,17 +55,17 @@ internal sealed partial class IngredientsGrid
 
         partial void OnSelectedIngredientIdChanged(int value)
         {
-            Ingredient? ingredient = Ingredients.FirstOrDefault(x => x.Id == value);
+            IngredientGridItem? item = IngredientItems.FirstOrDefault(x => x.Id == value);
 
-            if (SelectedIngredient?.Id != ingredient?.Id)
+            if (SelectedIngredientItem?.Id != item?.Id)
             {
-                SelectedIngredient = ingredient;
+                SelectedIngredientItem = item;
             }
 
             IngredientSelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        partial void OnSelectedIngredientChanged(Ingredient? value)
+        partial void OnSelectedIngredientItemChanged(IngredientGridItem? value)
         {
             int ingredientId = value?.Id ?? 0;
 

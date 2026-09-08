@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Tracker.Module.Dining.Abstraction.Services;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Shared.Abstraction.Enums;
@@ -40,6 +41,7 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable
 
     internal record IngredientsGridArguments(
         IEntityQueryService<Ingredient, SearchableIngredient> QueryService,
+        IStatisticsService StatisticsService,
         IUiDispatcher UiDispatcher,
         ILoggerFactory LoggerFactory,
         DiningArgumentsFactory ArgumentsFactory,

@@ -34,6 +34,7 @@ public class DiningStartup<TApplicationBuilder> : ModularStartup<TApplicationBui
 
         services.AddSingleton<DiningArgumentsFactory>();
         services.AddSingleton<DiningSpreadsheetReader>();
+        services.AddSingleton(TimeProvider.System);
 
         services.AddSingleton<IDiningImportService, DiningExcelImportService>();
         services.AddSingleton<IStatisticsService, StatisticsService>();

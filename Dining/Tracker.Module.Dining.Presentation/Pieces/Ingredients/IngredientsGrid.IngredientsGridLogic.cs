@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Tracker.Module.Dining.Abstraction.Services;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Module.Dining.Presentation.Pages.Search;
@@ -17,11 +18,13 @@ internal sealed partial class IngredientsGrid
     {
         private readonly IEntityQueryService<Ingredient, SearchableIngredient> queryService;
         private readonly IUiDispatcher uiDispatcher;
+        private readonly IStatisticsService statisticsService;
         private readonly ILogger<IngredientsGridLogic> logger;
 
         public IngredientsGridLogic(IngredientsGridViewModel viewModel) : base(viewModel)
         {
             queryService = ViewModel.Arguments.QueryService;
+            statisticsService = ViewModel.Arguments.StatisticsService;
             uiDispatcher = ViewModel.Arguments.UiDispatcher;
             logger = ViewModel.Arguments.LoggerFactory.CreateLogger<IngredientsGridLogic>();
 
@@ -63,25 +66,31 @@ internal sealed partial class IngredientsGrid
                 ingredients = ingredients.Where(x => suppliedIds.Contains(x.Id)).ToList();
             }
 
-            ingredients = ViewModel.DataGrid.ApplyCurrentSort(ingredients).ToList();
+            var averageDays = await statisticsService.GetIngredientAverageDaysBetweenUsage();
+            var items = ingredients.Select(x => new IngredientGridItem(x, averageDays.GetValueOrDefault(x.Id)))
+                .ToList();
+
+            items = ViewModel.DataGrid.ApplyCurrentSort(items).ToList();
 
             logger.LogInformation(
-                "Ingredient search returned {IngredientCount} ingredients. Fuzzy search: {UseFuzzySearch}",
-                ingredients.Count, string.IsNullOrWhiteSpace(ViewModel.Searchable.Searchable.Name));
+                "Ingredient search returned {IngredientCount} ingredients. Fuzzy search: {UseFuzzySearch}", items.Count,
+                string.IsNullOrWhiteSpace(ViewModel.Searchable.Searchable.Name));
+
 
             uiDispatcher.TryEnqueue(() =>
             {
                 logger.LogDebug("Updating Ingredients collection. Existing count: {ExistingCount}",
-                    ViewModel.Ingredients.Count);
+                    ViewModel.IngredientItems.Count);
 
-                ViewModel.Ingredients.ReplaceItems(ingredients);
+                ViewModel.IngredientItems.ReplaceItems(items);
                 ViewModel.DataGrid.Refresh();
 
                 RestoreSelectedIngredient();
 
                 logger.LogDebug(
                     "Ingredients collection updated. New count: {NewCount}, SelectedIngredientId: {SelectedIngredientId}, SelectedIngredient: '{SelectedIngredientName}'",
-                    ViewModel.Ingredients.Count, ViewModel.SelectedIngredientId, ViewModel.SelectedIngredient?.Name);
+                    ViewModel.IngredientItems.Count, ViewModel.SelectedIngredientId,
+                    ViewModel.SelectedIngredient?.Name);
             });
         }
 
@@ -95,8 +104,8 @@ internal sealed partial class IngredientsGrid
 
         private void RestoreSelectedIngredient()
         {
-            ViewModel.SelectedIngredient =
-                ViewModel.Ingredients.FirstOrDefault(x => x.Id == ViewModel.SelectedIngredientId);
+            ViewModel.SelectedIngredientItem =
+                ViewModel.IngredientItems.FirstOrDefault(x => x.Id == ViewModel.SelectedIngredientId);
         }
 
 

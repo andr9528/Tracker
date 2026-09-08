@@ -30,8 +30,8 @@ public sealed class DiningArgumentsFactory(
     internal IngredientsGrid.IngredientsGridArguments CreateIngredientsGridArguments(
         GridEntitySource entitySource = GridEntitySource.ALL, int selectedIngredientId = 0)
     {
-        return new IngredientsGrid.IngredientsGridArguments(ingredientQueryService, uiDispatcher, loggerFactory, this,
-            entitySource, selectedIngredientId);
+        return new IngredientsGrid.IngredientsGridArguments(ingredientQueryService, statisticsService, uiDispatcher,
+            loggerFactory, this, entitySource, selectedIngredientId);
     }
 
     internal IngredientAdvancedSearchPage.IngredientAdvancedSearchPageArguments

@@ -11,6 +11,7 @@ namespace Tracker.Module.Dining.Services;
 public sealed class DiningExcelImportService : IDiningImportService
 {
     private readonly DiningSpreadsheetReader spreadsheetReader;
+    private readonly IStatisticsService statisticsService;
 
     private readonly IEntityQueryService<Dinner, SearchableDinner> dinnerQueryService;
 
@@ -33,7 +34,7 @@ public sealed class DiningExcelImportService : IDiningImportService
         IEntityQueryService<Dish, SearchableDish> dishQueryService,
         IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService,
         IEntityQueryService<DishIngredient, SearchableDishIngredient> dishIngredientQueryService,
-        ILogger<DiningExcelImportService> logger)
+        ILogger<DiningExcelImportService> logger, IStatisticsService statisticsService)
     {
         this.spreadsheetReader = spreadsheetReader;
         this.dinnerQueryService = dinnerQueryService;
@@ -41,6 +42,7 @@ public sealed class DiningExcelImportService : IDiningImportService
         this.ingredientQueryService = ingredientQueryService;
         this.dishIngredientQueryService = dishIngredientQueryService;
         this.logger = logger;
+        this.statisticsService = statisticsService;
     }
 
     private async Task<ImportResult> Import(Stream stream)
@@ -61,7 +63,18 @@ public sealed class DiningExcelImportService : IDiningImportService
 
         await SaveDinners(createdDinners, updatedDinners);
 
+        if (HasImportedChanges(counters))
+        {
+            statisticsService.Invalidate();
+        }
+
         return counters;
+    }
+
+    private bool HasImportedChanges(ImportResult result)
+    {
+        return result.CreatedDinners > 0 || result.UpdatedDinners > 0 || result.CreatedDishes > 0 ||
+               result.CreatedIngredients > 0 || result.CreatedDishIngredients > 0;
     }
 
     private async Task<Dictionary<DateOnly, Dinner>> GetExistingDinners()

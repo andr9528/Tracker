@@ -32,4 +32,21 @@ public interface IStatisticsService
     /// Gets the dish most recently added to the database.
     /// </summary>
     Task<RecentlyAddedDishStatistic?> GetMostRecentlyAddedDish();
+
+    /// <summary>
+    /// Gets the Average amount of days between eating each dish.
+    /// </summary>
+    /// <returns></returns>
+    Task<IReadOnlyDictionary<int, float?>> GetDishAverageDaysBetweenEating();
+
+    /// <summary>
+    /// Gets the Average amount of days between using each ingredient.
+    /// </summary>
+    /// <returns></returns>
+    Task<IReadOnlyDictionary<int, float?>> GetIngredientAverageDaysBetweenUsage();
+
+    /// <summary>
+    /// Clears any cached data.
+    /// </summary>
+    void Invalidate();
 }

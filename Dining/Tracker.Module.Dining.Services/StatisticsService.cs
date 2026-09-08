@@ -8,8 +8,12 @@ namespace Tracker.Module.Dining.Services;
 
 public sealed class StatisticsService(
     IEntityQueryService<Dish, SearchableDish> dishQueryService,
-    IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService) : IStatisticsService
+    IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService,
+    TimeProvider timeProvider) : IStatisticsService
 {
+    private IReadOnlyDictionary<int, float?>? dishAverageDays;
+    private IReadOnlyDictionary<int, float?>? ingredientAverageDays;
+
     /// <inheritdoc />
     public async Task<IReadOnlyCollection<DishEatingStatistic>> GetMostEatenDishes()
     {
@@ -53,6 +57,43 @@ public sealed class StatisticsService(
         return dish is null ? null : new RecentlyAddedDishStatistic(dish.Id, dish.Name, dish.CreatedDateTime);
     }
 
+    /// <inheritdoc />
+    public async Task<IReadOnlyDictionary<int, float?>> GetDishAverageDaysBetweenEating()
+    {
+        return dishAverageDays ??= await CreateDishAverageDays();
+    }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyDictionary<int, float?>> GetIngredientAverageDaysBetweenUsage()
+    {
+        return ingredientAverageDays ??= await CreateIngredientAverageDays();
+    }
+
+    /// <inheritdoc />
+    public void Invalidate()
+    {
+        dishAverageDays = null;
+        ingredientAverageDays = null;
+    }
+
+    private async Task<IReadOnlyDictionary<int, float?>> CreateDishAverageDays()
+    {
+        var dishes = await dishQueryService.GetAllEntities();
+
+        return dishes.ToDictionary(x => x.Id,
+            x => CalculateAverageDaysBetween(
+                x.Dinners.Where(dinner => !dinner.IsEatenOut).Select(dinner => dinner.Date)));
+    }
+
+    private async Task<IReadOnlyDictionary<int, float?>> CreateIngredientAverageDays()
+    {
+        var ingredients = await ingredientQueryService.GetAllEntities();
+
+        return ingredients.ToDictionary(x => x.Id,
+            x => CalculateAverageDaysBetween(x.DishIngredients.SelectMany(dishIngredient => dishIngredient.Dish.Dinners)
+                .Where(dinner => !dinner.IsEatenOut).Select(dinner => dinner.Date)));
+    }
+
     private async Task<IReadOnlyCollection<DishEatingStatistic>> GetDishEatingStatistics()
     {
         var dishes = await dishQueryService.GetAllEntities();
@@ -71,9 +112,24 @@ public sealed class StatisticsService(
 
     private IngredientUsageStatistic CreateIngredientUsageStatistic(Ingredient ingredient)
     {
-        int dinnerCount = ingredient.DishIngredients.Sum(x => x.Dish.Dinners.Count);
+        int dinnerCount = ingredient.DishIngredients.Sum(x => x.Dish.Dinners.Count(dinner => !dinner.IsEatenOut));
 
         return new IngredientUsageStatistic(ingredient.Id, ingredient.Name, dinnerCount,
             ingredient.DishIngredients.Count);
+    }
+
+    private float? CalculateAverageDaysBetween(IEnumerable<DateOnly> dates)
+    {
+        var orderedDates = dates.OrderBy(x => x).ToList();
+
+        if (orderedDates.Count == 0)
+        {
+            return null;
+        }
+
+        orderedDates.Add(DateOnly.FromDateTime(timeProvider.GetLocalNow().DateTime));
+
+        return (float) orderedDates
+            .Zip(orderedDates.Skip(1), (previous, current) => current.DayNumber - previous.DayNumber).Average();
     }
 }
