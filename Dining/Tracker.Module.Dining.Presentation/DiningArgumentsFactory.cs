@@ -78,19 +78,27 @@ public sealed class DiningArgumentsFactory(
         GridDisplayMode displayMode = GridDisplayMode.NORMAL, int selectedDinnerTemplateId = 0)
     {
         return new DinnerTemplatesGrid.DinnerTemplatesGridArguments(dinnerTemplateQueryService, uiDispatcher,
-            loggerFactory, displayMode, selectedDinnerTemplateId);
+            loggerFactory, this, displayMode, selectedDinnerTemplateId);
     }
 
     internal DinnerTemplatesPage.DinnerTemplatesPageArguments CreateDinnerTemplatesPageArguments()
     {
         return new DinnerTemplatesPage.DinnerTemplatesPageArguments(navigationService, this);
     }
+
+    internal DinnerTemplateCreationPage.DinnerTemplateCreationPageArguments CreateDinnerTemplateCreationPageArguments()
+    {
+        return new DinnerTemplateCreationPage.DinnerTemplateCreationPageArguments(dinnerTemplateQueryService,
+            navigationService, loggerFactory, this);
+    }
+
     internal DinnerTemplateDetailsPage.DinnerTemplateDetailsPageArguments CreateDinnerTemplateDetailsPageArguments(
         int dinnerTemplateId)
     {
         return new DinnerTemplateDetailsPage.DinnerTemplateDetailsPageArguments(dinnerTemplateId,
             dinnerTemplateQueryService, uiDispatcher, loggerFactory, navigationService, this);
     }
+
     internal DinnerTemplateAdvancedSearchPage.DinnerTemplateAdvancedSearchPageArguments
         CreateDinnerTemplateAdvancedSearchPageArguments(ComplexSearchableDinnerTemplate searchable)
     {

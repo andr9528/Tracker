@@ -10,12 +10,12 @@ internal sealed partial class DinnerTemplatesPage
     {
         public void CreateDinnerTemplateClicked(object sender, RoutedEventArgs e)
         {
-            //DinnerTemplateCreationPage.DinnerTemplateCreationPageArguments arguments =
-            //    ViewModel.Arguments.ArgumentsFactory.CreateDinnerTemplateCreationPageArguments();
+            DinnerTemplateCreationPage.DinnerTemplateCreationPageArguments arguments =
+                ViewModel.Arguments.ArgumentsFactory.CreateDinnerTemplateCreationPageArguments();
 
-            //var page = new DinnerTemplateCreationPage(arguments);
+            var page = new DinnerTemplateCreationPage(arguments);
 
-            //ViewModel.Arguments.NavigationService.NavigateTo(page, nameof(DinnerTemplateCreationPage));
+            ViewModel.Arguments.NavigationService.NavigateTo(page, nameof(DinnerTemplateCreationPage));
         }
 
         public void ShowDetailsClicked(object sender, RoutedEventArgs e)
