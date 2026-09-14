@@ -1,3 +1,4 @@
+using Tracker.Module.Dining.Model.Entity;
 using Tracker.Shared.Frontend.Core;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Dinners;
@@ -34,6 +35,65 @@ internal sealed partial class DinnerTemplateEditor
 
         /// <inheritdoc />
         public bool IsReadyMadeDish => ViewModel.PropertiesEditor.Api.IsReadyMadeDish;
+
+        /// <inheritdoc />
+        public event EventHandler? NameChanged
+        {
+            add => ViewModel.NameChanged += value;
+            remove => ViewModel.NameChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? IsTakeAwayChanged
+        {
+            add => ViewModel.PropertiesEditor.Api.IsTakeAwayChanged += value;
+            remove => ViewModel.PropertiesEditor.Api.IsTakeAwayChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? HasLeftoversChanged
+        {
+            add => ViewModel.PropertiesEditor.Api.HasLeftoversChanged += value;
+            remove => ViewModel.PropertiesEditor.Api.HasLeftoversChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? LeftoversEnoughForDinnerChanged
+        {
+            add => ViewModel.PropertiesEditor.Api.LeftoversEnoughForDinnerChanged += value;
+            remove => ViewModel.PropertiesEditor.Api.LeftoversEnoughForDinnerChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? IsLeftoversChanged
+        {
+            add => ViewModel.PropertiesEditor.Api.IsLeftoversChanged += value;
+            remove => ViewModel.PropertiesEditor.Api.IsLeftoversChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? IsEatenOutChanged
+        {
+            add => ViewModel.PropertiesEditor.Api.IsEatenOutChanged += value;
+            remove => ViewModel.PropertiesEditor.Api.IsEatenOutChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? IsReadyMadeDishChanged
+        {
+            add => ViewModel.PropertiesEditor.Api.IsReadyMadeDishChanged += value;
+            remove => ViewModel.PropertiesEditor.Api.IsReadyMadeDishChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public void ApplyDinnerTemplate(DinnerTemplate dinnerTemplate)
+        {
+            ArgumentNullException.ThrowIfNull(dinnerTemplate);
+
+            ViewModel.Name = dinnerTemplate.Name;
+
+            ViewModel.PropertiesEditor.Api.ApplyTemplate(dinnerTemplate);
+        }
 
         /// <inheritdoc />
         public void SetReadOnly(bool isReadOnly)

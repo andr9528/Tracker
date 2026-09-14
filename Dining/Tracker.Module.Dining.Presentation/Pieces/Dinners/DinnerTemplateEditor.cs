@@ -43,5 +43,15 @@ internal sealed partial class DinnerTemplateEditor : Border
         bool IsReadyMadeDish { get; }
 
         void SetReadOnly(bool isReadOnly);
+
+        event EventHandler? NameChanged;
+        event EventHandler? IsTakeAwayChanged;
+        event EventHandler? HasLeftoversChanged;
+        event EventHandler? LeftoversEnoughForDinnerChanged;
+        event EventHandler? IsLeftoversChanged;
+        event EventHandler? IsEatenOutChanged;
+        event EventHandler? IsReadyMadeDishChanged;
+
+        void ApplyDinnerTemplate(DinnerTemplate dinnerTemplate);
     }
 }

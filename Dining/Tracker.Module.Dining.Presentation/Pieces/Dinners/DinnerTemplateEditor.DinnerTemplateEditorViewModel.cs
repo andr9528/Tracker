@@ -10,6 +10,7 @@ internal sealed partial class DinnerTemplateEditor
         internal DinnerTemplateEditorArguments Arguments { get; } = arguments;
 
         public event EventHandler? IsReadOnlyChanged;
+        public event EventHandler? NameChanged;
 
         internal TextBox NameTextBox { get; set; } = null!;
 
@@ -18,6 +19,11 @@ internal sealed partial class DinnerTemplateEditor
         [ObservableProperty] private string name = arguments.DinnerTemplate?.Name ?? string.Empty;
 
         [ObservableProperty] private bool isReadOnly = arguments.IsReadOnly;
+
+        partial void OnNameChanged(string value)
+        {
+            NameChanged?.Invoke(this, EventArgs.Empty);
+        }
 
         partial void OnIsReadOnlyChanged(bool value)
         {

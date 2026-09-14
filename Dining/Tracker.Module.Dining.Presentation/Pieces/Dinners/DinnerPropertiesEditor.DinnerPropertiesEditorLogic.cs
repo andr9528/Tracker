@@ -29,6 +29,48 @@ internal sealed partial class DinnerPropertiesEditor
         public bool IsReadyMadeDish => ViewModel.IsReadyMadeDish;
 
         /// <inheritdoc />
+        public event EventHandler? IsTakeAwayChanged
+        {
+            add => ViewModel.IsTakeAwayChanged += value;
+            remove => ViewModel.IsTakeAwayChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? HasLeftoversChanged
+        {
+            add => ViewModel.HasLeftoversChanged += value;
+            remove => ViewModel.HasLeftoversChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? LeftoversEnoughForDinnerChanged
+        {
+            add => ViewModel.LeftoversEnoughForDinnerChanged += value;
+            remove => ViewModel.LeftoversEnoughForDinnerChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? IsLeftoversChanged
+        {
+            add => ViewModel.IsLeftoversChanged += value;
+            remove => ViewModel.IsLeftoversChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? IsEatenOutChanged
+        {
+            add => ViewModel.IsEatenOutChanged += value;
+            remove => ViewModel.IsEatenOutChanged -= value;
+        }
+
+        /// <inheritdoc />
+        public event EventHandler? IsReadyMadeDishChanged
+        {
+            add => ViewModel.IsReadyMadeDishChanged += value;
+            remove => ViewModel.IsReadyMadeDishChanged -= value;
+        }
+
+        /// <inheritdoc />
         public void ApplyTemplate(IDinnerTemplate template)
         {
             ArgumentNullException.ThrowIfNull(template);

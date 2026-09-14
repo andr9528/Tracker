@@ -85,6 +85,12 @@ public sealed class DiningArgumentsFactory(
     {
         return new DinnerTemplatesPage.DinnerTemplatesPageArguments(navigationService, this);
     }
+    internal DinnerTemplateDetailsPage.DinnerTemplateDetailsPageArguments CreateDinnerTemplateDetailsPageArguments(
+        int dinnerTemplateId)
+    {
+        return new DinnerTemplateDetailsPage.DinnerTemplateDetailsPageArguments(dinnerTemplateId,
+            dinnerTemplateQueryService, uiDispatcher, loggerFactory, navigationService, this);
+    }
     internal DinnerTemplateAdvancedSearchPage.DinnerTemplateAdvancedSearchPageArguments
         CreateDinnerTemplateAdvancedSearchPageArguments(ComplexSearchableDinnerTemplate searchable)
     {

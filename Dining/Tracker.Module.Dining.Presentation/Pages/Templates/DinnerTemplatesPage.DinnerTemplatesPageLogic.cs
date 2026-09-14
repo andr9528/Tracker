@@ -27,12 +27,12 @@ internal sealed partial class DinnerTemplatesPage
                 return;
             }
 
-            //DinnerTemplateDetailsPage.DinnerTemplateDetailsPageArguments arguments =
-            //    ViewModel.Arguments.ArgumentsFactory.CreateDinnerTemplateDetailsPageArguments(selectedTemplate.Id);
+            DinnerTemplateDetailsPage.DinnerTemplateDetailsPageArguments arguments =
+                ViewModel.Arguments.ArgumentsFactory.CreateDinnerTemplateDetailsPageArguments(selectedTemplate.Id);
 
-            //var page = new DinnerTemplateDetailsPage(arguments);
+            var page = new DinnerTemplateDetailsPage(arguments);
 
-            //ViewModel.Arguments.NavigationService.NavigateTo(page, nameof(DinnerTemplateDetailsPage));
+            ViewModel.Arguments.NavigationService.NavigateTo(page, nameof(DinnerTemplateDetailsPage));
         }
     }
 }
