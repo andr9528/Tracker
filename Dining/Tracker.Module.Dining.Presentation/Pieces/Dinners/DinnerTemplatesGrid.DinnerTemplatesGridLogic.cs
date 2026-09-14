@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
+using Tracker.Module.Dining.Presentation.Pages.Search;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Extensions;
 using Tracker.Shared.Frontend.Abstraction;
@@ -42,7 +43,7 @@ internal sealed partial class DinnerTemplatesGrid
         {
             RememberSelectedDinnerTemplate();
 
-            var templates = (await queryService.GetEntities(ViewModel.Searchable)).ToList();
+            var templates = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
 
             templates = ViewModel.DataGrid.ApplyCurrentSort(templates).ToList();
 
@@ -79,6 +80,17 @@ internal sealed partial class DinnerTemplatesGrid
         {
             ViewModel.SelectedDinnerTemplate =
                 ViewModel.DinnerTemplates.FirstOrDefault(x => x.Id == ViewModel.SelectedDinnerTemplateId);
+        }
+
+        internal void AdvancedSearchClicked(object? sender, EventArgs e)
+        {
+            DinnerTemplateAdvancedSearchPage.DinnerTemplateAdvancedSearchPageArguments arguments =
+                ViewModel.Arguments.ArgumentsFactory.CreateDinnerTemplateAdvancedSearchPageArguments(ViewModel
+                    .Searchable);
+
+            var page = new DinnerTemplateAdvancedSearchPage(arguments);
+
+            arguments.NavigationService.NavigateTo(page, nameof(DinnerTemplateAdvancedSearchPage));
         }
 
         #region Implementation of IDinnerTemplatesGridApi

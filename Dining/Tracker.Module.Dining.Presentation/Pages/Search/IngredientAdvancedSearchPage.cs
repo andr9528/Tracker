@@ -1,12 +1,14 @@
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Model.ComplexSearchable;
 using Tracker.Shared.Frontend.Abstraction;
+using Tracker.Shared.Frontend.Abstraction.Attributes;
 
 namespace Tracker.Module.Dining.Presentation.Pages.Search;
 
+[SkipOnBackNavigation]
 internal sealed partial class IngredientAdvancedSearchPage : Page
 {
-    internal IngredientAdvancedSearchPageViewModel ViewModel =>
+    private IngredientAdvancedSearchPageViewModel ViewModel =>
         (IngredientAdvancedSearchPageViewModel) DataContext;
 
     public IngredientAdvancedSearchPage(IngredientAdvancedSearchPageArguments arguments)

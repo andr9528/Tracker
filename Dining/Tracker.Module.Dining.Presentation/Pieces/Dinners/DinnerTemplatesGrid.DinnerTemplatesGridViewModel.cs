@@ -1,6 +1,7 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.UI.Controls;
+using Tracker.Module.Dining.Model.ComplexSearchable;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 
@@ -17,7 +18,7 @@ internal sealed partial class DinnerTemplatesGrid
 
         internal DataGrid DataGrid { get; set; } = null!;
 
-        public SearchableDinnerTemplate Searchable { get; } = new();
+        public ComplexSearchableDinnerTemplate Searchable { get; } = new();
 
         public ObservableCollection<DinnerTemplate> DinnerTemplates { get; } = [];
 
@@ -29,9 +30,28 @@ internal sealed partial class DinnerTemplatesGrid
 
         partial void OnNameSearchTextChanged(string value)
         {
-            Searchable.Name = value;
+            UpdateNameSearch(value);
+        }
+
+        private void UpdateNameSearch(string? name)
+        {
+            if (UsesFuzzySearch())
+            {
+                Searchable.Name = name;
+                Searchable.Searchable.Name = string.Empty;
+            }
+            else
+            {
+                Searchable.Name = null;
+                Searchable.Searchable.Name = name ?? string.Empty;
+            }
 
             SearchChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private bool UsesFuzzySearch()
+        {
+            return string.IsNullOrWhiteSpace(Searchable.Searchable.Name);
         }
 
         partial void OnSelectedDinnerTemplateIdChanged(int value)

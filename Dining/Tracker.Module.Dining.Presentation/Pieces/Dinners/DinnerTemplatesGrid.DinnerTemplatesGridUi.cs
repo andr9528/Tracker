@@ -17,14 +17,18 @@ internal sealed partial class DinnerTemplatesGrid
         protected override void ConfigureGrid(Grid grid)
         {
             grid.RowSpacing = 8;
+            grid.ColumnSpacing = 8;
 
             grid.DefineRows(new GridLength(1, GridUnitType.Star), GridLength.Auto);
+
+            grid.DefineColumns(new GridLength(1, GridUnitType.Star), GridLength.Auto);
         }
 
         protected override void AddControlsToGrid(Grid grid)
         {
-            grid.Children.Add(CreateDinnerTemplateDataGrid().SetRow(0));
-            grid.Children.Add(CreateNameSearchTextBox().SetRow(1));
+            grid.Children.Add(CreateDinnerTemplateDataGrid().SetRow(0).SetColumn(0, 2));
+            grid.Children.Add(CreateNameSearchTextBox().SetRow(1).SetColumn(0));
+            grid.Children.Add(CreateAdvancedSearchButtonGrid().SetRow(1).SetColumn(1));
         }
 
         private DataGrid CreateDinnerTemplateDataGrid()
@@ -47,6 +51,11 @@ internal sealed partial class DinnerTemplatesGrid
         {
             return TextBoxFactory.CreateSearchBox("Name", "Search by template name",
                 nameof(DinnerTemplatesGridViewModel.NameSearchText));
+        }
+
+        private Grid CreateAdvancedSearchButtonGrid()
+        {
+            return SimplePieceFactory.CreateRightButtonGrid("Advanced Search", Logic.AdvancedSearchClicked);
         }
 
         private bool ShouldIncludeColumn(DinnerTemplateGridColumns column)

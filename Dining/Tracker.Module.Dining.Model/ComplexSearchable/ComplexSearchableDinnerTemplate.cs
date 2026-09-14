@@ -8,7 +8,16 @@ public class ComplexSearchableDinnerTemplate : IComplexSearchable<SearchableDinn
     #region Implementation of IComplexSearchable<SearchableDinnerTemplate>
 
     /// <inheritdoc />
-    public SearchableDinnerTemplate Searchable { get; set; }
+    public SearchableDinnerTemplate Searchable { get; set; } = new();
+
+    public string? Name { get; set; }
+
+    public bool? IsTakeAway { get; set; }
+    public bool? HasLeftovers { get; set; }
+    public bool? LeftoversEnoughForDinner { get; set; }
+    public bool? IsLeftovers { get; set; }
+    public bool? IsEatenOut { get; set; }
+    public bool? IsReadyMadeDish { get; set; }
 
     #endregion
 }
