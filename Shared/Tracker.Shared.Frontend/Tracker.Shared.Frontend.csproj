@@ -41,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
     <ProjectReference Include="..\Tracker.Shared.Extensions\Tracker.Shared.Extensions.csproj" />
   </ItemGroup>
 

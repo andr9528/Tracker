@@ -1,3 +1,5 @@
+using Tracker.Shared.Abstraction.Interfaces.Frontend;
+using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Pieces;
 
 namespace Tracker.Shared.Frontend.Core;
@@ -8,5 +10,11 @@ public abstract class BaseArgumentsFactory
         string header, bool? initialValue = null)
     {
         return new NullableBooleanOptionBar.NullableBooleanOptionBarArguments(header, initialValue);
+    }
+
+    public EntitySelectionPiece<T>.EntitySelectionPieceArguments CreateEntitySelectionPieceArguments<T>(
+        IEntitySelectionGrid<T> availableGrid, ISuppliedEntityGrid<T> suppliedGrid) where T : IEntity
+    {
+        return new EntitySelectionPiece<T>.EntitySelectionPieceArguments(availableGrid, suppliedGrid);
     }
 }
