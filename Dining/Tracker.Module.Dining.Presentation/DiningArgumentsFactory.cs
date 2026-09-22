@@ -8,6 +8,7 @@ using Tracker.Module.Dining.Presentation.Pages.Ingredients;
 using Tracker.Module.Dining.Presentation.Pages.Search;
 using Tracker.Module.Dining.Presentation.Pages.Templates;
 using Tracker.Module.Dining.Presentation.Pieces.Dinners;
+using Tracker.Module.Dining.Presentation.Pieces.Dishes;
 using Tracker.Module.Dining.Presentation.Pieces.Ingredients;
 using Tracker.Shared.Abstraction.Enums;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
@@ -20,6 +21,7 @@ namespace Tracker.Module.Dining.Presentation;
 public sealed class DiningArgumentsFactory(
     IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService,
     IEntityQueryService<DinnerTemplate, SearchableDinnerTemplate> dinnerTemplateQueryService,
+    IEntityQueryService<Dish, SearchableDish> dishQueryService,
     IUiDispatcher uiDispatcher,
     ILoggerFactory loggerFactory,
     INavigationService navigationService,
@@ -104,5 +106,17 @@ public sealed class DiningArgumentsFactory(
     {
         return new DinnerTemplateAdvancedSearchPage.DinnerTemplateAdvancedSearchPageArguments(searchable,
             navigationService, loggerFactory, this);
+    }
+    internal DishEditor.DishEditorArguments CreateDishEditorArguments(Dish? dish = null, bool isReadOnly = true)
+    {
+        return new DishEditor.DishEditorArguments(this, dish, isReadOnly);
+    }
+
+    internal DishesGrid.DishesGridArguments CreateDishesGridArguments(
+        GridEntitySource entitySource = GridEntitySource.ALL, GridDisplayMode displayMode = GridDisplayMode.NORMAL,
+        int selectedDishId = 0)
+    {
+        return new DishesGrid.DishesGridArguments(dishQueryService, uiDispatcher, loggerFactory, this, entitySource,
+            displayMode, selectedDishId);
     }
 }
