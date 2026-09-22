@@ -74,6 +74,7 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients
             {
                 ViewModel.NameTextBox.IsReadOnly = ViewModel.IsReadOnly;
                 ViewModel.InStockCheckBox.IsEnabled = !ViewModel.IsReadOnly;
+                ViewModel.DishSelector.Api.SetReadOnly(ViewModel.IsReadOnly);
             }
         }
     }

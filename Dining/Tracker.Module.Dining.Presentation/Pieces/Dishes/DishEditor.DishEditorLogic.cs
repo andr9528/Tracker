@@ -73,6 +73,7 @@ internal sealed partial class DishEditor
         internal void UpdateReadOnlyState()
         {
             ViewModel.NameTextBox.IsReadOnly = ViewModel.IsReadOnly;
+            ViewModel.IngredientSelector.Api.SetReadOnly(ViewModel.IsReadOnly);
         }
     }
 }

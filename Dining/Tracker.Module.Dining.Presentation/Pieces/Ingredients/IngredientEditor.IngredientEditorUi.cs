@@ -36,7 +36,9 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients
                     ViewModel.Arguments.ArgumentsFactory.CreateEntitySelectionPieceArguments($"{nameof(Dish)}es",
                         ViewModel.AvailableDishesGrid, ViewModel.SuppliedDishesGrid);
 
-                return new EntitySelectionPiece<Dish>(arguments);
+                ViewModel.DishSelector = new EntitySelectionPiece<Dish>(arguments);
+
+                return ViewModel.DishSelector;
             }
 
             private void CreateDishGrids()

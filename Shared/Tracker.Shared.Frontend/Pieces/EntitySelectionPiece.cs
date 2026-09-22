@@ -6,22 +6,35 @@ namespace Tracker.Shared.Frontend.Pieces;
 
 public sealed partial class EntitySelectionPiece<T> : Border where T : IEntity
 {
+    private EntitySelectionPieceViewModel ViewModel =>
+        (EntitySelectionPieceViewModel) DataContext;
+
     private EntitySelectionPieceLogic Logic { get; }
+
+    private EntitySelectionPieceUi Ui { get; }
+
+    public IEntitySelectionPieceApi Api => Logic;
 
     public EntitySelectionPiece(EntitySelectionPieceArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
         this.ConfigurePieceBorder();
 
-        Logic = new EntitySelectionPieceLogic(arguments);
+        DataContext = new EntitySelectionPieceViewModel(arguments);
 
-        var ui = new EntitySelectionPieceUi(Logic, arguments);
+        Logic = new EntitySelectionPieceLogic(ViewModel);
+        Ui = new EntitySelectionPieceUi(Logic, ViewModel);
 
-        Child = ui.CreateContentGrid();
+        Child = Ui.CreateContentGrid();
     }
 
     public sealed record EntitySelectionPieceArguments(
         string Header,
         ISuppliedEntityGrid<T> AvailableGrid,
         ISuppliedEntityGrid<T> SuppliedGrid);
+
+    public interface IEntitySelectionPieceApi
+    {
+        void SetReadOnly(bool isReadOnly);
+    }
 }

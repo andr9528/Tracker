@@ -43,7 +43,9 @@ internal sealed partial class DishEditor
                 ViewModel.Arguments.ArgumentsFactory.CreateEntitySelectionPieceArguments($"{nameof(Ingredient)}s",
                     ViewModel.AvailableIngredientsGrid, ViewModel.SuppliedIngredientsGrid);
 
-            return new EntitySelectionPiece<Ingredient>(arguments);
+            ViewModel.IngredientSelector = new EntitySelectionPiece<Ingredient>(arguments);
+
+            return ViewModel.IngredientSelector;
         }
 
         private void CreateIngredientGrids()
