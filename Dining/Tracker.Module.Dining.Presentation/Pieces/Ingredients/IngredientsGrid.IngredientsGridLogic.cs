@@ -4,6 +4,7 @@ using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Module.Dining.Presentation.Pages.Search;
 using Tracker.Shared.Abstraction.Enums;
+using Tracker.Shared.Abstraction.Interfaces.Frontend;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Extensions;
 using Tracker.Shared.Frontend.Abstraction;
@@ -97,7 +98,9 @@ internal sealed partial class IngredientsGrid
         private void RememberSelectedIngredient()
         {
             if (ViewModel.SelectedIngredient is null)
+            {
                 return;
+            }
 
             ViewModel.SelectedIngredientId = ViewModel.SelectedIngredient.Id;
         }
@@ -146,7 +149,9 @@ internal sealed partial class IngredientsGrid
             ArgumentNullException.ThrowIfNull(ingredient);
 
             if (suppliedIngredients.All(x => x.Id != ingredient.Id))
+            {
                 suppliedIngredients.Add(ingredient);
+            }
 
             _ = RefreshIngredients();
         }
@@ -183,15 +188,19 @@ internal sealed partial class IngredientsGrid
             foreach (Ingredient ingredient in ingredients)
             {
                 if (suppliedIngredients.All(x => x.Id != ingredient.Id))
+                {
                     suppliedIngredients.Add(ingredient);
+                }
             }
         }
 
         private void EnsureSuppliedSource()
         {
             if (ViewModel.Arguments.EntitySource != GridEntitySource.SUPPLIED)
+            {
                 throw new InvalidOperationException(
                     "Supplied ingredients can only be modified when the grid entity source is SUPPLIED.");
+            }
         }
 
         #endregion

@@ -2,6 +2,7 @@ using System.ComponentModel;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Data;
 using Tracker.Module.Dining.Model.Entity;
+using Tracker.Shared.Abstraction.Enums;
 using Tracker.Shared.Frontend.Core;
 using Tracker.Shared.Frontend.Extensions;
 using Tracker.Shared.Frontend.Factory;
@@ -36,7 +37,7 @@ internal sealed partial class IngredientsGrid
         private DataGrid CreateIngredientDataGrid()
         {
             ViewModel.DataGrid = DataGridFactory.Create<IngredientGridColumns>(ViewModel.IngredientItems,
-                GetColumnBindingPath, GetColumnConverter);
+                GetColumnBindingPath, GetColumnConverter, ShouldIncludeColumn);
 
             ViewModel.DataGrid.SetBinding(DataGrid.SelectedItemProperty, new Binding
             {
@@ -47,6 +48,16 @@ internal sealed partial class IngredientsGrid
             ViewModel.DataGrid.Margin = new Thickness(4);
 
             return ViewModel.DataGrid;
+        }
+
+        private bool ShouldIncludeColumn(IngredientGridColumns column)
+        {
+            if (ViewModel.Arguments.DisplayMode == GridDisplayMode.NORMAL)
+            {
+                return true;
+            }
+
+            return column == IngredientGridColumns.NAME;
         }
 
         private TextBox CreateNameSearchTextBox()

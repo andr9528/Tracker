@@ -3,13 +3,14 @@ using Tracker.Module.Dining.Abstraction.Services;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Shared.Abstraction.Enums;
+using Tracker.Shared.Abstraction.Interfaces.Frontend;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Frontend.Factory;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients;
 
-internal sealed partial class IngredientsGrid : Border, INavigationRefreshable
+internal sealed partial class IngredientsGrid : Border, INavigationRefreshable, ISuppliedEntityGrid<Ingredient>
 {
     private IngredientsGridViewModel ViewModel => (IngredientsGridViewModel) DataContext;
     private IngredientsGridLogic Logic { get; }
@@ -46,6 +47,7 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable
         ILoggerFactory LoggerFactory,
         DiningArgumentsFactory ArgumentsFactory,
         GridEntitySource EntitySource = GridEntitySource.ALL,
+        GridDisplayMode DisplayMode = GridDisplayMode.NORMAL,
         int SelectedIngredientId = 0);
 
     internal interface IIngredientsGridApi
@@ -60,4 +62,30 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable
 
         Task Refresh();
     }
+
+    #region Implementation of IEntitySelectionGrid<Ingredient>
+
+    /// <inheritdoc />
+    public Ingredient? SelectedEntity => Api.SelectedIngredient;
+
+    /// <inheritdoc />
+    public UIElement Content => this;
+
+    #endregion
+
+    #region Implementation of ISuppliedEntityGrid<Ingredient>
+
+    /// <inheritdoc />
+    public void AddSuppliedEntity(Ingredient entity)
+    {
+        Api.AddSuppliedIngredient(entity);
+    }
+
+    /// <inheritdoc />
+    public void RemoveSuppliedEntity(Ingredient entity)
+    {
+        Api.RemoveSuppliedIngredient(entity);
+    }
+
+    #endregion
 }
