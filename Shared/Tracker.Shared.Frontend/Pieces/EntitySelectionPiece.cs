@@ -21,6 +21,7 @@ public sealed partial class EntitySelectionPiece<T> : Border where T : IEntity
     }
 
     public sealed record EntitySelectionPieceArguments(
-        IEntitySelectionGrid<T> AvailableGrid,
+        string Header,
+        ISuppliedEntityGrid<T> AvailableGrid,
         ISuppliedEntityGrid<T> SuppliedGrid);
 }

@@ -13,8 +13,8 @@ public abstract class BaseArgumentsFactory
     }
 
     public EntitySelectionPiece<T>.EntitySelectionPieceArguments CreateEntitySelectionPieceArguments<T>(
-        IEntitySelectionGrid<T> availableGrid, ISuppliedEntityGrid<T> suppliedGrid) where T : IEntity
+        string header, ISuppliedEntityGrid<T> availableGrid, ISuppliedEntityGrid<T> suppliedGrid) where T : IEntity
     {
-        return new EntitySelectionPiece<T>.EntitySelectionPieceArguments(availableGrid, suppliedGrid);
+        return new EntitySelectionPiece<T>.EntitySelectionPieceArguments(header, availableGrid, suppliedGrid);
     }
 }

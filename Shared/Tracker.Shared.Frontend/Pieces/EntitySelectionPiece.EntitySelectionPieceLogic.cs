@@ -13,6 +13,7 @@ public sealed partial class EntitySelectionPiece<T>
                 return;
             }
 
+            arguments.AvailableGrid.AddSuppliedEntity(entity);
             arguments.SuppliedGrid.AddSuppliedEntity(entity);
         }
 
@@ -25,6 +26,7 @@ public sealed partial class EntitySelectionPiece<T>
                 return;
             }
 
+            arguments.AvailableGrid.RemoveSuppliedEntity(entity);
             arguments.SuppliedGrid.RemoveSuppliedEntity(entity);
         }
     }
