@@ -26,16 +26,26 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients
 
             Child = Ui.CreateContentGrid();
 
+            if (arguments.Ingredient is not null)
+            {
+                Logic.ApplyIngredient(arguments.Ingredient);
+            }
+
             Logic.UpdateReadOnlyState();
         }
 
-        internal sealed record IngredientEditorArguments(Ingredient? Ingredient = null, bool IsReadOnly = true);
+        internal sealed record IngredientEditorArguments(
+            DiningArgumentsFactory ArgumentsFactory,
+            Ingredient? Ingredient = null,
+            bool IsReadOnly = true);
 
         internal interface IIngredientEditorApi
         {
             string Name { get; }
 
             bool InStock { get; }
+
+            IReadOnlyCollection<Dish> Dishes { get; }
 
             event EventHandler? NameChanged;
             event EventHandler? InStockChanged;

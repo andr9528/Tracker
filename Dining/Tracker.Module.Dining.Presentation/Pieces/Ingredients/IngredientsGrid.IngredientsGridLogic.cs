@@ -120,6 +120,10 @@ internal sealed partial class IngredientsGrid
         private readonly List<Ingredient> suppliedIngredients = [];
 
         /// <inheritdoc />
+        public IReadOnlyCollection<Ingredient> SuppliedIngredients =>
+            suppliedIngredients.AsReadOnly();
+
+        /// <inheritdoc />
         public void SetSuppliedIngredients(IEnumerable<Ingredient> ingredients)
         {
             EnsureSuppliedSource();

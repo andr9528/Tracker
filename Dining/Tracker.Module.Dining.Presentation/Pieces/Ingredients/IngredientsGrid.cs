@@ -59,6 +59,7 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable, 
         void AddSuppliedIngredient(Ingredient ingredient);
         void RemoveSuppliedIngredient(Ingredient ingredient);
         void ClearSuppliedIngredients();
+        IReadOnlyCollection<Ingredient> SuppliedIngredients { get; }
 
         Task Refresh();
     }

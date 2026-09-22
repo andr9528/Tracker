@@ -30,10 +30,11 @@ public sealed class DiningArgumentsFactory(
     IMainWindowAccessor accessor) : BaseArgumentsFactory
 {
     internal IngredientsGrid.IngredientsGridArguments CreateIngredientsGridArguments(
-        GridEntitySource entitySource = GridEntitySource.ALL, int selectedIngredientId = 0)
+        GridEntitySource entitySource = GridEntitySource.ALL, GridDisplayMode displayMode = GridDisplayMode.NORMAL,
+        int selectedIngredientId = 0)
     {
         return new IngredientsGrid.IngredientsGridArguments(ingredientQueryService, statisticsService, uiDispatcher,
-            loggerFactory, this, entitySource, selectedIngredientId);
+            loggerFactory, this, entitySource, displayMode, selectedIngredientId);
     }
 
     internal IngredientAdvancedSearchPage.IngredientAdvancedSearchPageArguments
@@ -61,7 +62,7 @@ public sealed class DiningArgumentsFactory(
     internal IngredientEditor.IngredientEditorArguments CreateIngredientEditorArguments(
         Ingredient? ingredient = null, bool isReadOnly = true)
     {
-        return new IngredientEditor.IngredientEditorArguments(ingredient, isReadOnly);
+        return new IngredientEditor.IngredientEditorArguments(this, ingredient, isReadOnly);
     }
 
     internal IngredientDetailsPage.IngredientDetailsPageArguments CreateIngredientDetailsPageArguments(int ingredientId)
@@ -107,6 +108,7 @@ public sealed class DiningArgumentsFactory(
         return new DinnerTemplateAdvancedSearchPage.DinnerTemplateAdvancedSearchPageArguments(searchable,
             navigationService, loggerFactory, this);
     }
+
     internal DishEditor.DishEditorArguments CreateDishEditorArguments(Dish? dish = null, bool isReadOnly = true)
     {
         return new DishEditor.DishEditorArguments(this, dish, isReadOnly);

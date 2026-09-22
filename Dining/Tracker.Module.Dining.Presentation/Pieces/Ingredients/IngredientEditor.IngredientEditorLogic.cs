@@ -21,6 +21,10 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients
             public bool InStock => ViewModel.InStock;
 
             /// <inheritdoc />
+            public IReadOnlyCollection<Dish> Dishes =>
+                ViewModel.SuppliedDishesGrid.Api.SuppliedDishes;
+
+            /// <inheritdoc />
             public event EventHandler? NameChanged
             {
                 add => ViewModel.NameChanged += value;
@@ -41,6 +45,16 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients
 
                 ViewModel.Name = ingredient.Name;
                 ViewModel.InStock = ingredient.InStock;
+
+                ApplyDishes(ingredient);
+            }
+
+            private void ApplyDishes(Ingredient ingredient)
+            {
+                List<Dish> dishes = ingredient.DishIngredients.Select(x => x.Dish).OfType<Dish>().ToList();
+
+                ViewModel.AvailableDishesGrid.Api.SetSuppliedDishes(dishes);
+                ViewModel.SuppliedDishesGrid.Api.SetSuppliedDishes(dishes);
             }
 
             /// <inheritdoc />

@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using Tracker.Module.Dining.Presentation.Pieces.Dishes;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients
 {
@@ -14,6 +15,9 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients
 
             internal TextBox NameTextBox { get; set; } = null!;
             internal CheckBox InStockCheckBox { get; set; } = null!;
+
+            internal DishesGrid AvailableDishesGrid { get; set; } = null!;
+            internal DishesGrid SuppliedDishesGrid { get; set; } = null!;
 
             [ObservableProperty] private string name = arguments.Ingredient?.Name ?? string.Empty;
 
