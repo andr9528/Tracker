@@ -122,6 +122,7 @@ public sealed class DiningArgumentsFactory(
         return new DishesGrid.DishesGridArguments(dishQueryService, uiDispatcher, loggerFactory, this, entitySource,
             displayMode, selectedDishId);
     }
+
     internal DishesPage.DishesPageArguments CreateDishesPageArguments()
     {
         return new DishesPage.DishesPageArguments(navigationService, this);
@@ -131,5 +132,10 @@ public sealed class DiningArgumentsFactory(
     {
         return new DishDetailsPage.DishDetailsPageArguments(dishId, dishQueryService, uiDispatcher, loggerFactory,
             navigationService, this);
+    }
+
+    internal DishCreationPage.DishCreationPageArguments CreateDishCreationPageArguments()
+    {
+        return new DishCreationPage.DishCreationPageArguments(dishQueryService, navigationService, loggerFactory, this);
     }
 }
