@@ -1,8 +1,9 @@
 using Tracker.Shared.Frontend.Abstraction;
+using Tracker.Shared.Frontend.Factory;
 
 namespace Tracker.Module.Dining.Presentation.Pages.Templates;
 
-internal sealed partial class DinnerTemplatesPage : Page, INavigationRefreshable
+internal sealed partial class DinnerTemplatesPage : Border, INavigationRefreshable
 {
     private DinnerTemplatesPageViewModel ViewModel =>
         (DinnerTemplatesPageViewModel) DataContext;
@@ -10,13 +11,14 @@ internal sealed partial class DinnerTemplatesPage : Page, INavigationRefreshable
     public DinnerTemplatesPage(DinnerTemplatesPageArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
+        this.ConfigurePageBorder();
 
         DataContext = new DinnerTemplatesPageViewModel(arguments);
 
         var logic = new DinnerTemplatesPageLogic(ViewModel);
         var ui = new DinnerTemplatesPageUi(logic, ViewModel);
 
-        Content = ui.CreateContentGrid();
+        Child = ui.CreateContentGrid();
     }
 
     #region Implementation of INavigationRefreshable

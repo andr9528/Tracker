@@ -1,8 +1,9 @@
 using Tracker.Shared.Frontend.Abstraction;
+using Tracker.Shared.Frontend.Factory;
 
 namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
 {
-    internal sealed partial class IngredientsPage : Page, INavigationRefreshable
+    internal sealed partial class IngredientsPage : Border, INavigationRefreshable
     {
         private IngredientsPageViewModel ViewModel =>
             (IngredientsPageViewModel) DataContext;
@@ -10,13 +11,14 @@ namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
         public IngredientsPage(IngredientsPageArguments arguments)
         {
             ArgumentNullException.ThrowIfNull(arguments);
+            this.ConfigurePageBorder();
 
             DataContext = new IngredientsPageViewModel(arguments);
 
             var logic = new IngredientsPageLogic(ViewModel);
             var ui = new IngredientsPageUi(logic, ViewModel);
 
-            Content = ui.CreateContentGrid();
+            Child = ui.CreateContentGrid();
         }
 
         /// <inheritdoc />

@@ -1,10 +1,11 @@
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Abstraction.Services;
 using Tracker.Shared.Frontend.Abstraction;
+using Tracker.Shared.Frontend.Factory;
 
 namespace Tracker.Module.Dining.Presentation.Pages;
 
-internal sealed partial class DiningHomepage : Page
+internal sealed partial class DiningHomepage : Border
 {
     private DiningHomepageViewModel ViewModel =>
         (DiningHomepageViewModel) DataContext;
@@ -12,13 +13,14 @@ internal sealed partial class DiningHomepage : Page
     public DiningHomepage(DiningHomepageArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
+        this.ConfigurePageBorder();
 
         DataContext = new DiningHomepageViewModel(arguments);
 
         var logic = new DiningHomepageLogic(ViewModel);
         var ui = new DiningHomepageUi(logic, ViewModel);
 
-        Content = ui.CreateContentGrid();
+        Child = ui.CreateContentGrid();
 
         Loaded += logic.PageLoaded;
     }

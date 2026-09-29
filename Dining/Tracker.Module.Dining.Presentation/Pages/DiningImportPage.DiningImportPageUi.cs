@@ -165,7 +165,7 @@ internal sealed partial class DiningImportPage
             button.MinWidth = 160;
             button.HorizontalAlignment = HorizontalAlignment.Center;
 
-            button.SetBinding(IsEnabledProperty, new Binding
+            button.SetBinding(Control.IsEnabledProperty, new Binding
             {
                 Path = new PropertyPath(nameof(DiningImportPageViewModel.CanImport)),
                 Mode = BindingMode.OneWay,
