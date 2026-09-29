@@ -18,6 +18,8 @@ public sealed partial class EntitySelectionPiece<T>
 
             ViewModel.Arguments.AvailableGrid.AddSuppliedEntity(entity);
             ViewModel.Arguments.SuppliedGrid.AddSuppliedEntity(entity);
+
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
         internal void RemoveClicked(object? sender, EventArgs e)
@@ -31,9 +33,14 @@ public sealed partial class EntitySelectionPiece<T>
 
             ViewModel.Arguments.AvailableGrid.RemoveSuppliedEntity(entity);
             ViewModel.Arguments.SuppliedGrid.RemoveSuppliedEntity(entity);
+
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
         #region Implementation of IEntitySelectionPieceApi
+
+        /// <inheritdoc />
+        public event EventHandler? SelectionChanged;
 
         /// <inheritdoc />
         public void SetReadOnly(bool isReadOnly)

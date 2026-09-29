@@ -28,6 +28,12 @@ internal sealed partial class DishEditor
             remove => ViewModel.NameChanged -= value;
         }
 
+        public event EventHandler? IngredientsChanged
+        {
+            add => ViewModel.IngredientSelector.Api.SelectionChanged += value;
+            remove => ViewModel.IngredientSelector.Api.SelectionChanged -= value;
+        }
+
         /// <inheritdoc />
         public void ApplyDish(Dish dish)
         {

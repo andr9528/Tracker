@@ -35,6 +35,7 @@ public sealed partial class EntitySelectionPiece<T> : Border where T : IEntity
 
     public interface IEntitySelectionPieceApi
     {
+        event EventHandler? SelectionChanged;
         void SetReadOnly(bool isReadOnly);
     }
 }

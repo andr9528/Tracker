@@ -60,12 +60,7 @@ internal sealed partial class IngredientsGrid
 
             List<Ingredient> ingredients = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
 
-            if (ViewModel.Arguments.EntitySource == GridEntitySource.SUPPLIED)
-            {
-                var suppliedIds = suppliedIngredients.Select(x => x.Id).ToHashSet();
-
-                ingredients = ingredients.Where(x => suppliedIds.Contains(x.Id)).ToList();
-            }
+            ingredients = ApplyEntitySource(ingredients);
 
             var averageDays = await statisticsService.GetIngredientAverageDaysBetweenUsage();
             var items = ingredients.Select(x => new IngredientGridItem(x, averageDays.GetValueOrDefault(x.Id)))
@@ -93,6 +88,25 @@ internal sealed partial class IngredientsGrid
                     ViewModel.IngredientItems.Count, ViewModel.SelectedIngredientId,
                     ViewModel.SelectedIngredient?.Name);
             });
+        }
+
+        private List<Ingredient> ApplyEntitySource(List<Ingredient> ingredients)
+        {
+            if (ViewModel.Arguments.EntitySource == GridEntitySource.ALL)
+            {
+                return ingredients;
+            }
+
+            var suppliedIds = suppliedIngredients.Select(x => x.Id).ToHashSet();
+
+            return ViewModel.Arguments.EntitySource switch
+            {
+                GridEntitySource.SUPPLIED => ingredients.Where(x => suppliedIds.Contains(x.Id)).ToList(),
+
+                GridEntitySource.NOT_SUPPLIED => ingredients.Where(x => !suppliedIds.Contains(x.Id)).ToList(),
+
+                var _ => ingredients,
+            };
         }
 
         private void RememberSelectedIngredient()
@@ -200,10 +214,10 @@ internal sealed partial class IngredientsGrid
 
         private void EnsureSuppliedSource()
         {
-            if (ViewModel.Arguments.EntitySource != GridEntitySource.SUPPLIED)
+            if (ViewModel.Arguments.EntitySource == GridEntitySource.ALL)
             {
                 throw new InvalidOperationException(
-                    "Supplied ingredients can only be modified when the grid entity source is SUPPLIED.");
+                    "Supplied ingredients can only be modified when the grid entity source is SUPPLIED or NOT_SUPPLIED.");
             }
         }
 

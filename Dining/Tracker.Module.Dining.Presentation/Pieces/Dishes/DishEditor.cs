@@ -43,6 +43,7 @@ internal sealed partial class DishEditor : Border
         IReadOnlyCollection<Ingredient> Ingredients { get; }
 
         event EventHandler? NameChanged;
+        event EventHandler? IngredientsChanged;
 
         void ApplyDish(Dish dish);
 
