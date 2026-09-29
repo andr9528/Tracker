@@ -17,9 +17,9 @@ namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
         public IngredientCreationPage(IngredientCreationPageArguments arguments)
         {
             ArgumentNullException.ThrowIfNull(arguments);
+            this.ConfigurePageBorder();
 
             DataContext = new IngredientCreationPageViewModel(arguments);
-            this.ConfigurePageBorder();
 
             var viewModel = (IngredientCreationPageViewModel) DataContext;
             var logic = new IngredientCreationPageLogic(viewModel);

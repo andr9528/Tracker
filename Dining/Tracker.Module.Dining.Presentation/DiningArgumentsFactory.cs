@@ -4,6 +4,7 @@ using Tracker.Module.Dining.Model.ComplexSearchable;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Module.Dining.Presentation.Pages;
+using Tracker.Module.Dining.Presentation.Pages.Dishes;
 using Tracker.Module.Dining.Presentation.Pages.Ingredients;
 using Tracker.Module.Dining.Presentation.Pages.Search;
 using Tracker.Module.Dining.Presentation.Pages.Templates;
@@ -120,5 +121,15 @@ public sealed class DiningArgumentsFactory(
     {
         return new DishesGrid.DishesGridArguments(dishQueryService, uiDispatcher, loggerFactory, this, entitySource,
             displayMode, selectedDishId);
+    }
+    internal DishesPage.DishesPageArguments CreateDishesPageArguments()
+    {
+        return new DishesPage.DishesPageArguments(navigationService, this);
+    }
+
+    internal DishDetailsPage.DishDetailsPageArguments CreateDishDetailsPageArguments(int dishId)
+    {
+        return new DishDetailsPage.DishDetailsPageArguments(dishId, dishQueryService, uiDispatcher, loggerFactory,
+            navigationService, this);
     }
 }
