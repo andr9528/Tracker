@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.UI.Windowing;
 using Tracker.Frontend.Styles;
-using WinRT.Interop;
 
 namespace Tracker.Frontend;
 
@@ -75,8 +75,29 @@ public partial class App : Application
         }
 
         Startup.FlushStartupLogs();
+
         // Ensure the current window is active
         mainWindow.Activate();
+
+        if (ShouldStartMinimized(args))
+        {
+            MinimizeWindow(mainWindow);
+        }
+
         Startup.MainWindow = mainWindow;
+    }
+
+    private bool ShouldStartMinimized(LaunchActivatedEventArgs args)
+    {
+        return args.Arguments?.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Any(x => x.Equals("--minimized", StringComparison.OrdinalIgnoreCase)) ?? false;
+    }
+
+    private void MinimizeWindow(Window window)
+    {
+        if (window.AppWindow.Presenter is OverlappedPresenter presenter)
+        {
+            presenter.Minimize();
+        }
     }
 }
