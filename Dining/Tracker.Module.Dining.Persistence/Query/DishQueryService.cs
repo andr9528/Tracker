@@ -31,6 +31,26 @@ public class DishQueryService
             query = query.Where(x => EF.Functions.Like(x.Name, keyword));
         }
 
+        if (!string.IsNullOrWhiteSpace(searchable.Ingredients))
+        {
+            query = AddIngredientSearch(query, searchable.Ingredients);
+        }
+
+        return query;
+    }
+
+    private static IQueryable<Dish> AddIngredientSearch(IQueryable<Dish> query, string search)
+    {
+        string[] ingredients =
+            search.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        foreach (string ingredient in ingredients)
+        {
+            var keyword = $"%{ingredient}%";
+
+            query = query.Where(dish => dish.DishIngredients.Any(x => EF.Functions.Like(x.Ingredient.Name, keyword)));
+        }
+
         return query;
     }
 

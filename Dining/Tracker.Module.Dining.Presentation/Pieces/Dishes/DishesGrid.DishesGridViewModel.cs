@@ -18,6 +18,7 @@ internal sealed partial class DishesGrid
         internal DataGrid DataGrid { get; set; } = null!;
 
         [ObservableProperty] private string nameSearchText = string.Empty;
+        [ObservableProperty] private string ingredientSearchText = string.Empty;
 
         public ComplexSearchableDish Searchable { get; } = new();
 
@@ -77,6 +78,18 @@ internal sealed partial class DishesGrid
             }
 
             SelectedDishId = dishId;
+        }
+
+        partial void OnIngredientSearchTextChanged(string value)
+        {
+            UpdateIngredientSearch(value);
+        }
+
+        private void UpdateIngredientSearch(string? ingredients)
+        {
+            Searchable.Ingredients = ingredients;
+
+            SearchChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

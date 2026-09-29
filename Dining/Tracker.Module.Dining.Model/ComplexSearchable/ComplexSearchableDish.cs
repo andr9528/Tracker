@@ -9,4 +9,5 @@ public class ComplexSearchableDish : IComplexSearchable<SearchableDish>
     public SearchableDish Searchable { get; set; } = new();
 
     public string? Name { get; set; }
+    public string? Ingredients { get; set; }
 }

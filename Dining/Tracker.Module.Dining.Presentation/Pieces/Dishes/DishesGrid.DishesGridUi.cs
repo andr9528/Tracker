@@ -19,7 +19,7 @@ internal sealed partial class DishesGrid
 
             grid.DefineRows(new GridLength(1, GridUnitType.Star), GridLength.Auto);
 
-            grid.DefineColumns(new GridLength(1, GridUnitType.Star), GridLength.Auto);
+            grid.DefineColumns(new GridLength(1, GridUnitType.Star), new GridLength(1, GridUnitType.Star));
         }
 
         protected override void AddControlsToGrid(Grid grid)
@@ -27,6 +27,13 @@ internal sealed partial class DishesGrid
             grid.Children.Add(CreateDishDataGrid().SetRow(0).SetColumn(0, 2));
 
             grid.Children.Add(CreateNameSearchTextBox().SetRow(1).SetColumn(0));
+            grid.Children.Add(CreateIngredientSearchTextBox().SetRow(1).SetColumn(1));
+        }
+
+        private TextBox CreateIngredientSearchTextBox()
+        {
+            return TextBoxFactory.CreateSearchBox("Ingredients", "Search by ingredients, separated by comma",
+                nameof(DishesGridViewModel.IngredientSearchText));
         }
 
         private DataGrid CreateDishDataGrid()
