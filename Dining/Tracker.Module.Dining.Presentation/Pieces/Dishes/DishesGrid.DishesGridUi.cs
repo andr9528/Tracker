@@ -1,6 +1,7 @@
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Data;
 using Tracker.Shared.Abstraction.Enums;
+using Tracker.Shared.Extensions;
 using Tracker.Shared.Frontend.Core;
 using Tracker.Shared.Frontend.Extensions;
 using Tracker.Shared.Frontend.Factory;
@@ -41,6 +42,8 @@ internal sealed partial class DishesGrid
             ViewModel.DataGrid = DataGridFactory.Create<DishGridColumns>(ViewModel.DishItems, GetColumnBindingPath,
                 includeColumn: ShouldIncludeColumn);
 
+            ConfigureColumnBindings();
+
             ViewModel.DataGrid.SetBinding(DataGrid.SelectedItemProperty, new Binding
             {
                 Path = new PropertyPath(nameof(DishesGridViewModel.SelectedDishItem)),
@@ -50,6 +53,21 @@ internal sealed partial class DishesGrid
             ViewModel.DataGrid.Margin = new Thickness(4);
 
             return ViewModel.DataGrid;
+        }
+
+        private void ConfigureColumnBindings()
+        {
+            DataGridTextColumn? column = ViewModel.DataGrid.Columns.OfType<DataGridTextColumn>().FirstOrDefault(x =>
+                x.Header?.ToString() == DishGridColumns.DAYS_SINCE_LAST_EATEN.ToColumnHeader());
+
+            if (column is not null)
+            {
+                column.Binding = new Binding
+                {
+                    Path = new PropertyPath(nameof(DishGridItem.DaysSinceLastEaten)),
+                    TargetNullValue = "Never",
+                };
+            }
         }
 
         private bool ShouldIncludeColumn(DishGridColumns column)
@@ -78,15 +96,19 @@ internal sealed partial class DishesGrid
 
                 DishGridColumns.INGREDIENTS => nameof(DishGridItem.Ingredients),
 
+                DishGridColumns.DAYS_SINCE_LAST_EATEN => nameof(DishGridItem.DaysSinceLastEaten),
+
                 var _ => throw new ArgumentOutOfRangeException(nameof(column), column, null),
             };
         }
+
 
         private enum DishGridColumns
         {
             NAME = 0,
             DINNER_COUNT = 1,
-            INGREDIENTS = 2,
+            DAYS_SINCE_LAST_EATEN = 2,
+            INGREDIENTS = 3,
         }
     }
 }

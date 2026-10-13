@@ -4,7 +4,7 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Dishes;
 
 internal sealed partial class DishesGrid
 {
-    internal sealed partial record DishGridItem(Dish Dish)
+    internal sealed partial record DishGridItem(Dish Dish, DateOnly CurrentDate)
     {
         public int Id => Dish.Id;
 
@@ -14,5 +14,9 @@ internal sealed partial class DishesGrid
 
         public string Ingredients => string.Join(", ",
             Dish.DishIngredients.Select(x => x.Ingredient.Name).OrderBy(x => x));
+
+        public int? DaysSinceLastEaten => Dish.Dinners.Count == 0
+            ? null
+            : CurrentDate.DayNumber - Dish.Dinners.Max(x => x.Date.DayNumber);
     }
 }

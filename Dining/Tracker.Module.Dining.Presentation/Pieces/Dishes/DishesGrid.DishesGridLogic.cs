@@ -49,7 +49,9 @@ internal sealed partial class DishesGrid
 
             dishes = ApplyEntitySource(dishes);
 
-            var items = dishes.Select(x => new DishGridItem(x)).ToList();
+            DateOnly currentDate = DateOnly.FromDateTime(DateTime.Today);
+
+            var items = dishes.Select(x => new DishGridItem(x, currentDate)).ToList();
 
             items = ViewModel.DataGrid.ApplyCurrentSort(items).ToList();
 
