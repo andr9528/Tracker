@@ -61,6 +61,10 @@ public class UnoStartup : ModularStartup<IApplicationBuilder>, IMainWindowAccess
         DispatcherQueue uiDispatcherQueue = DispatcherQueue.GetForCurrentThread();
         services.AddSingleton(uiDispatcherQueue);
         services.AddSingleton<IUiDispatcher, UiDispatcher>();
+
+        services.AddSingleton<WindowsApiService>();
+        services.AddSingleton<WindowTrayService>();
+        services.AddSingleton<StartupArgumentService>();
     }
 
     /// <inheritdoc />

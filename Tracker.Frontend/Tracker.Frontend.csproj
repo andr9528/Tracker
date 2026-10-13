@@ -60,4 +60,14 @@
     <Folder Include="Presentation\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="H.NotifyIcon.Uno.WinUI" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Assets\Icons\icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

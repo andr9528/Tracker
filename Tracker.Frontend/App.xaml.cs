@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.UI.Windowing;
+using Tracker.Frontend.Services;
 using Tracker.Frontend.Styles;
 
 namespace Tracker.Frontend;
@@ -79,25 +79,10 @@ public partial class App : Application
         // Ensure the current window is active
         mainWindow.Activate();
 
-        if (ShouldStartMinimized(args))
-        {
-            MinimizeWindow(mainWindow);
-        }
-
         Startup.MainWindow = mainWindow;
-    }
 
-    private bool ShouldStartMinimized(LaunchActivatedEventArgs args)
-    {
-        return args.Arguments?.Split(' ', StringSplitOptions.RemoveEmptyEntries)
-            .Any(x => x.Equals("--minimized", StringComparison.OrdinalIgnoreCase)) ?? false;
-    }
+        var argumentService = Host!.Services.GetRequiredService<StartupArgumentService>();
 
-    private void MinimizeWindow(Window window)
-    {
-        if (window.AppWindow.Presenter is OverlappedPresenter presenter)
-        {
-            presenter.Minimize();
-        }
+        argumentService.ProcessArguments(mainWindow, args);
     }
 }

@@ -14,6 +14,16 @@
     "Tracker": {
       "commandName": "Project",
       "compatibleTargetFramework": "desktop"
+    },
+    "Minimized And To Tray": {
+      "commandName": "Project",
+      "commandLineArgs": "--minimized --minimize-to-tray",
+      "compatibleTargetFramework": "desktop"
+    },
+    "To Tray": {
+      "commandName": "Project",
+      "commandLineArgs": "--minimize-to-tray",
+      "compatibleTargetFramework": "desktop"
     }
   },
   "iisSettings": {
