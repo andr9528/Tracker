@@ -11,6 +11,16 @@ public class RecurringPayment : IRecurringPayment
 
     #endregion
 
+    #region Constructors
+
+    [JsonConstructor]
+    public RecurringPayment(int id)
+    {
+        this.id = id;
+    }
+
+    #endregion
+
     #region Implementation of ISearchable
 
     /// <inheritdoc />
@@ -55,16 +65,6 @@ public class RecurringPayment : IRecurringPayment
 
     /// <inheritdoc />
     public ICollection<IPayment> Payments { get; set; }
-
-    #endregion
-
-    #region Constructors
-
-    [JsonConstructor]
-    public RecurringPayment(int id)
-    {
-        this.id = id;
-    }
 
     #endregion
 }

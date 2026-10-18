@@ -1,7 +1,6 @@
-namespace Tracker.Shared.Frontend.Abstraction.Attributes
+namespace Tracker.Shared.Frontend.Abstraction.Attributes;
+
+[AttributeUsage(AttributeTargets.Class)]
+public sealed class SkipOnBackNavigationAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
-    public sealed class SkipOnBackNavigationAttribute : Attribute
-    {
-    }
 }

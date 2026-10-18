@@ -1,41 +1,43 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
-    <PackageReference Include="Serilog" />
-    <PackageReference Include="Serilog.Extensions.Logging" />
-    <PackageReference Include="Serilog.Sinks.Console" />
-    <PackageReference Include="Serilog.Sinks.File" />
-    <PackageReference Include="Uno.Extensions.Hosting.WinUI" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Configuration" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+        <PackageReference Include="Serilog" />
+        <PackageReference Include="Serilog.Extensions.Logging" />
+        <PackageReference Include="Serilog.Sinks.Console" />
+        <PackageReference Include="Serilog.Sinks.File" />
+        <PackageReference Include="Uno.Extensions.Hosting.WinUI" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Budget\Tracker.Module.Budget.Persistence\Tracker.Module.Budget.Persistence.csproj" />
-    <ProjectReference Include="..\..\Dining\Tracker.Module.Dining.Persistence\Tracker.Module.Dining.Persistence.csproj" />
-    <ProjectReference Include="..\..\Time\Tracker.Module.Time.Persistence\Tracker.Module.Time.Persistence.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
-    <ProjectReference Include="..\Tracker.Shared.Services\Tracker.Shared.Services.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference
+            Include="..\..\Budget\Tracker.Module.Budget.Persistence\Tracker.Module.Budget.Persistence.csproj" />
+        <ProjectReference
+            Include="..\..\Dining\Tracker.Module.Dining.Persistence\Tracker.Module.Dining.Persistence.csproj" />
+        <ProjectReference Include="..\..\Time\Tracker.Module.Time.Persistence\Tracker.Module.Time.Persistence.csproj" />
+        <ProjectReference Include="..\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
+        <ProjectReference Include="..\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
+        <ProjectReference Include="..\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
+        <ProjectReference Include="..\Tracker.Shared.Services\Tracker.Shared.Services.csproj" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modules\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Modules\" />
+    </ItemGroup>
 
 </Project>

@@ -5,12 +5,12 @@ namespace Tracker.Module.Dining.Model.ComplexSearchable;
 
 public class ComplexSearchableIngredient : IComplexSearchable<SearchableIngredient>
 {
-    /// <inheritdoc />
-    public SearchableIngredient Searchable { get; set; } = new();
-
     public string? Name { get; set; }
     public bool? InStock { get; set; }
 
     public int? MinimumDishCount { get; set; }
     public int? MaximumDishCount { get; set; }
+
+    /// <inheritdoc />
+    public SearchableIngredient Searchable { get; set; } = new();
 }

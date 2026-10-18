@@ -8,18 +8,17 @@ internal sealed partial class DiningHomepage
 {
     internal sealed partial class DiningHomepageViewModel(DiningHomepageArguments arguments) : ObservableObject
     {
-        public DiningHomepageArguments Arguments { get; } = arguments;
-
-        public ObservableCollection<IngredientUsageStatistic> MostUsedIngredients { get; } = [];
-        public ObservableCollection<DishEatingStatistic> MostEatenDishes { get; } = [];
-        public ObservableCollection<DishEatingStatistic> LeastEatenDishes { get; } = [];
-
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(MostRecentlyAddedDishName))]
         [NotifyPropertyChangedFor(nameof(MostRecentlyAddedDishDetails))]
         private RecentlyAddedDishStatistic? mostRecentlyAddedDish;
 
         [ObservableProperty] private int uniqueDishesEaten;
+        public DiningHomepageArguments Arguments { get; } = arguments;
+
+        public ObservableCollection<IngredientUsageStatistic> MostUsedIngredients { get; } = [];
+        public ObservableCollection<DishEatingStatistic> MostEatenDishes { get; } = [];
+        public ObservableCollection<DishEatingStatistic> LeastEatenDishes { get; } = [];
 
         public string MostRecentlyAddedDishName =>
             MostRecentlyAddedDish?.DishName ?? "No dishes registered";

@@ -5,8 +5,7 @@ namespace Tracker.Module.Dining.Presentation.Pages.Search;
 
 internal sealed partial class IngredientAdvancedSearchPage
 {
-    internal sealed class IngredientAdvancedSearchPageLogic
-        : BaseLogic<IngredientAdvancedSearchPageViewModel>
+    internal sealed class IngredientAdvancedSearchPageLogic : BaseLogic<IngredientAdvancedSearchPageViewModel>
     {
         private readonly ILogger<IngredientAdvancedSearchPageLogic> logger;
 

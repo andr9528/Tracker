@@ -6,8 +6,8 @@ namespace Tracker.Frontend.Services;
 
 public class NavigationService(IUiDispatcher uiDispatcher, ILogger<NavigationService> logger) : INavigationService
 {
-    private Frame? contentFrame;
     private readonly Stack<(UIElement Element, string Name)> navigationStack = new();
+    private Frame? contentFrame;
 
     /// <inheritdoc />
     public void RegisterContentFrame(Frame frame)
@@ -52,7 +52,9 @@ public class NavigationService(IUiDispatcher uiDispatcher, ILogger<NavigationSer
             UIElement element = navigationStack.Peek().Element;
 
             if (!Attribute.IsDefined(element.GetType(), typeof(SkipOnBackNavigationAttribute), true))
+            {
                 return;
+            }
 
             navigationStack.Pop();
         }

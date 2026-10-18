@@ -6,7 +6,7 @@ namespace Tracker.Shared.Frontend.Pieces;
 
 public sealed partial class NullableBooleanOptionBar
 {
-    internal sealed partial class NullableBooleanOptionBarUi(
+    internal sealed class NullableBooleanOptionBarUi(
         NullableBooleanOptionBarLogic logic,
         NullableBooleanOptionBarViewModel viewModel)
         : BaseUi<NullableBooleanOptionBarLogic, NullableBooleanOptionBarViewModel>(logic, viewModel)
@@ -38,7 +38,7 @@ public sealed partial class NullableBooleanOptionBar
 
             grid.Margin = new Thickness(4);
             grid.ColumnSpacing = 0;
-            grid.DefineColumns(GridUnitType.Star, [1, 1, 1,]);
+            grid.DefineColumns(GridUnitType.Star, 1, 1, 1);
 
             grid.Children.Add(CreateYesButton().SetColumn(0));
             grid.Children.Add(CreateNoButton().SetColumn(1));

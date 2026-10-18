@@ -23,19 +23,6 @@ public class PaymentTemplate : IPaymentTemplate
 
     #endregion
 
-    #region Implementation of ISearchableCommonPayment
-
-    /// <inheritdoc />
-    public double Amount { get; set; }
-
-    /// <inheritdoc />
-    public CurrencyCodes Currency { get; set; }
-
-    /// <inheritdoc />
-    public int PaymentTypeId { get; set; }
-
-    #endregion
-
     #region Implementation of ISearchablePaymentTemplate
 
     /// <inheritdoc />
@@ -50,6 +37,26 @@ public class PaymentTemplate : IPaymentTemplate
 
     #endregion
 
+    #region Implementation of ICommonPayment
+
+    /// <inheritdoc />
+    public IPaymentType PaymentType { get; set; }
+
+    #endregion
+
+    #region Implementation of ISearchableCommonPayment
+
+    /// <inheritdoc />
+    public double Amount { get; set; }
+
+    /// <inheritdoc />
+    public CurrencyCodes Currency { get; set; }
+
+    /// <inheritdoc />
+    public int PaymentTypeId { get; set; }
+
+    #endregion
+
     #region Implementation of IEntity
 
     /// <inheritdoc />
@@ -60,13 +67,6 @@ public class PaymentTemplate : IPaymentTemplate
 
     /// <inheritdoc />
     public DateTime UpdatedDateTime { get; set; }
-
-    #endregion
-
-    #region Implementation of ICommonPayment
-
-    /// <inheritdoc />
-    public IPaymentType PaymentType { get; set; }
 
     #endregion
 

@@ -50,12 +50,12 @@ public sealed class DiningSpreadsheetReader
 
     private DateOnly? ParseDate(IXLCell cell)
     {
-        if (cell.TryGetValue<DateTime>(out DateTime dateTime))
+        if (cell.TryGetValue(out DateTime dateTime))
         {
             return DateOnly.FromDateTime(dateTime);
         }
 
-        if (cell.TryGetValue<double>(out double serialDate))
+        if (cell.TryGetValue(out double serialDate))
         {
             return DateOnly.FromDateTime(DateTime.FromOADate(serialDate));
         }

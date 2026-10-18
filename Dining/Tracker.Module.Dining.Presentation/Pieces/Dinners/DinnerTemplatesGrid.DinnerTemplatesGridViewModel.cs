@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.UI.Controls;
 using Tracker.Module.Dining.Model.ComplexSearchable;
 using Tracker.Module.Dining.Model.Entity;
-using Tracker.Module.Dining.Model.Searchable;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Dinners;
 
@@ -12,10 +11,12 @@ internal sealed partial class DinnerTemplatesGrid
     internal sealed partial class DinnerTemplatesGridViewModel(DinnerTemplatesGridArguments arguments)
         : ObservableObject
     {
-        public DinnerTemplatesGridArguments Arguments { get; } = arguments;
+        [ObservableProperty] private string nameSearchText = string.Empty;
 
-        public event EventHandler? SearchChanged;
-        public event EventHandler? DinnerTemplateSelectionChanged;
+        [ObservableProperty] private DinnerTemplate? selectedDinnerTemplate;
+
+        [ObservableProperty] private int selectedDinnerTemplateId = arguments.SelectedDinnerTemplateId;
+        public DinnerTemplatesGridArguments Arguments { get; } = arguments;
 
         internal DataGrid DataGrid { get; set; } = null!;
 
@@ -23,11 +24,8 @@ internal sealed partial class DinnerTemplatesGrid
 
         public ObservableCollection<DinnerTemplate> DinnerTemplates { get; } = [];
 
-        [ObservableProperty] private string nameSearchText = string.Empty;
-
-        [ObservableProperty] private int selectedDinnerTemplateId = arguments.SelectedDinnerTemplateId;
-
-        [ObservableProperty] private DinnerTemplate? selectedDinnerTemplate;
+        public event EventHandler? SearchChanged;
+        public event EventHandler? DinnerTemplateSelectionChanged;
 
         partial void OnNameSearchTextChanged(string value)
         {

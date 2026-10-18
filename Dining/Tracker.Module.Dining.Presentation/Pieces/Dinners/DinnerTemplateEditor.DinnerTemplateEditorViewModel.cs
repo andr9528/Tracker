@@ -7,18 +7,17 @@ internal sealed partial class DinnerTemplateEditor
     internal sealed partial class DinnerTemplateEditorViewModel(DinnerTemplateEditorArguments arguments)
         : ObservableObject
     {
-        internal DinnerTemplateEditorArguments Arguments { get; } = arguments;
+        [ObservableProperty] private bool isReadOnly = arguments.IsReadOnly;
 
-        public event EventHandler? IsReadOnlyChanged;
-        public event EventHandler? NameChanged;
+        [ObservableProperty] private string name = arguments.DinnerTemplate?.Name ?? string.Empty;
+        internal DinnerTemplateEditorArguments Arguments { get; } = arguments;
 
         internal TextBox NameTextBox { get; set; } = null!;
 
         internal DinnerPropertiesEditor PropertiesEditor { get; set; } = null!;
 
-        [ObservableProperty] private string name = arguments.DinnerTemplate?.Name ?? string.Empty;
-
-        [ObservableProperty] private bool isReadOnly = arguments.IsReadOnly;
+        public event EventHandler? IsReadOnlyChanged;
+        public event EventHandler? NameChanged;
 
         partial void OnNameChanged(string value)
         {

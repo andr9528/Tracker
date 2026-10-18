@@ -12,6 +12,18 @@ internal sealed partial class DinnerTemplateEditor
             ViewModel.IsReadOnlyChanged += OnIsReadOnlyChanged;
         }
 
+        private void OnIsReadOnlyChanged(object? sender, EventArgs e)
+        {
+            UpdateReadOnlyState();
+        }
+
+        internal void UpdateReadOnlyState()
+        {
+            ViewModel.NameTextBox.IsReadOnly = ViewModel.IsReadOnly;
+
+            ViewModel.PropertiesEditor.Api.SetReadOnly(ViewModel.IsReadOnly);
+        }
+
         #region Implementation of IDinnerTemplateEditorApi
 
         /// <inheritdoc />
@@ -102,17 +114,5 @@ internal sealed partial class DinnerTemplateEditor
         }
 
         #endregion
-
-        private void OnIsReadOnlyChanged(object? sender, EventArgs e)
-        {
-            UpdateReadOnlyState();
-        }
-
-        internal void UpdateReadOnlyState()
-        {
-            ViewModel.NameTextBox.IsReadOnly = ViewModel.IsReadOnly;
-
-            ViewModel.PropertiesEditor.Api.SetReadOnly(ViewModel.IsReadOnly);
-        }
     }
 }

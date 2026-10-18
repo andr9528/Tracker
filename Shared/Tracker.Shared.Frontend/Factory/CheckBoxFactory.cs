@@ -32,8 +32,8 @@ public static class CheckBoxFactory
         Grid grid = GridFactory.CreateDefaultGrid();
 
         grid.ColumnSpacing = 4;
-        grid.DefineColumns(GridUnitType.Auto, [1,]);
-        grid.DefineColumns(GridUnitType.Star, [1,]);
+        grid.DefineColumns(GridUnitType.Auto, 1);
+        grid.DefineColumns(GridUnitType.Star, 1);
 
         checkBox = CreateLightCheckBox(bindingPath).SetColumn(0);
 

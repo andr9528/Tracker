@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Tracker.Module.Budget.Model.Entity;
 using Tracker.Module.Budget.Model.Searchable;
 using Tracker.Module.Budget.Persistence.Query;
-using Tracker.Shared.Abstraction.Interfaces.Startup;
 using Tracker.Shared.Startup;
 using Tracker.Shared.Startup.Modules;
 
@@ -12,7 +11,7 @@ namespace Tracker.Module.Budget.Startup;
 
 public class BudgetStartup<TApplicationBuilder> : ModularStartup<TApplicationBuilder>
 {
-    public BudgetStartup() : base()
+    public BudgetStartup()
     {
         AddModule(new EntityQueryServiceStartupModule<PaymentQueryService, Payment, SearchablePayment>());
         AddModule(
@@ -27,6 +26,9 @@ public class BudgetStartup<TApplicationBuilder> : ModularStartup<TApplicationBui
     }
 
     /// <inheritdoc />
+    protected override string ModuleName => "Budget Startup Module";
+
+    /// <inheritdoc />
     protected override void ConfigureModuleServices(IServiceCollection services)
     {
         base.ConfigureModuleServices(services);
@@ -34,7 +36,4 @@ public class BudgetStartup<TApplicationBuilder> : ModularStartup<TApplicationBui
         // Register any pages that should be possible to navigate to from the left side menu.
         //services.AddSingleton<IPageRegion, SomePageRegionDefinition>();
     }
-
-    /// <inheritdoc />
-    protected override string ModuleName => "Budget Startup Module";
 }

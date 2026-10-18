@@ -8,8 +8,7 @@ using Tracker.Shared.Persistence.Core;
 
 namespace Tracker.Module.Dining.Persistence.Query;
 
-public class IngredientQueryService
-    : BaseEntityQueryService<TrackerDatabaseContext, Ingredient, SearchableIngredient>
+public class IngredientQueryService : BaseEntityQueryService<TrackerDatabaseContext, Ingredient, SearchableIngredient>
 {
     public IngredientQueryService(TrackerDatabaseContext context) : base(context)
     {

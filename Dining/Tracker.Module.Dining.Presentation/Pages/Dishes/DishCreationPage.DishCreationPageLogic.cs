@@ -12,9 +12,9 @@ internal sealed partial class DishCreationPage
 {
     private sealed class DishCreationPageLogic : BaseLogic<DishCreationPageViewModel>
     {
-        private readonly IEntityQueryService<Dish, SearchableDish> queryService;
-        private readonly INavigationService navigationService;
         private readonly ILogger<DishCreationPageLogic> logger;
+        private readonly INavigationService navigationService;
+        private readonly IEntityQueryService<Dish, SearchableDish> queryService;
 
         public DishCreationPageLogic(DishCreationPageViewModel viewModel) : base(viewModel)
         {

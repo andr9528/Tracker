@@ -7,11 +7,7 @@ internal sealed partial class DateTimePicker
 {
     internal sealed partial class DateTimePickerViewModel : ObservableObject
     {
-        private bool shouldSkipNextDateChange = true;
-        private bool shouldSkipNextTimeChange = true;
-
-        public DateTimePickerArguments Arguments { get; }
-        public event EventHandler? SelectedDateTimeChanged;
+        private readonly ILogger<DateTimePickerViewModel> logger;
 
         [ObservableProperty] [NotifyPropertyChangedFor(nameof(SelectedDateText))]
         private DateTimeOffset? selectedDate;
@@ -19,17 +15,10 @@ internal sealed partial class DateTimePicker
         [ObservableProperty] [NotifyPropertyChangedFor(nameof(SelectedTimeText))]
         private TimeSpan? selectedTime;
 
-        private readonly ILogger<DateTimePickerViewModel> logger;
+        private bool shouldSkipNextDateChange = true;
+        private bool shouldSkipNextTimeChange = true;
 
-        public string SelectedDateText => SelectedDate.HasValue
-            ? SelectedDate.Value.ToString("dd.MM.yyyy")
-            : "No Date is Set";
-
-        public string SelectedTimeText => SelectedTime.HasValue
-            ? SelectedTime.Value.ToString(@"hh\:mm")
-            : "No Time is Set";
-
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public DateTimePickerViewModel(DateTimePickerArguments arguments)
         {
             Arguments = arguments;
@@ -39,11 +28,15 @@ internal sealed partial class DateTimePicker
             logger = Arguments.LoggerFactory.CreateLogger<DateTimePickerViewModel>();
         }
 
-        internal void SetSelectedDateTime(DateTime? dateTime)
-        {
-            SelectedDate = dateTime;
-            SelectedTime = dateTime?.TimeOfDay;
-        }
+        public DateTimePickerArguments Arguments { get; }
+
+        public string SelectedDateText => SelectedDate.HasValue
+            ? SelectedDate.Value.ToString("dd.MM.yyyy")
+            : "No Date is Set";
+
+        public string SelectedTimeText => SelectedTime.HasValue
+            ? SelectedTime.Value.ToString(@"hh\:mm")
+            : "No Time is Set";
 
         internal DateTime? SelectedDateTime =>
             SelectedDate.HasValue && SelectedTime.HasValue ? SelectedDate.Value.Date.Add(SelectedTime.Value) : null;
@@ -52,6 +45,13 @@ internal sealed partial class DateTimePicker
         internal TimePicker TimePicker { get; set; } = null!;
         internal Button DateButton { get; set; } = null!;
         internal Button TimeButton { get; set; } = null!;
+        public event EventHandler? SelectedDateTimeChanged;
+
+        internal void SetSelectedDateTime(DateTime? dateTime)
+        {
+            SelectedDate = dateTime;
+            SelectedTime = dateTime?.TimeOfDay;
+        }
 
         partial void OnSelectedDateChanged(DateTimeOffset? value)
         {

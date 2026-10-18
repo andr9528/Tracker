@@ -6,74 +6,73 @@ using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Frontend.Core;
 
-namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
+namespace Tracker.Module.Dining.Presentation.Pages.Ingredients;
+
+internal sealed partial class IngredientCreationPage
 {
-    internal sealed partial class IngredientCreationPage
+    private sealed class IngredientCreationPageLogic : BaseLogic<IngredientCreationPageViewModel>
     {
-        private sealed class IngredientCreationPageLogic : BaseLogic<IngredientCreationPageViewModel>
+        private readonly ILogger<IngredientCreationPageLogic> logger;
+        private readonly INavigationService navigationService;
+        private readonly IEntityQueryService<Ingredient, SearchableIngredient> queryService;
+
+        public IngredientCreationPageLogic(IngredientCreationPageViewModel viewModel) : base(viewModel)
         {
-            private readonly IEntityQueryService<Ingredient, SearchableIngredient> queryService;
-            private readonly INavigationService navigationService;
-            private readonly ILogger<IngredientCreationPageLogic> logger;
+            queryService = ViewModel.Arguments.IngredientQueryService;
+            navigationService = ViewModel.Arguments.NavigationService;
+            logger = ViewModel.Arguments.LoggerFactory.CreateLogger<IngredientCreationPageLogic>();
+        }
 
-            public IngredientCreationPageLogic(IngredientCreationPageViewModel viewModel) : base(viewModel)
+        internal async Task SaveClicked(object sender, RoutedEventArgs e)
+        {
+            try
             {
-                queryService = ViewModel.Arguments.IngredientQueryService;
-                navigationService = ViewModel.Arguments.NavigationService;
-                logger = ViewModel.Arguments.LoggerFactory.CreateLogger<IngredientCreationPageLogic>();
-            }
-
-            internal async Task SaveClicked(object sender, RoutedEventArgs e)
-            {
-                try
+                if (!IsUserInputValid())
                 {
-                    if (!IsUserInputValid())
-                    {
-                        logger.LogInformation("Ingredient creation was blocked by invalid input.");
+                    logger.LogInformation("Ingredient creation was blocked by invalid input.");
 
-                        return;
-                    }
-
-                    Ingredient ingredient = BuildNewIngredient();
-
-                    await queryService.AddEntity(ingredient);
-
-                    logger.LogInformation("Created ingredient {IngredientId} with name '{IngredientName}'.",
-                        ingredient.Id, ingredient.Name);
-
-                    IngredientDetailsPage.IngredientDetailsPageArguments arguments =
-                        ViewModel.Arguments.ArgumentsFactory.CreateIngredientDetailsPageArguments(ingredient.Id);
-
-                    var details = new IngredientDetailsPage(arguments);
-
-                    navigationService.NavigateTo(details, nameof(IngredientDetailsPage));
+                    return;
                 }
-                catch (Exception exception)
-                {
-                    logger.LogError(exception, "Caught exception while trying to create a new Ingredient.");
-                }
-            }
 
-            private bool IsUserInputValid()
+                Ingredient ingredient = BuildNewIngredient();
+
+                await queryService.AddEntity(ingredient);
+
+                logger.LogInformation("Created ingredient {IngredientId} with name '{IngredientName}'.", ingredient.Id,
+                    ingredient.Name);
+
+                IngredientDetailsPage.IngredientDetailsPageArguments arguments =
+                    ViewModel.Arguments.ArgumentsFactory.CreateIngredientDetailsPageArguments(ingredient.Id);
+
+                var details = new IngredientDetailsPage(arguments);
+
+                navigationService.NavigateTo(details, nameof(IngredientDetailsPage));
+            }
+            catch (Exception exception)
             {
-                return !string.IsNullOrWhiteSpace(ViewModel.IngredientEditor.Api.Name);
+                logger.LogError(exception, "Caught exception while trying to create a new Ingredient.");
             }
+        }
 
-            private Ingredient BuildNewIngredient()
+        private bool IsUserInputValid()
+        {
+            return !string.IsNullOrWhiteSpace(ViewModel.IngredientEditor.Api.Name);
+        }
+
+        private Ingredient BuildNewIngredient()
+        {
+            IngredientEditor.IIngredientEditorApi editor = ViewModel.IngredientEditor.Api;
+
+            return new Ingredient
             {
-                IngredientEditor.IIngredientEditorApi editor = ViewModel.IngredientEditor.Api;
+                Name = editor.Name,
+                InStock = editor.InStock,
+            };
+        }
 
-                return new Ingredient
-                {
-                    Name = editor.Name,
-                    InStock = editor.InStock,
-                };
-            }
-
-            internal void CancelClicked(object sender, RoutedEventArgs e)
-            {
-                navigationService.NavigateBack();
-            }
+        internal void CancelClicked(object sender, RoutedEventArgs e)
+        {
+            navigationService.NavigateBack();
         }
     }
 }

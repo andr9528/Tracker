@@ -5,9 +5,6 @@ namespace Tracker.Module.Dining.Presentation.Pages.Templates;
 
 internal sealed partial class DinnerTemplatesPage : Border, INavigationRefreshable
 {
-    private DinnerTemplatesPageViewModel ViewModel =>
-        (DinnerTemplatesPageViewModel) DataContext;
-
     public DinnerTemplatesPage(DinnerTemplatesPageArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -20,6 +17,9 @@ internal sealed partial class DinnerTemplatesPage : Border, INavigationRefreshab
 
         Child = ui.CreateContentGrid();
     }
+
+    private DinnerTemplatesPageViewModel ViewModel =>
+        (DinnerTemplatesPageViewModel) DataContext;
 
     #region Implementation of INavigationRefreshable
 

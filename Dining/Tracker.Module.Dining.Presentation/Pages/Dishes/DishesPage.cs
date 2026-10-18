@@ -5,9 +5,6 @@ namespace Tracker.Module.Dining.Presentation.Pages.Dishes;
 
 internal sealed partial class DishesPage : Border, INavigationRefreshable
 {
-    private DishesPageViewModel ViewModel =>
-        (DishesPageViewModel) DataContext;
-
     public DishesPage(DishesPageArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -20,6 +17,9 @@ internal sealed partial class DishesPage : Border, INavigationRefreshable
 
         Child = ui.CreateContentGrid();
     }
+
+    private DishesPageViewModel ViewModel =>
+        (DishesPageViewModel) DataContext;
 
     /// <inheritdoc />
     public void RefreshAfterNavigation()

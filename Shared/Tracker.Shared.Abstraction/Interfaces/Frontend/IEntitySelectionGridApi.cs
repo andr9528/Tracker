@@ -8,4 +8,3 @@ public interface IEntitySelectionGridApi<T> where T : IEntity
 
     event EventHandler? SelectionChanged;
 }
-

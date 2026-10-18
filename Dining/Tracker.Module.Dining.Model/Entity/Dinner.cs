@@ -22,6 +22,13 @@ public class Dinner : IDinner
 
     #endregion
 
+    #region Implementation of IDinner
+
+    /// <inheritdoc />
+    public IDish Dish { get; set; }
+
+    #endregion
+
     #region Implementation of ISearchableDinner
 
     /// <inheritdoc />
@@ -45,13 +52,6 @@ public class Dinner : IDinner
 
     /// <inheritdoc />
     public DateTime UpdatedDateTime { get; set; }
-
-    #endregion
-
-    #region Implementation of IDinner
-
-    /// <inheritdoc />
-    public IDish Dish { get; set; }
 
     #endregion
 

@@ -5,8 +5,7 @@ namespace Tracker.Module.Dining.Presentation.Pages.Templates;
 
 internal sealed partial class DinnerTemplatesPage
 {
-    internal sealed partial class DinnerTemplatesPageViewModel(DinnerTemplatesPageArguments arguments)
-        : ObservableObject
+    internal sealed class DinnerTemplatesPageViewModel(DinnerTemplatesPageArguments arguments) : ObservableObject
     {
         public DinnerTemplatesPageArguments Arguments { get; } = arguments;
 

@@ -17,13 +17,13 @@ public class StartupArgumentService
 
     public void ProcessArguments(Window mainWindow, LaunchActivatedEventArgs args)
     {
-        HashSet<string> arguments =
+        var arguments =
             args.Arguments?.Split(' ', StringSplitOptions.RemoveEmptyEntries)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase) ?? new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         foreach (string argument in arguments)
         {
-            if (argumentHandlers.TryGetValue(argument, out Action<Window>? handler))
+            if (argumentHandlers.TryGetValue(argument, out var handler))
             {
                 handler(mainWindow);
             }

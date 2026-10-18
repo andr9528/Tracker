@@ -1,58 +1,57 @@
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Shared.Frontend.Factory;
 
-namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients
+namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients;
+
+internal sealed partial class IngredientEditor : Border
 {
-    internal sealed partial class IngredientEditor : Border
+    public IngredientEditor(IngredientEditorArguments arguments)
     {
-        private IngredientEditorViewModel ViewModel =>
-            (IngredientEditorViewModel) DataContext;
+        ArgumentNullException.ThrowIfNull(arguments);
+        this.ConfigurePieceBorder();
 
-        private IngredientEditorLogic Logic { get; }
+        DataContext = new IngredientEditorViewModel(arguments);
 
-        private IngredientEditorUi Ui { get; }
+        Logic = new IngredientEditorLogic(ViewModel);
+        Ui = new IngredientEditorUi(Logic, ViewModel);
 
-        public IIngredientEditorApi Api => Logic;
+        Child = Ui.CreateContentGrid();
 
-        public IngredientEditor(IngredientEditorArguments arguments)
+        if (arguments.Ingredient is not null)
         {
-            ArgumentNullException.ThrowIfNull(arguments);
-            this.ConfigurePieceBorder();
-
-            DataContext = new IngredientEditorViewModel(arguments);
-
-            Logic = new IngredientEditorLogic(ViewModel);
-            Ui = new IngredientEditorUi(Logic, ViewModel);
-
-            Child = Ui.CreateContentGrid();
-
-            if (arguments.Ingredient is not null)
-            {
-                Logic.ApplyIngredient(arguments.Ingredient);
-            }
-
-            Logic.UpdateReadOnlyState();
+            Logic.ApplyIngredient(arguments.Ingredient);
         }
 
-        internal sealed record IngredientEditorArguments(
-            DiningArgumentsFactory ArgumentsFactory,
-            Ingredient? Ingredient = null,
-            bool IsReadOnly = true);
+        Logic.UpdateReadOnlyState();
+    }
 
-        internal interface IIngredientEditorApi
-        {
-            string Name { get; }
+    private IngredientEditorViewModel ViewModel =>
+        (IngredientEditorViewModel) DataContext;
 
-            bool InStock { get; }
+    private IngredientEditorLogic Logic { get; }
 
-            IReadOnlyCollection<Dish> Dishes { get; }
+    private IngredientEditorUi Ui { get; }
 
-            event EventHandler? NameChanged;
-            event EventHandler? InStockChanged;
+    public IIngredientEditorApi Api => Logic;
 
-            void ApplyIngredient(Ingredient ingredient);
+    internal sealed record IngredientEditorArguments(
+        DiningArgumentsFactory ArgumentsFactory,
+        Ingredient? Ingredient = null,
+        bool IsReadOnly = true);
 
-            void SetReadOnly(bool isReadOnly);
-        }
+    internal interface IIngredientEditorApi
+    {
+        string Name { get; }
+
+        bool InStock { get; }
+
+        IReadOnlyCollection<Dish> Dishes { get; }
+
+        event EventHandler? NameChanged;
+        event EventHandler? InStockChanged;
+
+        void ApplyIngredient(Ingredient ingredient);
+
+        void SetReadOnly(bool isReadOnly);
     }
 }

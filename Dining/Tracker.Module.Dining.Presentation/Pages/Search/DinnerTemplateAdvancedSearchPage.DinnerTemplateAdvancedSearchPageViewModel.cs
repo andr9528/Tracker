@@ -8,6 +8,22 @@ internal sealed partial class DinnerTemplateAdvancedSearchPage
     internal sealed partial class DinnerTemplateAdvancedSearchPageViewModel(
         DinnerTemplateAdvancedSearchPageArguments arguments) : ObservableObject
     {
+        [ObservableProperty] private bool? selectedHasLeftovers = arguments.Searchable.HasLeftovers;
+
+        [ObservableProperty] private bool? selectedIsEatenOut = arguments.Searchable.IsEatenOut;
+
+        [ObservableProperty] private bool? selectedIsLeftovers = arguments.Searchable.IsLeftovers;
+
+        [ObservableProperty] private bool? selectedIsReadyMadeDish = arguments.Searchable.IsReadyMadeDish;
+
+        [ObservableProperty] private bool? selectedIsTakeAway = arguments.Searchable.IsTakeAway;
+
+        [ObservableProperty]
+        private bool? selectedLeftoversEnoughForDinner = arguments.Searchable.LeftoversEnoughForDinner;
+
+        [ObservableProperty] [NotifyPropertyChangedFor(nameof(SearchModeText))]
+        private bool useFuzzySearch = string.IsNullOrWhiteSpace(arguments.Searchable.Searchable.Name);
+
         public DinnerTemplateAdvancedSearchPageArguments Arguments { get; } = arguments;
 
         internal NullableBooleanOptionBar IsTakeAwayOptionBar { get; set; } = null!;
@@ -16,22 +32,6 @@ internal sealed partial class DinnerTemplateAdvancedSearchPage
         internal NullableBooleanOptionBar IsLeftoversOptionBar { get; set; } = null!;
         internal NullableBooleanOptionBar IsEatenOutOptionBar { get; set; } = null!;
         internal NullableBooleanOptionBar IsReadyMadeDishOptionBar { get; set; } = null!;
-
-        [ObservableProperty] [NotifyPropertyChangedFor(nameof(SearchModeText))]
-        private bool useFuzzySearch = string.IsNullOrWhiteSpace(arguments.Searchable.Searchable.Name);
-
-        [ObservableProperty] private bool? selectedIsTakeAway = arguments.Searchable.IsTakeAway;
-
-        [ObservableProperty] private bool? selectedHasLeftovers = arguments.Searchable.HasLeftovers;
-
-        [ObservableProperty]
-        private bool? selectedLeftoversEnoughForDinner = arguments.Searchable.LeftoversEnoughForDinner;
-
-        [ObservableProperty] private bool? selectedIsLeftovers = arguments.Searchable.IsLeftovers;
-
-        [ObservableProperty] private bool? selectedIsEatenOut = arguments.Searchable.IsEatenOut;
-
-        [ObservableProperty] private bool? selectedIsReadyMadeDish = arguments.Searchable.IsReadyMadeDish;
 
         public string SearchModeText =>
             UseFuzzySearch ? "Fuzzy search" : "Exact search";

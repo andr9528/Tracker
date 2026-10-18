@@ -10,9 +10,8 @@ internal sealed partial class DinnerTemplateDetailsPage
     internal sealed partial class DinnerTemplateDetailsPageViewModel(DinnerTemplateDetailsPageArguments arguments)
         : BaseDetailsPageViewModel
     {
-        public DinnerTemplateDetailsPageArguments Arguments { get; } = arguments;
-
         [ObservableProperty] private DinnerTemplate dinnerTemplate = null!;
+        public DinnerTemplateDetailsPageArguments Arguments { get; } = arguments;
 
         public DinnerTemplateEditor DinnerTemplateEditor { get; set; } = null!;
     }

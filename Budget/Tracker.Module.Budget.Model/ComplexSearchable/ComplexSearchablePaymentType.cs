@@ -5,10 +5,10 @@ namespace Tracker.Module.Budget.Model.ComplexSearchable;
 
 public class ComplexSearchablePaymentType : IComplexSearchable<SearchablePaymentType>
 {
-    /// <inheritdoc />
-    public SearchablePaymentType Searchable { get; set; } = new();
-
     public string? Name { get; set; }
 
     public string? Description { get; set; }
+
+    /// <inheritdoc />
+    public SearchablePaymentType Searchable { get; set; } = new();
 }

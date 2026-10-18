@@ -1,4 +1,3 @@
-
 using System.Runtime.InteropServices;
 
 namespace Tracker.Frontend.Services;
@@ -56,8 +55,6 @@ public sealed class WindowsApiService
         return result;
     }
 
-    private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
-
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
@@ -76,4 +73,6 @@ public sealed class WindowsApiService
     [DllImport("user32.dll")]
     [return: MarshalAs(UnmanagedType.Bool)]
     private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 }

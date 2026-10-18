@@ -37,14 +37,14 @@ public sealed partial class MainPage : Page
 
             var navigationService = App.Startup.ServiceProvider.GetRequiredService<INavigationService>();
 
-            logger.LogDebug($"Back mouse button clicked - Attempting to Navigate Back.");
+            logger.LogDebug("Back mouse button clicked - Attempting to Navigate Back.");
             navigationService.NavigateBack();
 
             e.Handled = true;
         }
         catch (Exception exe)
         {
-            logger.LogError(exe, $"Exception caught during handling of Mouse click event.");
+            logger.LogError(exe, "Exception caught during handling of Mouse click event.");
             throw;
         }
     }

@@ -6,15 +6,6 @@ namespace Tracker.Shared.Frontend.Pieces;
 
 public sealed partial class EntitySelectionPiece<T> : Border where T : IEntity
 {
-    private EntitySelectionPieceViewModel ViewModel =>
-        (EntitySelectionPieceViewModel) DataContext;
-
-    private EntitySelectionPieceLogic Logic { get; }
-
-    private EntitySelectionPieceUi Ui { get; }
-
-    public IEntitySelectionPieceApi Api => Logic;
-
     public EntitySelectionPiece(EntitySelectionPieceArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -27,6 +18,15 @@ public sealed partial class EntitySelectionPiece<T> : Border where T : IEntity
 
         Child = Ui.CreateContentGrid();
     }
+
+    private EntitySelectionPieceViewModel ViewModel =>
+        (EntitySelectionPieceViewModel) DataContext;
+
+    private EntitySelectionPieceLogic Logic { get; }
+
+    private EntitySelectionPieceUi Ui { get; }
+
+    public IEntitySelectionPieceApi Api => Logic;
 
     public sealed record EntitySelectionPieceArguments(
         string Header,

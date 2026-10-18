@@ -5,25 +5,24 @@ namespace Tracker.Module.Dining.Presentation.Pages.Search;
 
 internal sealed partial class IngredientAdvancedSearchPage
 {
-    internal sealed partial class IngredientAdvancedSearchPageViewModel(
-        IngredientAdvancedSearchPageArguments arguments) : ObservableObject
+    internal sealed partial class IngredientAdvancedSearchPageViewModel(IngredientAdvancedSearchPageArguments arguments)
+        : ObservableObject
     {
-        public IngredientAdvancedSearchPageArguments Arguments { get; } = arguments;
+        [ObservableProperty] private string maximumDishCountText =
+            arguments.Searchable.MaximumDishCount?.ToString() ?? string.Empty;
 
-        internal NullableBooleanOptionBar InStockOptionBar { get; set; } = null!;
+        [ObservableProperty] private string minimumDishCountText =
+            arguments.Searchable.MinimumDishCount?.ToString() ?? string.Empty;
 
         [ObservableProperty] private bool? selectedInStock = arguments.Searchable.InStock;
 
         [ObservableProperty] [NotifyPropertyChangedFor(nameof(SearchModeText))]
         private bool useFuzzySearch = string.IsNullOrWhiteSpace(arguments.Searchable.Searchable.Name);
 
-        [ObservableProperty] private string minimumDishCountText =
-            arguments.Searchable.MinimumDishCount?.ToString() ?? string.Empty;
-
-        [ObservableProperty] private string maximumDishCountText =
-            arguments.Searchable.MaximumDishCount?.ToString() ?? string.Empty;
-
         [ObservableProperty] private string? validationMessage;
+        public IngredientAdvancedSearchPageArguments Arguments { get; } = arguments;
+
+        internal NullableBooleanOptionBar InStockOptionBar { get; set; } = null!;
 
         public string SearchModeText =>
             UseFuzzySearch ? "Fuzzy search" : "Exact search";

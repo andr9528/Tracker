@@ -23,6 +23,20 @@ public class Payment : IPayment
 
     #endregion
 
+    #region Implementation of IPayment
+
+    /// <inheritdoc />
+    public IRecurringPayment? RecurringPayment { get; set; }
+
+    #endregion
+
+    #region Implementation of ICommonPayment
+
+    /// <inheritdoc />
+    public IPaymentType PaymentType { get; set; }
+
+    #endregion
+
     #region Implementation of ISearchablePayment
 
     /// <inheritdoc />
@@ -30,13 +44,6 @@ public class Payment : IPayment
 
     /// <inheritdoc />
     public int? RecurringPaymentId { get; set; }
-
-    #endregion
-
-    #region Implementation of IPayment
-
-    /// <inheritdoc />
-    public IRecurringPayment? RecurringPayment { get; set; }
 
     #endregion
 
@@ -63,13 +70,6 @@ public class Payment : IPayment
 
     /// <inheritdoc />
     public DateTime UpdatedDateTime { get; set; }
-
-    #endregion
-
-    #region Implementation of ICommonPayment
-
-    /// <inheritdoc />
-    public IPaymentType PaymentType { get; set; }
 
     #endregion
 

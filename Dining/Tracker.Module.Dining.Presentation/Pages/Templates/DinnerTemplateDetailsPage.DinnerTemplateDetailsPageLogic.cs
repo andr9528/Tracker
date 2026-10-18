@@ -12,9 +12,9 @@ internal sealed partial class DinnerTemplateDetailsPage
 {
     internal sealed class DinnerTemplateDetailsPageLogic : BaseDetailsPageLogic<DinnerTemplateDetailsPageViewModel>
     {
+        private readonly ILogger<DinnerTemplateDetailsPageLogic> logger;
         private readonly IEntityQueryService<DinnerTemplate, SearchableDinnerTemplate> queryService;
         private readonly IUiDispatcher uiDispatcher;
-        private readonly ILogger<DinnerTemplateDetailsPageLogic> logger;
 
         public DinnerTemplateDetailsPageLogic(DinnerTemplateDetailsPageViewModel viewModel) : base(viewModel)
         {

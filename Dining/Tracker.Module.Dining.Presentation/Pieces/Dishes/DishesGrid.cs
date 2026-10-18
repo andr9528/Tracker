@@ -11,13 +11,6 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Dishes;
 
 internal sealed partial class DishesGrid : Border, INavigationRefreshable, ISuppliedEntityGrid<Dish>
 {
-    private DishesGridViewModel ViewModel =>
-        (DishesGridViewModel) DataContext;
-
-    private DishesGridLogic Logic { get; }
-
-    public IDishesGridApi Api => Logic;
-
     public DishesGrid(DishesGridArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -32,6 +25,13 @@ internal sealed partial class DishesGrid : Border, INavigationRefreshable, ISupp
 
         _ = Logic.RefreshDishes();
     }
+
+    private DishesGridViewModel ViewModel =>
+        (DishesGridViewModel) DataContext;
+
+    private DishesGridLogic Logic { get; }
+
+    public IDishesGridApi Api => Logic;
 
     /// <inheritdoc />
     public void RefreshAfterNavigation()

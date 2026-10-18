@@ -11,13 +11,6 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Dinners;
 
 internal sealed partial class DinnerTemplatesGrid : Border, INavigationRefreshable, IEntitySelectionGrid<DinnerTemplate>
 {
-    private DinnerTemplatesGridViewModel ViewModel =>
-        (DinnerTemplatesGridViewModel) DataContext;
-
-    private DinnerTemplatesGridLogic Logic { get; }
-
-    public IDinnerTemplatesGridApi Api => Logic;
-
     public DinnerTemplatesGrid(DinnerTemplatesGridArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -32,6 +25,13 @@ internal sealed partial class DinnerTemplatesGrid : Border, INavigationRefreshab
 
         _ = Logic.RefreshDinnerTemplates();
     }
+
+    private DinnerTemplatesGridViewModel ViewModel =>
+        (DinnerTemplatesGridViewModel) DataContext;
+
+    private DinnerTemplatesGridLogic Logic { get; }
+
+    public IDinnerTemplatesGridApi Api => Logic;
 
     #region Implementation of INavigationRefreshable
 

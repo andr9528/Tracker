@@ -21,7 +21,10 @@ internal sealed partial class DishesPage
         {
             Dish? selectedDish = ViewModel.DishesGrid.Api.SelectedEntity;
 
-            if (selectedDish == null) return;
+            if (selectedDish == null)
+            {
+                return;
+            }
 
             DishDetailsPage.DishDetailsPageArguments arguments =
                 ViewModel.Arguments.ArgumentsFactory.CreateDishDetailsPageArguments(selectedDish.Id);

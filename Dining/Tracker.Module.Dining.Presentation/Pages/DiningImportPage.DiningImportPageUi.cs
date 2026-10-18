@@ -1,4 +1,5 @@
 using Microsoft.UI;
+using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Data;
 using Tracker.Module.Dining.Abstraction.Records;
 using Tracker.Shared.Frontend.Core;
@@ -238,7 +239,7 @@ internal sealed partial class DiningImportPage
 
             textBlock.Text = text;
             textBlock.FontSize = 18;
-            textBlock.FontWeight = Microsoft.UI.Text.FontWeights.SemiBold;
+            textBlock.FontWeight = FontWeights.SemiBold;
 
             return textBlock;
         }
@@ -257,7 +258,7 @@ internal sealed partial class DiningImportPage
         {
             TextBlock textBlock = TextBlockFactory.CreateBlackText();
 
-            textBlock.FontWeight = Microsoft.UI.Text.FontWeights.SemiBold;
+            textBlock.FontWeight = FontWeights.SemiBold;
 
             textBlock.SetBinding(TextBlock.TextProperty, new Binding
             {

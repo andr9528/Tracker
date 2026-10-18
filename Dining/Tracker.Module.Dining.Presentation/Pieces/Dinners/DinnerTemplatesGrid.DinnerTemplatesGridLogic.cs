@@ -14,9 +14,9 @@ internal sealed partial class DinnerTemplatesGrid
 {
     internal sealed class DinnerTemplatesGridLogic : BaseLogic<DinnerTemplatesGridViewModel>, IDinnerTemplatesGridApi
     {
+        private readonly ILogger<DinnerTemplatesGridLogic> logger;
         private readonly IEntityQueryService<DinnerTemplate, SearchableDinnerTemplate> queryService;
         private readonly IUiDispatcher uiDispatcher;
-        private readonly ILogger<DinnerTemplatesGridLogic> logger;
 
         public DinnerTemplatesGridLogic(DinnerTemplatesGridViewModel viewModel) : base(viewModel)
         {
@@ -26,6 +26,16 @@ internal sealed partial class DinnerTemplatesGrid
 
             ViewModel.SearchChanged += SearchChanged;
         }
+
+        #region Implementation of IDinnerTemplatesGridApi
+
+        /// <inheritdoc />
+        public Task Refresh()
+        {
+            return RefreshDinnerTemplates();
+        }
+
+        #endregion
 
         private async void SearchChanged(object? sender, EventArgs e)
         {
@@ -92,16 +102,6 @@ internal sealed partial class DinnerTemplatesGrid
 
             arguments.NavigationService.NavigateTo(page, nameof(DinnerTemplateAdvancedSearchPage));
         }
-
-        #region Implementation of IDinnerTemplatesGridApi
-
-        /// <inheritdoc />
-        public Task Refresh()
-        {
-            return RefreshDinnerTemplates();
-        }
-
-        #endregion
 
         #region Implementation of IEntitySelectionGridApi<DinnerTemplate>
 

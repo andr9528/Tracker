@@ -7,9 +7,6 @@ namespace Tracker.Module.Dining.Presentation.Pages;
 
 internal sealed partial class DiningHomepage : Border
 {
-    private DiningHomepageViewModel ViewModel =>
-        (DiningHomepageViewModel) DataContext;
-
     public DiningHomepage(DiningHomepageArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -24,6 +21,9 @@ internal sealed partial class DiningHomepage : Border
 
         Loaded += logic.PageLoaded;
     }
+
+    private DiningHomepageViewModel ViewModel =>
+        (DiningHomepageViewModel) DataContext;
 
     internal record DiningHomepageArguments(
         INavigationService NavigationService,

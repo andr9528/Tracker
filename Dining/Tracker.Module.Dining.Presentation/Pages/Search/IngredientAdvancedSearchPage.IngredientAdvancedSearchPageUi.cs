@@ -1,4 +1,3 @@
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Tracker.Shared.Frontend.Core;
@@ -21,8 +20,8 @@ internal sealed partial class IngredientAdvancedSearchPage
             grid.RowSpacing = 12;
             grid.ColumnSpacing = 8;
 
-            grid.DefineRows(GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto,
-                GridLength.Auto, new GridLength(1, GridUnitType.Star), GridLength.Auto);
+            grid.DefineRows(GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto,
+                new GridLength(1, GridUnitType.Star), GridLength.Auto);
             grid.DefineColumns(new GridLength(1, GridUnitType.Star), new GridLength(1, GridUnitType.Star));
         }
 
@@ -46,7 +45,7 @@ internal sealed partial class IngredientAdvancedSearchPage
         {
             return SimplePieceFactory.CreateFuzzySearchGrid(
                 nameof(IngredientAdvancedSearchPageViewModel.UseFuzzySearch),
-                nameof(IngredientAdvancedSearchPageViewModel.SearchModeText), out var _);
+                nameof(IngredientAdvancedSearchPageViewModel.SearchModeText), out CheckBox _);
         }
 
         private NullableBooleanOptionBar CreateInStockOptionBar()

@@ -10,22 +10,21 @@ internal sealed partial class IngredientsGrid
 {
     internal sealed partial class IngredientsGridViewModel(IngredientsGridArguments arguments) : ObservableObject
     {
+        [ObservableProperty] private string nameSearchText = string.Empty;
+
+        [ObservableProperty] private int selectedIngredientId = arguments.SelectedIngredientId;
+        [ObservableProperty] private IngredientGridItem? selectedIngredientItem;
         public IngredientsGridArguments Arguments { get; } = arguments;
 
-        public event EventHandler? SearchChanged;
-        public event EventHandler? IngredientSelectionChanged;
-
         internal DataGrid DataGrid { get; set; } = null!;
-
-        [ObservableProperty] private string nameSearchText = string.Empty;
 
         public ComplexSearchableIngredient Searchable { get; } = new();
         public ObservableCollection<IngredientGridItem> IngredientItems { get; } = [];
 
-        [ObservableProperty] private int selectedIngredientId = arguments.SelectedIngredientId;
-        [ObservableProperty] private IngredientGridItem? selectedIngredientItem;
-
         public Ingredient? SelectedIngredient => SelectedIngredientItem?.Ingredient;
+
+        public event EventHandler? SearchChanged;
+        public event EventHandler? IngredientSelectionChanged;
 
         partial void OnNameSearchTextChanged(string value)
         {

@@ -1,5 +1,4 @@
 using Tracker.Module.Dining.Presentation.Pieces.Dinners;
-using Tracker.Shared.Abstraction.Enums;
 using Tracker.Shared.Frontend.Core;
 using Tracker.Shared.Frontend.Extensions;
 using Tracker.Shared.Frontend.Factory;
@@ -28,7 +27,7 @@ internal sealed partial class DinnerTemplatesPage
         private DinnerTemplatesGrid CreateDinnerTemplatesGrid()
         {
             ViewModel.DinnerTemplatesGrid = new DinnerTemplatesGrid(
-                ViewModel.Arguments.ArgumentsFactory.CreateDinnerTemplatesGridArguments(GridDisplayMode.NORMAL));
+                ViewModel.Arguments.ArgumentsFactory.CreateDinnerTemplatesGridArguments());
 
             return ViewModel.DinnerTemplatesGrid;
         }

@@ -128,12 +128,15 @@ public abstract class BaseEntityQueryService<TContext, TEntity, TSearchable> : I
     }
 
     /// <summary>
-    /// Add Query Arguments from the supplied <see cref="IComplexSearchable{TSearchable}"/>.
+    ///     Add Query Arguments from the supplied <see cref="IComplexSearchable{TSearchable}" />.
     /// </summary>
     /// <param name="query"></param>
     /// <param name="complex"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException">Thrown when there are no implementation of <see cref="IComplexSearchable{TSearchable}"/></exception>
+    /// <exception cref="NotImplementedException">
+    ///     Thrown when there are no implementation of
+    ///     <see cref="IComplexSearchable{TSearchable}" />
+    /// </exception>
     /// <exception cref="InvalidOperationException">Thrown when supplied properties would guarantee no results.</exception>
     protected abstract IQueryable<TEntity> AddComplexQueryArguments(
         IQueryable<TEntity> query, IComplexSearchable<TSearchable> complex);
@@ -142,14 +145,14 @@ public abstract class BaseEntityQueryService<TContext, TEntity, TSearchable> : I
         IEnumerable<TEntity> entities, IComplexSearchable<TSearchable> complex);
 
     /// <summary>
-    /// Gets the base <see cref="IQueryable{TEntity}"/> from the <see cref="TContext"/>.
+    ///     Gets the base <see cref="IQueryable{TEntity}" /> from the <see cref="TContext" />.
     /// </summary>
     /// <returns></returns>
     protected abstract IQueryable<TEntity> GetBaseQuery();
 
 
     /// <summary>
-    /// Add Query Arguments from the supplied <see cref="TSearchable"/>.
+    ///     Add Query Arguments from the supplied <see cref="TSearchable" />.
     /// </summary>
     /// <param name="searchable"></param>
     /// <param name="query"></param>

@@ -9,7 +9,7 @@ using Tracker.Shared.Frontend.Factory;
 namespace Tracker.Module.Dining.Presentation.Pages.Templates;
 
 /// <summary>
-/// Creates a new dinner template. Editing is always enabled.
+///     Creates a new dinner template. Editing is always enabled.
 /// </summary>
 [SkipOnBackNavigation]
 internal sealed partial class DinnerTemplateCreationPage : Border

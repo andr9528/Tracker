@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Tracker.Module.Dining.Model\Tracker.Module.Dining.Model.csproj" />
-    <ProjectReference Include="..\..\Shared\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
-    <ProjectReference Include="..\..\Shared\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
-    <ProjectReference Include="..\..\Shared\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Tracker.Module.Dining.Model\Tracker.Module.Dining.Model.csproj" />
+        <ProjectReference Include="..\..\Shared\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
+        <ProjectReference Include="..\..\Shared\Tracker.Shared.Persistence.Core\Tracker.Shared.Persistence.Core.csproj" />
+        <ProjectReference Include="..\..\Shared\Tracker.Shared.Persistence\Tracker.Shared.Persistence.csproj" />
+    </ItemGroup>
 
 </Project>

@@ -11,6 +11,24 @@ public class DinnerTemplate : IDinnerTemplate
 
     #endregion
 
+    #region Implementation of ISearchable
+
+    /// <inheritdoc />
+    public int Id
+    {
+        get => id;
+        set => throw new InvalidOperationException($"{nameof(Id)} cannot be changed");
+    }
+
+    #endregion
+
+    #region Implementation of ISearchableDinnerTemplate
+
+    /// <inheritdoc />
+    public string Name { get; set; }
+
+    #endregion
+
     #region Implementation of ICommonDinnerTemplate
 
     /// <inheritdoc />
@@ -30,24 +48,6 @@ public class DinnerTemplate : IDinnerTemplate
 
     /// <inheritdoc />
     public bool IsReadyMadeDish { get; set; }
-
-    #endregion
-
-    #region Implementation of ISearchable
-
-    /// <inheritdoc />
-    public int Id
-    {
-        get => id;
-        set => throw new InvalidOperationException($"{nameof(Id)} cannot be changed");
-    }
-
-    #endregion
-
-    #region Implementation of ISearchableDinnerTemplate
-
-    /// <inheritdoc />
-    public string Name { get; set; }
 
     #endregion
 

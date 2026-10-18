@@ -5,15 +5,6 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Dinners;
 
 internal sealed partial class DinnerTemplateEditor : Border
 {
-    public IDinnerTemplateEditorApi Api => Logic;
-
-    internal DinnerTemplateEditorViewModel ViewModel =>
-        (DinnerTemplateEditorViewModel) DataContext;
-
-    private DinnerTemplateEditorLogic Logic { get; }
-
-    private DinnerTemplateEditorUi Ui { get; }
-
     public DinnerTemplateEditor(DinnerTemplateEditorArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -28,6 +19,15 @@ internal sealed partial class DinnerTemplateEditor : Border
 
         Logic.UpdateReadOnlyState();
     }
+
+    public IDinnerTemplateEditorApi Api => Logic;
+
+    internal DinnerTemplateEditorViewModel ViewModel =>
+        (DinnerTemplateEditorViewModel) DataContext;
+
+    private DinnerTemplateEditorLogic Logic { get; }
+
+    private DinnerTemplateEditorUi Ui { get; }
 
     internal sealed record DinnerTemplateEditorArguments(DinnerTemplate? DinnerTemplate = null, bool IsReadOnly = true);
 

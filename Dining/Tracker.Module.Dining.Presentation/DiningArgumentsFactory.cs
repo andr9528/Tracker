@@ -15,7 +15,6 @@ using Tracker.Shared.Abstraction.Enums;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Frontend.Core;
-using Tracker.Shared.Frontend.Pieces;
 
 namespace Tracker.Module.Dining.Presentation;
 

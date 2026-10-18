@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 namespace Tracker.Shared.Services.Configuration;
 
 /// <summary>
-/// Handles application configuration loading, file creation and database option setup.
+///     Handles application configuration loading, file creation and database option setup.
 /// </summary>
 public class ConfigurationService(Assembly resourceAssembly)
 {
@@ -25,7 +25,7 @@ public class ConfigurationService(Assembly resourceAssembly)
     }
 
     /// <summary>
-    /// Builds and returns the application configuration from the local app data folder.
+    ///     Builds and returns the application configuration from the local app data folder.
     /// </summary>
     public IConfiguration BuildConfiguration()
     {
@@ -70,7 +70,7 @@ public class ConfigurationService(Assembly resourceAssembly)
     }
 
     /// <summary>
-    /// Configures the database options.
+    ///     Configures the database options.
     /// </summary>
     public void ConfigureDatabaseOptions(DbContextOptionsBuilder options)
     {
@@ -93,7 +93,7 @@ public class ConfigurationService(Assembly resourceAssembly)
     }
 
     /// <summary>
-    /// Returns the application data path used for configuration files.
+    ///     Returns the application data path used for configuration files.
     /// </summary>
     public string GetApplicationDataPath()
     {
@@ -102,10 +102,10 @@ public class ConfigurationService(Assembly resourceAssembly)
     }
 
     /// <summary>
-    /// Ensures the appsettings file exists, creating an empty one if needed.
+    ///     Ensures the appsettings file exists, creating an empty one if needed.
     /// </summary>
     /// <summary>
-    /// Ensures the appsettings file exists and contains required sections.
+    ///     Ensures the appsettings file exists and contains required sections.
     /// </summary>
     private void EnsureAppSettingsFileExists()
     {
@@ -114,7 +114,6 @@ public class ConfigurationService(Assembly resourceAssembly)
         if (!File.Exists(fullAppFilePath))
         {
             CreateFile(fullAppFilePath, CreateDefaultAppSettings());
-            return;
         }
     }
 
@@ -126,7 +125,7 @@ public class ConfigurationService(Assembly resourceAssembly)
     }
 
     /// <summary>
-    /// Creates a JSON file with the supplied template content.
+    ///     Creates a JSON file with the supplied template content.
     /// </summary>
     private void CreateFile(string path, object template)
     {

@@ -7,35 +7,16 @@ namespace Tracker.Shared.Startup;
 public abstract class ModularStartup<TApplicationBuilder> : IServiceStartupModule,
     IApplicationStartupModule<TApplicationBuilder>
 {
-    private readonly ICollection<IServiceStartupModule> serviceModules = [];
     private readonly ICollection<IApplicationStartupModule<TApplicationBuilder>> applicationModules = [];
-    private readonly ICollection<ModularStartup<TApplicationBuilder>> modularStartupModules = [];
     private readonly Queue<Action<ILogger>> delayedLogActions = [];
+    private readonly ICollection<ModularStartup<TApplicationBuilder>> modularStartupModules = [];
+    private readonly ICollection<IServiceStartupModule> serviceModules = [];
 
     public IServiceCollection Services { get; private set; } = null!;
 
     public IServiceProvider ServiceProvider { get; private set; } = null!;
 
-    public string Name => ModuleName;
-
     protected abstract string ModuleName { get; }
-
-    public void ConfigureServices(IServiceCollection services)
-    {
-        ArgumentNullException.ThrowIfNull(services);
-
-        QueueStartupLog(logger => logger.LogDebug("Configuring services for {ModuleName}.", Name));
-
-        ConfigureModuleServices(services);
-
-        foreach (IServiceStartupModule module in serviceModules)
-        {
-            QueueStartupLog(logger =>
-                logger.LogDebug("Configuring services for child module {ModuleName}.", module.Name));
-
-            module.ConfigureServices(services);
-        }
-    }
 
     public void ConfigureApplication(TApplicationBuilder app)
     {
@@ -51,6 +32,25 @@ public abstract class ModularStartup<TApplicationBuilder> : IServiceStartupModul
                 logger.LogDebug("Configuring application for child module {ModuleName}.", module.Name));
 
             module.ConfigureApplication(app);
+        }
+    }
+
+    public string Name => ModuleName;
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        ArgumentNullException.ThrowIfNull(services);
+
+        QueueStartupLog(logger => logger.LogDebug("Configuring services for {ModuleName}.", Name));
+
+        ConfigureModuleServices(services);
+
+        foreach (IServiceStartupModule module in serviceModules)
+        {
+            QueueStartupLog(logger =>
+                logger.LogDebug("Configuring services for child module {ModuleName}.", module.Name));
+
+            module.ConfigureServices(services);
         }
     }
 

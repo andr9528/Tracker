@@ -13,9 +13,9 @@ internal sealed partial class DishDetailsPage
 {
     internal sealed class DishDetailsPageLogic : BaseDetailsPageLogic<DishDetailsPageViewModel>
     {
+        private readonly ILogger<DishDetailsPageLogic> logger;
         private readonly IEntityQueryService<Dish, SearchableDish> queryService;
         private readonly IUiDispatcher uiDispatcher;
-        private readonly ILogger<DishDetailsPageLogic> logger;
 
         public DishDetailsPageLogic(DishDetailsPageViewModel viewModel) : base(viewModel)
         {

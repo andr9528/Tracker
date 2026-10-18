@@ -14,7 +14,7 @@ namespace Tracker.Module.Dining.Startup;
 
 public class DiningStartup<TApplicationBuilder> : ModularStartup<TApplicationBuilder>
 {
-    public DiningStartup() : base()
+    public DiningStartup()
     {
         AddModule(new EntityQueryServiceStartupModule<DinnerQueryService, Dinner, SearchableDinner>());
         AddModule(
@@ -26,6 +26,9 @@ public class DiningStartup<TApplicationBuilder> : ModularStartup<TApplicationBui
         AddModule(new EntityQueryServiceStartupModule<DishQueryService, Dish, SearchableDish>());
         AddModule(new EntityQueryServiceStartupModule<IngredientQueryService, Ingredient, SearchableIngredient>());
     }
+
+    /// <inheritdoc />
+    protected override string ModuleName => "Dining Startup Module";
 
     /// <inheritdoc />
     protected override void ConfigureModuleServices(IServiceCollection services)
@@ -40,7 +43,4 @@ public class DiningStartup<TApplicationBuilder> : ModularStartup<TApplicationBui
         services.AddSingleton<IStatisticsService, StatisticsService>();
         services.AddSingleton<IPageRegion, DiningHomepageRegionDefinition>();
     }
-
-    /// <inheritdoc />
-    protected override string ModuleName => "Dining Startup Module";
 }

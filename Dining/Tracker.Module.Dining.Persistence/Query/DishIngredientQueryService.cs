@@ -7,8 +7,9 @@ using Tracker.Shared.Persistence.Core;
 
 namespace Tracker.Module.Dining.Persistence.Query;
 
-public class DishIngredientQueryService
-    : BaseEntityQueryService<TrackerDatabaseContext, DishIngredient, SearchableDishIngredient>
+public class
+    DishIngredientQueryService : BaseEntityQueryService<TrackerDatabaseContext, DishIngredient,
+    SearchableDishIngredient>
 {
     public DishIngredientQueryService(TrackerDatabaseContext context) : base(context)
     {
@@ -16,8 +17,7 @@ public class DishIngredientQueryService
 
     /// <inheritdoc />
     protected override IQueryable<DishIngredient> AddComplexQueryArguments(
-        IQueryable<DishIngredient> query,
-        IComplexSearchable<SearchableDishIngredient> complex)
+        IQueryable<DishIngredient> query, IComplexSearchable<SearchableDishIngredient> complex)
     {
         if (complex is not ComplexSearchableDishIngredient)
         {
@@ -29,8 +29,7 @@ public class DishIngredientQueryService
 
     /// <inheritdoc />
     protected override IEnumerable<DishIngredient> ApplyComplexNonDatabaseQueryArguments(
-        IEnumerable<DishIngredient> entities,
-        IComplexSearchable<SearchableDishIngredient> complex)
+        IEnumerable<DishIngredient> entities, IComplexSearchable<SearchableDishIngredient> complex)
     {
         return entities;
     }

@@ -14,11 +14,11 @@ internal sealed partial class DishesGrid
 {
     internal sealed class DishesGridLogic : BaseLogic<DishesGridViewModel>, IDishesGridApi
     {
-        private readonly IEntityQueryService<Dish, SearchableDish> queryService;
-        private readonly IUiDispatcher uiDispatcher;
         private readonly ILogger<DishesGridLogic> logger;
+        private readonly IEntityQueryService<Dish, SearchableDish> queryService;
 
         private readonly List<Dish> suppliedDishes = [];
+        private readonly IUiDispatcher uiDispatcher;
 
         public DishesGridLogic(DishesGridViewModel viewModel) : base(viewModel)
         {
@@ -45,7 +45,7 @@ internal sealed partial class DishesGrid
         {
             RememberSelectedDish();
 
-            List<Dish> dishes = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
+            var dishes = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
 
             dishes = ApplyEntitySource(dishes);
 
@@ -113,7 +113,7 @@ internal sealed partial class DishesGrid
         /// <inheritdoc />
         public Dish? SelectedEntity => ViewModel.SelectedDish;
 
-        ///<inheritdoc/>
+        /// <inheritdoc />
         public event EventHandler? SelectionChanged
         {
             add => ViewModel.DishSelectionChanged += value;

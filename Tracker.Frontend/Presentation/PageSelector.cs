@@ -4,7 +4,7 @@ using Tracker.Shared.Services.Configuration;
 namespace Tracker.Frontend.Presentation;
 
 /// <summary>
-/// Page navigation menu that hosts "regions" (pages) and swaps Content based on selection.
+///     Page navigation menu that hosts "regions" (pages) and swaps Content based on selection.
 /// </summary>
 internal sealed partial class PageSelector : Page
 {

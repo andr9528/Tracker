@@ -40,7 +40,7 @@ internal sealed partial class DateTimePicker
             grid.Margin = new Thickness(4);
             grid.ColumnSpacing = 4;
             grid.HorizontalAlignment = HorizontalAlignment.Stretch;
-            grid.DefineColumns(GridUnitType.Star, [1, 1,]);
+            grid.DefineColumns(GridUnitType.Star, 1, 1);
 
             Grid dateGrid = CreateDatePickerHost().SetColumn(0);
             Grid timeGrid = CreateTimePickerHost().SetColumn(1);

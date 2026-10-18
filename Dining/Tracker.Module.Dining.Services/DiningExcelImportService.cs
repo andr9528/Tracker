@@ -10,24 +10,23 @@ namespace Tracker.Module.Dining.Services;
 
 public sealed class DiningExcelImportService : IDiningImportService
 {
-    private readonly DiningSpreadsheetReader spreadsheetReader;
-    private readonly IStatisticsService statisticsService;
-
     private readonly IEntityQueryService<Dinner, SearchableDinner> dinnerQueryService;
+
+    private readonly Dictionary<DishImportKey, Dish> dishes = [];
+
+    private readonly IEntityQueryService<DishIngredient, SearchableDishIngredient> dishIngredientQueryService;
+
+    private readonly HashSet<DishIngredientKey> dishIngredients = [];
 
     private readonly IEntityQueryService<Dish, SearchableDish> dishQueryService;
 
     private readonly IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService;
 
-    private readonly IEntityQueryService<DishIngredient, SearchableDishIngredient> dishIngredientQueryService;
-
-    private readonly ILogger<DiningExcelImportService> logger;
-
-    private readonly Dictionary<DishImportKey, Dish> dishes = [];
-
     private readonly Dictionary<string, Ingredient> ingredients = new(StringComparer.OrdinalIgnoreCase);
 
-    private readonly HashSet<DishIngredientKey> dishIngredients = [];
+    private readonly ILogger<DiningExcelImportService> logger;
+    private readonly DiningSpreadsheetReader spreadsheetReader;
+    private readonly IStatisticsService statisticsService;
 
     public DiningExcelImportService(
         DiningSpreadsheetReader spreadsheetReader, IEntityQueryService<Dinner, SearchableDinner> dinnerQueryService,
@@ -44,6 +43,46 @@ public sealed class DiningExcelImportService : IDiningImportService
         this.logger = logger;
         this.statisticsService = statisticsService;
     }
+
+    #region Implementation of IDiningImportService
+
+    /// <inheritdoc />
+    public async Task<ImportResult> Import(string filePath)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
+
+        if (!File.Exists(filePath))
+        {
+            logger.LogWarning("Unable to import dining data. The file '{FilePath}' does not exist.", filePath);
+
+            throw new FileNotFoundException("The supplied file could not be found.", filePath);
+        }
+
+        string extension = Path.GetExtension(filePath);
+
+        if (!string.Equals(extension, ".xlsx", StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(extension, ".xls", StringComparison.OrdinalIgnoreCase))
+        {
+            logger.LogWarning("Unable to import dining data. The file '{FilePath}' is not an Excel file.", filePath);
+
+            throw new InvalidOperationException($"The file '{filePath}' is not an Excel file.");
+        }
+
+        logger.LogInformation("Importing dining data from '{FilePath}'.", filePath);
+
+        await using FileStream stream = File.OpenRead(filePath);
+
+        ImportResult result = await Import(stream);
+
+        logger.LogInformation(
+            "Imported {CreatedDinners} new dinners, updated {UpdatedDinners} existing dinners, created {CreatedDishes} dishes, {CreatedIngredients} ingredients and {CreatedDishIngredients} dish ingredient relations.",
+            result.CreatedDinners, result.UpdatedDinners, result.CreatedDishes, result.CreatedIngredients,
+            result.CreatedDishIngredients);
+
+        return result;
+    }
+
+    #endregion
 
     private async Task<ImportResult> Import(Stream stream)
     {
@@ -330,46 +369,6 @@ public sealed class DiningExcelImportService : IDiningImportService
 
         return new DishImportKey(normalizedName, normalizedIngredientIds);
     }
-
-    #region Implementation of IDiningImportService
-
-    /// <inheritdoc />
-    public async Task<ImportResult> Import(string filePath)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(filePath);
-
-        if (!File.Exists(filePath))
-        {
-            logger.LogWarning("Unable to import dining data. The file '{FilePath}' does not exist.", filePath);
-
-            throw new FileNotFoundException("The supplied file could not be found.", filePath);
-        }
-
-        string extension = Path.GetExtension(filePath);
-
-        if (!string.Equals(extension, ".xlsx", StringComparison.OrdinalIgnoreCase) &&
-            !string.Equals(extension, ".xls", StringComparison.OrdinalIgnoreCase))
-        {
-            logger.LogWarning("Unable to import dining data. The file '{FilePath}' is not an Excel file.", filePath);
-
-            throw new InvalidOperationException($"The file '{filePath}' is not an Excel file.");
-        }
-
-        logger.LogInformation("Importing dining data from '{FilePath}'.", filePath);
-
-        await using FileStream stream = File.OpenRead(filePath);
-
-        ImportResult result = await Import(stream);
-
-        logger.LogInformation(
-            "Imported {CreatedDinners} new dinners, updated {UpdatedDinners} existing dinners, created {CreatedDishes} dishes, {CreatedIngredients} ingredients and {CreatedDishIngredients} dish ingredient relations.",
-            result.CreatedDinners, result.UpdatedDinners, result.CreatedDishes, result.CreatedIngredients,
-            result.CreatedDishIngredients);
-
-        return result;
-    }
-
-    #endregion
 
     private readonly record struct DishIngredientKey(int DishId, int IngredientId);
 

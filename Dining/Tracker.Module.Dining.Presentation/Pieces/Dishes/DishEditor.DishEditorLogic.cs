@@ -12,6 +12,37 @@ internal sealed partial class DishEditor
             ViewModel.IsReadOnlyChanged += OnIsReadOnlyChanged;
         }
 
+        internal void ApplyInitialIngredients()
+        {
+            Dish? dish = ViewModel.Arguments.Dish;
+
+            if (dish is null)
+            {
+                return;
+            }
+
+            ApplyIngredients(dish);
+        }
+
+        private void ApplyIngredients(Dish dish)
+        {
+            var ingredients = dish.DishIngredients.Select(x => x.Ingredient).OfType<Ingredient>().ToList();
+
+            ViewModel.AvailableIngredientsGrid.Api.SetSuppliedIngredients(ingredients);
+            ViewModel.SuppliedIngredientsGrid.Api.SetSuppliedIngredients(ingredients);
+        }
+
+        private void OnIsReadOnlyChanged(object? sender, EventArgs e)
+        {
+            UpdateReadOnlyState();
+        }
+
+        internal void UpdateReadOnlyState()
+        {
+            ViewModel.NameTextBox.IsReadOnly = ViewModel.IsReadOnly;
+            ViewModel.IngredientSelector.Api.SetReadOnly(ViewModel.IsReadOnly);
+        }
+
         #region Implementation of IDishEditorApi
 
         /// <inheritdoc />
@@ -50,36 +81,5 @@ internal sealed partial class DishEditor
         }
 
         #endregion
-
-        internal void ApplyInitialIngredients()
-        {
-            Dish? dish = ViewModel.Arguments.Dish;
-
-            if (dish is null)
-            {
-                return;
-            }
-
-            ApplyIngredients(dish);
-        }
-
-        private void ApplyIngredients(Dish dish)
-        {
-            List<Ingredient> ingredients = dish.DishIngredients.Select(x => x.Ingredient).OfType<Ingredient>().ToList();
-
-            ViewModel.AvailableIngredientsGrid.Api.SetSuppliedIngredients(ingredients);
-            ViewModel.SuppliedIngredientsGrid.Api.SetSuppliedIngredients(ingredients);
-        }
-
-        private void OnIsReadOnlyChanged(object? sender, EventArgs e)
-        {
-            UpdateReadOnlyState();
-        }
-
-        internal void UpdateReadOnlyState()
-        {
-            ViewModel.NameTextBox.IsReadOnly = ViewModel.IsReadOnly;
-            ViewModel.IngredientSelector.Api.SetReadOnly(ViewModel.IsReadOnly);
-        }
     }
 }

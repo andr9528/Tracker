@@ -4,7 +4,6 @@ using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Module.Dining.Presentation.Pages.Search;
 using Tracker.Shared.Abstraction.Enums;
-using Tracker.Shared.Abstraction.Interfaces.Frontend;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Extensions;
 using Tracker.Shared.Frontend.Abstraction;
@@ -17,10 +16,10 @@ internal sealed partial class IngredientsGrid
 {
     internal sealed class IngredientsGridLogic : BaseLogic<IngredientsGridViewModel>, IIngredientsGridApi
     {
-        private readonly IEntityQueryService<Ingredient, SearchableIngredient> queryService;
-        private readonly IUiDispatcher uiDispatcher;
-        private readonly IStatisticsService statisticsService;
         private readonly ILogger<IngredientsGridLogic> logger;
+        private readonly IEntityQueryService<Ingredient, SearchableIngredient> queryService;
+        private readonly IStatisticsService statisticsService;
+        private readonly IUiDispatcher uiDispatcher;
 
         public IngredientsGridLogic(IngredientsGridViewModel viewModel) : base(viewModel)
         {
@@ -58,7 +57,7 @@ internal sealed partial class IngredientsGrid
         {
             RememberSelectedIngredient();
 
-            List<Ingredient> ingredients = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
+            var ingredients = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
 
             ingredients = ApplyEntitySource(ingredients);
 

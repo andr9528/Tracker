@@ -10,25 +10,25 @@ internal sealed partial class DishesGrid
 {
     internal sealed partial class DishesGridViewModel(DishesGridArguments arguments) : ObservableObject
     {
-        public DishesGridArguments Arguments { get; } = arguments;
-
-        public event EventHandler? SearchChanged;
-        public event EventHandler? DishSelectionChanged;
-
-        internal DataGrid DataGrid { get; set; } = null!;
+        [ObservableProperty] private string ingredientSearchText = string.Empty;
 
         [ObservableProperty] private string nameSearchText = string.Empty;
-        [ObservableProperty] private string ingredientSearchText = string.Empty;
+
+        [ObservableProperty] private int selectedDishId = arguments.SelectedDishId;
+
+        [ObservableProperty] private DishGridItem? selectedDishItem;
+        public DishesGridArguments Arguments { get; } = arguments;
+
+        internal DataGrid DataGrid { get; set; } = null!;
 
         public ComplexSearchableDish Searchable { get; } = new();
 
         public ObservableCollection<DishGridItem> DishItems { get; } = [];
 
-        [ObservableProperty] private int selectedDishId = arguments.SelectedDishId;
-
-        [ObservableProperty] private DishGridItem? selectedDishItem;
-
         public Dish? SelectedDish => SelectedDishItem?.Dish;
+
+        public event EventHandler? SearchChanged;
+        public event EventHandler? DishSelectionChanged;
 
         partial void OnNameSearchTextChanged(string value)
         {

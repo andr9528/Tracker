@@ -13,4 +13,4 @@ public sealed class ImportResult
     public int CreatedIngredients { get; set; }
 
     public int CreatedDishIngredients { get; set; }
-};
+}

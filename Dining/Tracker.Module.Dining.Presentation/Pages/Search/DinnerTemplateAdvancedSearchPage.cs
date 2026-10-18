@@ -9,9 +9,6 @@ namespace Tracker.Module.Dining.Presentation.Pages.Search;
 [SkipOnBackNavigation]
 internal sealed partial class DinnerTemplateAdvancedSearchPage : Border
 {
-    private DinnerTemplateAdvancedSearchPageViewModel ViewModel =>
-        (DinnerTemplateAdvancedSearchPageViewModel) DataContext;
-
     public DinnerTemplateAdvancedSearchPage(DinnerTemplateAdvancedSearchPageArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -24,6 +21,9 @@ internal sealed partial class DinnerTemplateAdvancedSearchPage : Border
 
         Child = ui.CreateContentGrid();
     }
+
+    private DinnerTemplateAdvancedSearchPageViewModel ViewModel =>
+        (DinnerTemplateAdvancedSearchPageViewModel) DataContext;
 
     internal record DinnerTemplateAdvancedSearchPageArguments(
         ComplexSearchableDinnerTemplate Searchable,

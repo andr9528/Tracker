@@ -8,8 +8,7 @@ using Tracker.Shared.Persistence.Core;
 
 namespace Tracker.Module.Dining.Persistence.Query;
 
-public class DinnerQueryService
-    : BaseEntityQueryService<TrackerDatabaseContext, Dinner, SearchableDinner>
+public class DinnerQueryService : BaseEntityQueryService<TrackerDatabaseContext, Dinner, SearchableDinner>
 {
     public DinnerQueryService(TrackerDatabaseContext context) : base(context)
     {
@@ -44,8 +43,7 @@ public class DinnerQueryService
 
         if (searchable.LeftoversEnoughForDinner.HasValue)
         {
-            query = query.Where(x =>
-                x.LeftoversEnoughForDinner == searchable.LeftoversEnoughForDinner.Value);
+            query = query.Where(x => x.LeftoversEnoughForDinner == searchable.LeftoversEnoughForDinner.Value);
         }
 
         if (searchable.IsLeftovers.HasValue)
@@ -70,8 +68,7 @@ public class DinnerQueryService
     }
 
     /// <inheritdoc />
-    protected override IQueryable<Dinner> AddQueryArguments(
-        SearchableDinner searchable, IQueryable<Dinner> query)
+    protected override IQueryable<Dinner> AddQueryArguments(SearchableDinner searchable, IQueryable<Dinner> query)
     {
         if (searchable.Date != default)
         {

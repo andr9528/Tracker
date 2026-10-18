@@ -8,7 +8,6 @@ using Tracker.Module.Dining.Startup;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Persistence;
-using Tracker.Shared.Services;
 using Tracker.Shared.Services.Configuration;
 using Tracker.Shared.Startup;
 using Tracker.Shared.Startup.Configuration;
@@ -18,12 +17,10 @@ namespace Tracker.Frontend;
 
 public class UnoStartup : ModularStartup<IApplicationBuilder>, IMainWindowAccessor
 {
-    public IHost? Host { get; private set; }
-
     private readonly IConfiguration configuration;
     private readonly ConfigurationService configurationService;
 
-    public UnoStartup() : base()
+    public UnoStartup()
     {
         configurationService = new ConfigurationService(GetType().Assembly);
         configuration = configurationService.BuildConfiguration();
@@ -41,8 +38,17 @@ public class UnoStartup : ModularStartup<IApplicationBuilder>, IMainWindowAccess
         AddModule(new DiningStartup<IApplicationBuilder>());
     }
 
+    public IHost? Host { get; private set; }
+
     /// <inheritdoc />
     protected override string ModuleName => "Uno Startup";
+
+    #region Implementation of IMainWindowAccessor
+
+    /// <inheritdoc />
+    public Window MainWindow { get; set; }
+
+    #endregion
 
     /// <inheritdoc />
     protected override void ConfigureModuleServices(IServiceCollection services)
@@ -91,11 +97,4 @@ public class UnoStartup : ModularStartup<IApplicationBuilder>, IMainWindowAccess
     {
         serviceCollection.AddSingleton(new JsonSerializerOptions {IncludeFields = true,});
     }
-
-    #region Implementation of IMainWindowAccessor
-
-    /// <inheritdoc />
-    public Window MainWindow { get; set; }
-
-    #endregion
 }

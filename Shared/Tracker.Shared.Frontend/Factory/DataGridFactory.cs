@@ -73,7 +73,7 @@ public static class DataGridFactory
             return;
         }
 
-        List<object> sortedItems = dataGrid.ApplyCurrentSort(items).ToList();
+        var sortedItems = dataGrid.ApplyCurrentSort(items).ToList();
 
         list.ReplaceItems(sortedItems);
     }

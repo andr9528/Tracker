@@ -1,5 +1,3 @@
-
-using System.Windows.Input;
 using H.NotifyIcon;
 using Microsoft.UI.Windowing;
 
@@ -8,14 +6,27 @@ namespace Tracker.Frontend.Services;
 public sealed class WindowTrayService : IDisposable
 {
     private readonly WindowsApiService windowsApiService;
+    private bool isRestoring;
 
     private TaskbarIcon? trayIcon;
     private Window? trayWindow;
-    private bool isRestoring;
 
     public WindowTrayService(WindowsApiService windowsApiService)
     {
         this.windowsApiService = windowsApiService;
+    }
+
+    public void Dispose()
+    {
+        if (trayWindow != null)
+        {
+            trayWindow.AppWindow.Changed -= OnWindowChanged;
+            trayWindow.Closed -= OnWindowClosed;
+        }
+
+        trayIcon?.Dispose();
+        trayIcon = null;
+        trayWindow = null;
     }
 
     public void EnableMinimizeToTray(Window window)
@@ -85,19 +96,6 @@ public sealed class WindowTrayService : IDisposable
         Dispose();
     }
 
-    public void Dispose()
-    {
-        if (trayWindow != null)
-        {
-            trayWindow.AppWindow.Changed -= OnWindowChanged;
-            trayWindow.Closed -= OnWindowClosed;
-        }
-
-        trayIcon?.Dispose();
-        trayIcon = null;
-        trayWindow = null;
-    }
-
     private sealed class TrayCommand(Action execute) : ICommand
     {
         public event EventHandler? CanExecuteChanged
@@ -106,8 +104,14 @@ public sealed class WindowTrayService : IDisposable
             remove { }
         }
 
-        public bool CanExecute(object? parameter) => true;
+        public bool CanExecute(object? parameter)
+        {
+            return true;
+        }
 
-        public void Execute(object? parameter) => execute();
+        public void Execute(object? parameter)
+        {
+            execute();
+        }
     }
 }

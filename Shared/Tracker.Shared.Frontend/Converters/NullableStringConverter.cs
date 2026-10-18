@@ -7,7 +7,9 @@ public sealed class NullableStringConverter(string nullText) : IValueConverter
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         if (value is string text && !string.IsNullOrWhiteSpace(text))
+        {
             return text;
+        }
 
         return nullText;
     }

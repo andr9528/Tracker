@@ -1,12 +1,10 @@
-using System.ComponentModel;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Data;
-using Tracker.Module.Dining.Model.Entity;
 using Tracker.Shared.Abstraction.Enums;
+using Tracker.Shared.Frontend.Converters;
 using Tracker.Shared.Frontend.Core;
 using Tracker.Shared.Frontend.Extensions;
 using Tracker.Shared.Frontend.Factory;
-using Tracker.Shared.Frontend.Converters;
 using BooleanConverter = Tracker.Shared.Frontend.Converters.BooleanConverter;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients;

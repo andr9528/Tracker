@@ -6,32 +6,31 @@ using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Frontend.Abstraction.Attributes;
 using Tracker.Shared.Frontend.Factory;
 
-namespace Tracker.Module.Dining.Presentation.Pages.Ingredients
+namespace Tracker.Module.Dining.Presentation.Pages.Ingredients;
+
+/// <summary>
+///     Creates a new ingredient. Editing is always enabled.
+/// </summary>
+[SkipOnBackNavigation]
+internal sealed partial class IngredientCreationPage : Border
 {
-    /// <summary>
-    /// Creates a new ingredient. Editing is always enabled.
-    /// </summary>
-    [SkipOnBackNavigation]
-    internal sealed partial class IngredientCreationPage : Border
+    public IngredientCreationPage(IngredientCreationPageArguments arguments)
     {
-        public IngredientCreationPage(IngredientCreationPageArguments arguments)
-        {
-            ArgumentNullException.ThrowIfNull(arguments);
-            this.ConfigurePageBorder();
+        ArgumentNullException.ThrowIfNull(arguments);
+        this.ConfigurePageBorder();
 
-            DataContext = new IngredientCreationPageViewModel(arguments);
+        DataContext = new IngredientCreationPageViewModel(arguments);
 
-            var viewModel = (IngredientCreationPageViewModel) DataContext;
-            var logic = new IngredientCreationPageLogic(viewModel);
-            var ui = new IngredientCreationPageUi(logic, viewModel);
+        var viewModel = (IngredientCreationPageViewModel) DataContext;
+        var logic = new IngredientCreationPageLogic(viewModel);
+        var ui = new IngredientCreationPageUi(logic, viewModel);
 
-            Child = ui.CreateContentGrid();
-        }
-
-        internal sealed record IngredientCreationPageArguments(
-            IEntityQueryService<Ingredient, SearchableIngredient> IngredientQueryService,
-            INavigationService NavigationService,
-            ILoggerFactory LoggerFactory,
-            DiningArgumentsFactory ArgumentsFactory);
+        Child = ui.CreateContentGrid();
     }
+
+    internal sealed record IngredientCreationPageArguments(
+        IEntityQueryService<Ingredient, SearchableIngredient> IngredientQueryService,
+        INavigationService NavigationService,
+        ILoggerFactory LoggerFactory,
+        DiningArgumentsFactory ArgumentsFactory);
 }

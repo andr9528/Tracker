@@ -5,7 +5,7 @@ namespace Tracker.Module.Dining.Presentation.Pages.Dishes;
 
 internal sealed partial class DishesPage
 {
-    internal sealed partial class DishesPageViewModel(DishesPageArguments arguments) : ObservableObject
+    internal sealed class DishesPageViewModel(DishesPageArguments arguments) : ObservableObject
     {
         public DishesPageArguments Arguments { get; } = arguments;
 

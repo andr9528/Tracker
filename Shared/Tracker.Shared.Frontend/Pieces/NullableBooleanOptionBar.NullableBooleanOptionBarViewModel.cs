@@ -6,18 +6,9 @@ public sealed partial class NullableBooleanOptionBar
 {
     public sealed partial class NullableBooleanOptionBarViewModel : ObservableObject
     {
-        public NullableBooleanOptionBarArguments Arguments { get; }
-        public event EventHandler? SelectionChanged;
-
-        [ObservableProperty] private bool? selectedValue;
-
         [ObservableProperty] private string header = string.Empty;
 
-        public RadioButton YesButton { get; set; } = null!;
-
-        public RadioButton NoButton { get; set; } = null!;
-
-        public RadioButton EitherButton { get; set; } = null!;
+        [ObservableProperty] private bool? selectedValue;
 
         public NullableBooleanOptionBarViewModel(NullableBooleanOptionBarArguments arguments)
         {
@@ -25,6 +16,15 @@ public sealed partial class NullableBooleanOptionBar
             Header = arguments.Header;
             SelectedValue = arguments.InitialValue;
         }
+
+        public NullableBooleanOptionBarArguments Arguments { get; }
+
+        public RadioButton YesButton { get; set; } = null!;
+
+        public RadioButton NoButton { get; set; } = null!;
+
+        public RadioButton EitherButton { get; set; } = null!;
+        public event EventHandler? SelectionChanged;
 
         partial void OnSelectedValueChanged(bool? value)
         {

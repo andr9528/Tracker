@@ -10,9 +10,8 @@ internal sealed partial class DishDetailsPage
     internal sealed partial class DishDetailsPageViewModel(DishDetailsPageArguments arguments)
         : BaseDetailsPageViewModel
     {
-        public DishDetailsPageArguments Arguments { get; } = arguments;
-
         [ObservableProperty] private Dish dish = null!;
+        public DishDetailsPageArguments Arguments { get; } = arguments;
 
         public DishEditor DishEditor { get; set; } = null!;
     }

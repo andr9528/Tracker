@@ -130,7 +130,7 @@ public class LoggingStartupModule : IServiceStartupModule
     }
 
     /// <summary>
-    /// Remove / Add relevant log level overrides for specific usage here.
+    ///     Remove / Add relevant log level overrides for specific usage here.
     /// </summary>
     /// <param name="configuration"></param>
     /// <returns></returns>

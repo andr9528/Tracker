@@ -6,15 +6,6 @@ namespace Tracker.Shared.Frontend.Pieces;
 
 public sealed partial class EntitySelectorPiece<T> : Border where T : IEntity
 {
-    private EntitySelectorPieceViewModel ViewModel =>
-        (EntitySelectorPieceViewModel) DataContext;
-
-    private EntitySelectorPieceLogic Logic { get; }
-
-    private EntitySelectorPieceUi Ui { get; }
-
-    public IEntitySelectorPieceApi Api => Logic;
-
     public EntitySelectorPiece(EntitySelectorPieceArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -29,6 +20,15 @@ public sealed partial class EntitySelectorPiece<T> : Border where T : IEntity
 
         Logic.Initialize();
     }
+
+    private EntitySelectorPieceViewModel ViewModel =>
+        (EntitySelectorPieceViewModel) DataContext;
+
+    private EntitySelectorPieceLogic Logic { get; }
+
+    private EntitySelectorPieceUi Ui { get; }
+
+    public IEntitySelectorPieceApi Api => Logic;
 
     public sealed record EntitySelectorPieceArguments(
         string Header,

@@ -5,5 +5,4 @@ namespace Tracker.Module.Budget.Abstraction.Entity;
 
 public interface IPaymentType : ISearchablePaymentType, IEntity
 {
-
 }

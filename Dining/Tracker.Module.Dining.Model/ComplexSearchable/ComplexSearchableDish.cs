@@ -5,9 +5,9 @@ namespace Tracker.Module.Dining.Model.ComplexSearchable;
 
 public class ComplexSearchableDish : IComplexSearchable<SearchableDish>
 {
-    /// <inheritdoc />
-    public SearchableDish Searchable { get; set; } = new();
-
     public string? Name { get; set; }
     public string? Ingredients { get; set; }
+
+    /// <inheritdoc />
+    public SearchableDish Searchable { get; set; } = new();
 }

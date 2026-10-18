@@ -9,7 +9,7 @@ using Tracker.Shared.Frontend.Factory;
 namespace Tracker.Module.Dining.Presentation.Pages.Dishes;
 
 /// <summary>
-/// Creates a new dish. Editing is always enabled.
+///     Creates a new dish. Editing is always enabled.
 /// </summary>
 [SkipOnBackNavigation]
 internal sealed partial class DishCreationPage : Border

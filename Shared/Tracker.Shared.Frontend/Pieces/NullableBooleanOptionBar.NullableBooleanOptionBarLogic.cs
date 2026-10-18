@@ -4,12 +4,12 @@ public sealed partial class NullableBooleanOptionBar
 {
     internal sealed class NullableBooleanOptionBarLogic
     {
-        private NullableBooleanOptionBarViewModel ViewModel { get; }
-
         public NullableBooleanOptionBarLogic(NullableBooleanOptionBarViewModel viewModel)
         {
             ViewModel = viewModel;
         }
+
+        private NullableBooleanOptionBarViewModel ViewModel { get; }
 
         internal void YesClicked(object sender, RoutedEventArgs e)
         {

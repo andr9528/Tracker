@@ -5,8 +5,6 @@ namespace Tracker.Shared.Frontend.Pieces;
 
 internal sealed partial class DateTimePicker : Border
 {
-    internal DateTimePickerViewModel ViewModel => (DateTimePickerViewModel) DataContext;
-
     public DateTimePicker(DateTimePickerArguments arguments)
     {
         DataContext = new DateTimePickerViewModel(arguments);
@@ -17,6 +15,8 @@ internal sealed partial class DateTimePicker : Border
 
         Child = ui.CreateContentGrid();
     }
+
+    internal DateTimePickerViewModel ViewModel => (DateTimePickerViewModel) DataContext;
 
     internal record DateTimePickerArguments(
         string Header,

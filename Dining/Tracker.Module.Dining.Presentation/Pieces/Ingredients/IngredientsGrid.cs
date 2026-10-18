@@ -12,10 +12,6 @@ namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients;
 
 internal sealed partial class IngredientsGrid : Border, INavigationRefreshable, ISuppliedEntityGrid<Ingredient>
 {
-    private IngredientsGridViewModel ViewModel => (IngredientsGridViewModel) DataContext;
-    private IngredientsGridLogic Logic { get; }
-    public IIngredientsGridApi Api => Logic;
-
     public IngredientsGrid(IngredientsGridArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -30,6 +26,10 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable, 
 
         _ = Logic.RefreshIngredients();
     }
+
+    private IngredientsGridViewModel ViewModel => (IngredientsGridViewModel) DataContext;
+    private IngredientsGridLogic Logic { get; }
+    public IIngredientsGridApi Api => Logic;
 
     /// <inheritdoc />
     public void RefreshAfterNavigation()
@@ -53,13 +53,13 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable, 
     internal interface IIngredientsGridApi : IEntitySelectionGridApi<Ingredient>
     {
         Ingredient? SelectedIngredient { get; }
+        IReadOnlyCollection<Ingredient> SuppliedIngredients { get; }
 
         void SetSuppliedIngredients(IEnumerable<Ingredient> ingredients);
         void AddSuppliedIngredients(IEnumerable<Ingredient> ingredients);
         void AddSuppliedIngredient(Ingredient ingredient);
         void RemoveSuppliedIngredient(Ingredient ingredient);
         void ClearSuppliedIngredients();
-        IReadOnlyCollection<Ingredient> SuppliedIngredients { get; }
 
         Task Refresh();
     }

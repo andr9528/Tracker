@@ -7,5 +7,4 @@ public interface IIngredient : ISearchableIngredient, IEntity
 {
     ICollection<IDishIngredient> DishIngredients { get; set; }
     bool InStock { get; set; }
-
 }

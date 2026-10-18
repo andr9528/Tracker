@@ -1,5 +1,6 @@
 using Windows.UI.Text;
 using Microsoft.UI;
+using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Documents;
 using Tracker.Module.Dining.Abstraction.Records;
@@ -148,7 +149,7 @@ internal sealed partial class DiningHomepage
             TextBlock textBlock = TextBlockFactory.CreateBlackText();
 
             textBlock.FontSize = 18;
-            textBlock.FontWeight = Microsoft.UI.Text.FontWeights.SemiBold;
+            textBlock.FontWeight = FontWeights.SemiBold;
             textBlock.TextWrapping = TextWrapping.Wrap;
 
             textBlock.SetBinding(TextBlock.TextProperty, new Binding
@@ -333,11 +334,9 @@ internal sealed partial class DiningHomepage
 
             content.Children.Add(CreateStatisticHeading(heading).SetRow(0));
 
-            content.Children.Add(CreateStatisticValue(nameBindingPath, 20, Microsoft.UI.Text.FontWeights.SemiBold)
-                .SetRow(1));
+            content.Children.Add(CreateStatisticValue(nameBindingPath, 20, FontWeights.SemiBold).SetRow(1));
 
-            content.Children.Add(CreateStatisticValue(detailsBindingPath, 16, Microsoft.UI.Text.FontWeights.Normal)
-                .SetRow(2));
+            content.Children.Add(CreateStatisticValue(detailsBindingPath, 16, FontWeights.Normal).SetRow(2));
 
             return CreateStatisticCardBorder(content);
         }
@@ -352,8 +351,7 @@ internal sealed partial class DiningHomepage
 
             content.Children.Add(CreateStatisticHeading(heading).SetRow(0));
 
-            content.Children.Add(
-                CreateStatisticValue(bindingPath, 28, Microsoft.UI.Text.FontWeights.SemiBold).SetRow(1));
+            content.Children.Add(CreateStatisticValue(bindingPath, 28, FontWeights.SemiBold).SetRow(1));
 
             return CreateStatisticCardBorder(content);
         }
@@ -378,7 +376,7 @@ internal sealed partial class DiningHomepage
 
             textBlock.Text = heading;
             textBlock.FontSize = 20;
-            textBlock.FontWeight = Microsoft.UI.Text.FontWeights.SemiBold;
+            textBlock.FontWeight = FontWeights.SemiBold;
             textBlock.TextWrapping = TextWrapping.Wrap;
 
             return textBlock;

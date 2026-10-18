@@ -1,20 +1,10 @@
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Shared.Frontend.Factory;
-using static Tracker.Module.Dining.Presentation.Pieces.Dishes.DishEditor;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Dishes;
 
 internal sealed partial class DishEditor : Border
 {
-    private DishEditorViewModel ViewModel =>
-        (DishEditorViewModel) DataContext;
-
-    private DishEditorLogic Logic { get; }
-
-    private DishEditorUi Ui { get; }
-
-    public IDishEditorApi Api => Logic;
-
     public DishEditor(DishEditorArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -30,6 +20,15 @@ internal sealed partial class DishEditor : Border
         Logic.ApplyInitialIngredients();
         Logic.UpdateReadOnlyState();
     }
+
+    private DishEditorViewModel ViewModel =>
+        (DishEditorViewModel) DataContext;
+
+    private DishEditorLogic Logic { get; }
+
+    private DishEditorUi Ui { get; }
+
+    public IDishEditorApi Api => Logic;
 
     internal sealed record DishEditorArguments(
         DiningArgumentsFactory ArgumentsFactory,

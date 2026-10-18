@@ -9,10 +9,10 @@ internal sealed partial class DishEditor
 {
     internal sealed partial class DishEditorViewModel(DishEditorArguments arguments) : ObservableObject
     {
-        internal DishEditorArguments Arguments { get; } = arguments;
+        [ObservableProperty] private bool isReadOnly = arguments.IsReadOnly;
 
-        public event EventHandler? IsReadOnlyChanged;
-        public event EventHandler? NameChanged;
+        [ObservableProperty] private string name = arguments.Dish?.Name ?? string.Empty;
+        internal DishEditorArguments Arguments { get; } = arguments;
 
         internal TextBox NameTextBox { get; set; } = null!;
 
@@ -20,9 +20,8 @@ internal sealed partial class DishEditor
         internal IngredientsGrid SuppliedIngredientsGrid { get; set; } = null!;
         internal EntitySelectionPiece<Ingredient> IngredientSelector { get; set; } = null!;
 
-        [ObservableProperty] private string name = arguments.Dish?.Name ?? string.Empty;
-
-        [ObservableProperty] private bool isReadOnly = arguments.IsReadOnly;
+        public event EventHandler? IsReadOnlyChanged;
+        public event EventHandler? NameChanged;
 
         partial void OnIsReadOnlyChanged(bool value)
         {

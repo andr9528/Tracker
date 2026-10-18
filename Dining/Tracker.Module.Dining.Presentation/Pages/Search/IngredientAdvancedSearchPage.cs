@@ -9,9 +9,6 @@ namespace Tracker.Module.Dining.Presentation.Pages.Search;
 [SkipOnBackNavigation]
 internal sealed partial class IngredientAdvancedSearchPage : Border
 {
-    private IngredientAdvancedSearchPageViewModel ViewModel =>
-        (IngredientAdvancedSearchPageViewModel) DataContext;
-
     public IngredientAdvancedSearchPage(IngredientAdvancedSearchPageArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -24,6 +21,9 @@ internal sealed partial class IngredientAdvancedSearchPage : Border
 
         Child = ui.CreateContentGrid();
     }
+
+    private IngredientAdvancedSearchPageViewModel ViewModel =>
+        (IngredientAdvancedSearchPageViewModel) DataContext;
 
     internal record IngredientAdvancedSearchPageArguments(
         ComplexSearchableIngredient Searchable,

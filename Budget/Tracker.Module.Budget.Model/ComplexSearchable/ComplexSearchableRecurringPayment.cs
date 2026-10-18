@@ -5,9 +5,6 @@ namespace Tracker.Module.Budget.Model.ComplexSearchable;
 
 public class ComplexSearchableRecurringPayment : IComplexSearchable<SearchableRecurringPayment>
 {
-    /// <inheritdoc />
-    public SearchableRecurringPayment Searchable { get; set; } = new();
-
     public DateOnly? StartFrom { get; set; }
 
     public DateOnly? StartTo { get; set; }
@@ -15,4 +12,7 @@ public class ComplexSearchableRecurringPayment : IComplexSearchable<SearchableRe
     public DateOnly? EndFrom { get; set; }
 
     public DateOnly? EndTo { get; set; }
+
+    /// <inheritdoc />
+    public SearchableRecurringPayment Searchable { get; set; } = new();
 }

@@ -1,7 +1,6 @@
 using Windows.Storage.Pickers;
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Abstraction.Records;
-using Tracker.Module.Dining.Model.Entity;
 using Tracker.Shared.Frontend.Core;
 using WinRT.Interop;
 
@@ -52,7 +51,9 @@ internal sealed partial class DiningImportPage
             try
             {
                 if (!ViewModel.CanImport)
+                {
                     return;
+                }
 
                 BeginImport();
 
@@ -112,7 +113,9 @@ internal sealed partial class DiningImportPage
             nint windowHandle = WindowNative.GetWindowHandle(mainWindow);
 
             if (windowHandle == 0)
+            {
                 throw new InvalidOperationException("The main window returned an invalid native window handle.");
+            }
 
             InitializeWithWindow.Initialize(picker, windowHandle);
 

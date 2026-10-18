@@ -12,6 +12,13 @@ public class SearchablePaymentTemplate : ISearchablePaymentTemplate
 
     #endregion
 
+    #region Implementation of ISearchablePaymentTemplate
+
+    /// <inheritdoc />
+    public int RecurringPaymentId { get; set; }
+
+    #endregion
+
     #region Implementation of ISearchableCommonPayment
 
     /// <inheritdoc />
@@ -22,13 +29,6 @@ public class SearchablePaymentTemplate : ISearchablePaymentTemplate
 
     /// <inheritdoc />
     public int PaymentTypeId { get; set; }
-
-    #endregion
-
-    #region Implementation of ISearchablePaymentTemplate
-
-    /// <inheritdoc />
-    public int RecurringPaymentId { get; set; }
 
     #endregion
 }

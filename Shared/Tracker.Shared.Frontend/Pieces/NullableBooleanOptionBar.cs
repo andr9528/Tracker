@@ -4,12 +4,6 @@ namespace Tracker.Shared.Frontend.Pieces;
 
 public sealed partial class NullableBooleanOptionBar : Border
 {
-    public NullableBooleanOptionBarViewModel ViewModel =>
-        (NullableBooleanOptionBarViewModel) DataContext;
-
-    private NullableBooleanOptionBarUi Ui { get; }
-    private NullableBooleanOptionBarLogic Logic { get; }
-
     public NullableBooleanOptionBar(NullableBooleanOptionBarArguments arguments)
     {
         ArgumentNullException.ThrowIfNull(arguments);
@@ -22,6 +16,12 @@ public sealed partial class NullableBooleanOptionBar : Border
 
         Child = Ui.CreateContentGrid();
     }
+
+    public NullableBooleanOptionBarViewModel ViewModel =>
+        (NullableBooleanOptionBarViewModel) DataContext;
+
+    private NullableBooleanOptionBarUi Ui { get; }
+    private NullableBooleanOptionBarLogic Logic { get; }
 
     public sealed record NullableBooleanOptionBarArguments(string Header, bool? InitialValue = null);
 }

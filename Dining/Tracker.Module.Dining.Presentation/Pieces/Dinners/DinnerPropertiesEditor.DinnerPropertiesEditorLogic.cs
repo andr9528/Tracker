@@ -8,6 +8,24 @@ internal sealed partial class DinnerPropertiesEditor
     internal sealed class DinnerPropertiesEditorLogic : BaseLogic<DinnerPropertiesEditorViewModel>,
         IDinnerPropertiesEditorApi
     {
+        public DinnerPropertiesEditorLogic(DinnerPropertiesEditorViewModel viewModel) : base(viewModel)
+        {
+            ViewModel.IsReadOnlyChanged += OnIsReadOnlyChanged;
+        }
+
+        private void OnIsReadOnlyChanged(object? sender, EventArgs e)
+        {
+            UpdateReadOnlyState();
+        }
+
+        internal void UpdateReadOnlyState()
+        {
+            foreach (CheckBox checkBox in ViewModel.CheckBoxes)
+            {
+                checkBox.IsEnabled = !ViewModel.IsReadOnly;
+            }
+        }
+
         #region Implementation of IDinnerPropertiesEditorApi
 
         /// <inheritdoc />
@@ -90,23 +108,5 @@ internal sealed partial class DinnerPropertiesEditor
         }
 
         #endregion
-
-        public DinnerPropertiesEditorLogic(DinnerPropertiesEditorViewModel viewModel) : base(viewModel)
-        {
-            ViewModel.IsReadOnlyChanged += OnIsReadOnlyChanged;
-        }
-
-        private void OnIsReadOnlyChanged(object? sender, EventArgs e)
-        {
-            UpdateReadOnlyState();
-        }
-
-        internal void UpdateReadOnlyState()
-        {
-            foreach (CheckBox checkBox in ViewModel.CheckBoxes)
-            {
-                checkBox.IsEnabled = !ViewModel.IsReadOnly;
-            }
-        }
     }
 }
