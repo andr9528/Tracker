@@ -222,5 +222,19 @@ internal sealed partial class IngredientsGrid
         }
 
         #endregion
+
+        #region Implementation of IEntitySelectionGridApi<Ingredient>
+
+        /// <inheritdoc />
+        public Ingredient? SelectedEntity => ViewModel.SelectedIngredient;
+
+        /// <inheritdoc />
+        public event EventHandler? SelectionChanged
+        {
+            add => ViewModel.IngredientSelectionChanged += value;
+            remove => ViewModel.IngredientSelectionChanged -= value;
+        }
+
+        #endregion
     }
 }

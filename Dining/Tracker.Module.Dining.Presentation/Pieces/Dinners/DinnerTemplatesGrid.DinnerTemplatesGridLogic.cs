@@ -96,13 +96,23 @@ internal sealed partial class DinnerTemplatesGrid
         #region Implementation of IDinnerTemplatesGridApi
 
         /// <inheritdoc />
-        public DinnerTemplate? SelectedDinnerTemplate =>
-            ViewModel.SelectedDinnerTemplate;
-
-        /// <inheritdoc />
         public Task Refresh()
         {
             return RefreshDinnerTemplates();
+        }
+
+        #endregion
+
+        #region Implementation of IEntitySelectionGridApi<DinnerTemplate>
+
+        /// <inheritdoc />
+        public DinnerTemplate? SelectedEntity => ViewModel.SelectedDinnerTemplate;
+
+        /// <inheritdoc />
+        public event EventHandler? SelectionChanged
+        {
+            add => ViewModel.DinnerTemplateSelectionChanged += value;
+            remove => ViewModel.DinnerTemplateSelectionChanged -= value;
         }
 
         #endregion

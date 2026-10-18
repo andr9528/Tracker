@@ -2,13 +2,14 @@ using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
 using Tracker.Shared.Abstraction.Enums;
+using Tracker.Shared.Abstraction.Interfaces.Frontend;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Frontend.Factory;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Dinners;
 
-internal sealed partial class DinnerTemplatesGrid : Border, INavigationRefreshable
+internal sealed partial class DinnerTemplatesGrid : Border, INavigationRefreshable, IEntitySelectionGrid<DinnerTemplate>
 {
     private DinnerTemplatesGridViewModel ViewModel =>
         (DinnerTemplatesGridViewModel) DataContext;
@@ -53,10 +54,18 @@ internal sealed partial class DinnerTemplatesGrid : Border, INavigationRefreshab
         GridDisplayMode DisplayMode = GridDisplayMode.NORMAL,
         int SelectedDinnerTemplateId = 0);
 
-    internal interface IDinnerTemplatesGridApi
+    internal interface IDinnerTemplatesGridApi : IEntitySelectionGridApi<DinnerTemplate>
     {
-        DinnerTemplate? SelectedDinnerTemplate { get; }
-
         Task Refresh();
     }
+
+    #region Implementation of IEntitySelectionGrid<DinnerTemplate>
+
+    /// <inheritdoc />
+    public IEntitySelectionGridApi<DinnerTemplate> SelectionApi => Api;
+
+    /// <inheritdoc />
+    public UIElement Content => this;
+
+    #endregion
 }

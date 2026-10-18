@@ -111,7 +111,14 @@ internal sealed partial class DishesGrid
         #region Implementation of IDishesGridApi
 
         /// <inheritdoc />
-        public Dish? SelectedDish => ViewModel.SelectedDish;
+        public Dish? SelectedEntity => ViewModel.SelectedDish;
+
+        ///<inheritdoc/>
+        public event EventHandler? SelectionChanged
+        {
+            add => ViewModel.DishSelectionChanged += value;
+            remove => ViewModel.DishSelectionChanged -= value;
+        }
 
         /// <inheritdoc />
         public IReadOnlyCollection<Dish> SuppliedDishes =>

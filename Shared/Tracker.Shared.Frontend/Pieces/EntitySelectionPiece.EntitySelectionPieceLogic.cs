@@ -9,7 +9,7 @@ public sealed partial class EntitySelectionPiece<T>
     {
         internal void AddClicked(object? sender, EventArgs e)
         {
-            T? entity = ViewModel.Arguments.AvailableGrid.SelectedEntity;
+            T? entity = ViewModel.Arguments.AvailableGrid.SelectionApi.SelectedEntity;
 
             if (entity is null)
             {
@@ -24,7 +24,7 @@ public sealed partial class EntitySelectionPiece<T>
 
         internal void RemoveClicked(object? sender, EventArgs e)
         {
-            T? entity = ViewModel.Arguments.SuppliedGrid.SelectedEntity;
+            T? entity = ViewModel.Arguments.SuppliedGrid.SelectionApi.SelectedEntity;
 
             if (entity is null)
             {

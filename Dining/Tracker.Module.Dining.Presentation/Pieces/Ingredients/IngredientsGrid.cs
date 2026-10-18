@@ -50,7 +50,7 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable, 
         GridDisplayMode DisplayMode = GridDisplayMode.NORMAL,
         int SelectedIngredientId = 0);
 
-    internal interface IIngredientsGridApi
+    internal interface IIngredientsGridApi : IEntitySelectionGridApi<Ingredient>
     {
         Ingredient? SelectedIngredient { get; }
 
@@ -67,7 +67,7 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable, 
     #region Implementation of IEntitySelectionGrid<Ingredient>
 
     /// <inheritdoc />
-    public Ingredient? SelectedEntity => Api.SelectedIngredient;
+    public IEntitySelectionGridApi<Ingredient> SelectionApi => Api;
 
     /// <inheritdoc />
     public UIElement Content => this;

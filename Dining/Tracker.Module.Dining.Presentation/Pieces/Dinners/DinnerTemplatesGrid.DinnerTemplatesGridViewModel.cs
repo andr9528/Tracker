@@ -15,6 +15,7 @@ internal sealed partial class DinnerTemplatesGrid
         public DinnerTemplatesGridArguments Arguments { get; } = arguments;
 
         public event EventHandler? SearchChanged;
+        public event EventHandler? DinnerTemplateSelectionChanged;
 
         internal DataGrid DataGrid { get; set; } = null!;
 
@@ -68,12 +69,12 @@ internal sealed partial class DinnerTemplatesGrid
         {
             int templateId = value?.Id ?? 0;
 
-            if (SelectedDinnerTemplateId == templateId)
+            if (SelectedDinnerTemplateId != templateId)
             {
-                return;
+                SelectedDinnerTemplateId = templateId;
             }
 
-            SelectedDinnerTemplateId = templateId;
+            DinnerTemplateSelectionChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

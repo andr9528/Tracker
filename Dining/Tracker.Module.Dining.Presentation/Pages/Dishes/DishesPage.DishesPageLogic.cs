@@ -19,7 +19,7 @@ internal sealed partial class DishesPage
 
         public void ShowDetailsClicked(object sender, RoutedEventArgs e)
         {
-            Dish? selectedDish = ViewModel.DishesGrid.Api.SelectedDish;
+            Dish? selectedDish = ViewModel.DishesGrid.Api.SelectedEntity;
 
             if (selectedDish == null) return;
 

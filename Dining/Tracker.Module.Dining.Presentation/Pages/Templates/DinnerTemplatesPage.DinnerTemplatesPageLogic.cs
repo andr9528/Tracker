@@ -20,7 +20,7 @@ internal sealed partial class DinnerTemplatesPage
 
         public void ShowDetailsClicked(object sender, RoutedEventArgs e)
         {
-            DinnerTemplate? selectedTemplate = ViewModel.DinnerTemplatesGrid.Api.SelectedDinnerTemplate;
+            DinnerTemplate? selectedTemplate = ViewModel.DinnerTemplatesGrid.Api.SelectedEntity;
 
             if (selectedTemplate is null)
             {

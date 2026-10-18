@@ -52,10 +52,8 @@ internal sealed partial class DishesGrid : Border, INavigationRefreshable, ISupp
         GridDisplayMode DisplayMode = GridDisplayMode.NORMAL,
         int SelectedDishId = 0);
 
-    internal interface IDishesGridApi
+    internal interface IDishesGridApi : IEntitySelectionGridApi<Dish>
     {
-        Dish? SelectedDish { get; }
-
         IReadOnlyCollection<Dish> SuppliedDishes { get; }
 
         void SetSuppliedDishes(IEnumerable<Dish> dishes);
@@ -67,15 +65,15 @@ internal sealed partial class DishesGrid : Border, INavigationRefreshable, ISupp
         Task Refresh();
     }
 
+
     #region Implementation of IEntitySelectionGrid<Dish>
 
-    /// <inheritdoc />
-    public Dish? SelectedEntity => Api.SelectedDish;
+    public IEntitySelectionGridApi<Dish> SelectionApi => Api;
 
-    /// <inheritdoc />
     public UIElement Content => this;
 
     #endregion
+
 
     #region Implementation of ISuppliedEntityGrid<Dish>
 
