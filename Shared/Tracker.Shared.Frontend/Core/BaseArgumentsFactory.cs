@@ -17,4 +17,13 @@ public abstract class BaseArgumentsFactory
     {
         return new EntitySelectionPiece<T>.EntitySelectionPieceArguments(header, availableGrid, suppliedGrid);
     }
+
+
+    public EntitySelectorPiece<T>.EntitySelectorPieceArguments CreateEntitySelectorPieceArguments<T>(
+        string header, IEntitySelectionGrid<T> grid, Func<T, string> selectionTextFactory,
+        string emptySelectionText = "None selected") where T : IEntity
+    {
+        return new EntitySelectorPiece<T>.EntitySelectorPieceArguments(header, grid, selectionTextFactory,
+            emptySelectionText);
+    }
 }
