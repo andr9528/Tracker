@@ -14,34 +14,33 @@ internal sealed partial class DinnerPropertiesEditor
         protected override void ConfigureGrid(Grid grid)
         {
             grid.RowSpacing = 8;
-            grid.ColumnSpacing = 24;
 
-            grid.DefineRows(GridLength.Auto, GridLength.Auto, GridLength.Auto);
-
-            grid.DefineColumns(new GridLength(1, GridUnitType.Star), new GridLength(1, GridUnitType.Star));
+            grid.DefineRows(GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto,
+                GridLength.Auto);
         }
+
 
         protected override void AddControlsToGrid(Grid grid)
         {
-            grid.Children.Add(CreateCheckBox("Take away?", nameof(DinnerPropertiesEditorViewModel.IsTakeAway)).SetRow(0)
-                .SetColumn(0));
-
-            grid.Children.Add(CreateCheckBox("Eaten out?", nameof(DinnerPropertiesEditorViewModel.IsEatenOut)).SetRow(1)
-                .SetColumn(0));
+            grid.Children.Add(
+                CreateCheckBox("Take away?", nameof(DinnerPropertiesEditorViewModel.IsTakeAway)).SetRow(0));
 
             grid.Children.Add(
-                CreateCheckBox("Ready made dish?", nameof(DinnerPropertiesEditorViewModel.IsReadyMadeDish)).SetRow(2)
-                    .SetColumn(0));
+                CreateCheckBox("Eaten out?", nameof(DinnerPropertiesEditorViewModel.IsEatenOut)).SetRow(1));
+
+            grid.Children.Add(CreateCheckBox("Ready made dish?",
+                nameof(DinnerPropertiesEditorViewModel.IsReadyMadeDish)).SetRow(2));
 
             grid.Children.Add(CreateCheckBox("Has leftovers?", nameof(DinnerPropertiesEditorViewModel.HasLeftovers))
-                .SetRow(0).SetColumn(1));
+                .SetRow(3));
 
             grid.Children.Add(CreateCheckBox("Enough for dinner?",
-                nameof(DinnerPropertiesEditorViewModel.LeftoversEnoughForDinner)).SetRow(1).SetColumn(1));
+                nameof(DinnerPropertiesEditorViewModel.LeftoversEnoughForDinner)).SetRow(4));
 
             grid.Children.Add(CreateCheckBox("Is leftovers?", nameof(DinnerPropertiesEditorViewModel.IsLeftovers))
-                .SetRow(2).SetColumn(1));
+                .SetRow(5));
         }
+
 
         private Grid CreateCheckBox(string label, string bindingPath)
         {

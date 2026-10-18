@@ -14,16 +14,21 @@ internal sealed partial class DinnerTemplateEditor
         protected override void ConfigureGrid(Grid grid)
         {
             grid.RowSpacing = 16;
+            grid.ColumnSpacing = 24;
 
             grid.DefineRows(GridLength.Auto, GridLength.Auto);
+
+            grid.DefineColumns(new GridLength(1, GridUnitType.Star), new GridLength(1, GridUnitType.Star));
         }
+
 
         protected override void AddControlsToGrid(Grid grid)
         {
-            grid.Children.Add(CreateNameTextBox().SetRow(0));
+            grid.Children.Add(CreateNameTextBox().SetRow(0).SetColumn(0));
 
-            grid.Children.Add(CreateDinnerPropertiesEditor().SetRow(1));
+            grid.Children.Add(CreateDinnerPropertiesEditor().SetRow(1).SetColumn(0));
         }
+
 
         private TextBox CreateNameTextBox()
         {
