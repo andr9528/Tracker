@@ -1,3 +1,4 @@
+using Tracker.Module.Dining.Services.Managers;
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Abstraction.Services;
 using Tracker.Module.Dining.Model.Entity;
@@ -19,12 +20,15 @@ internal sealed partial class IngredientsGrid
         private readonly ILogger<IngredientsGridLogic> logger;
         private readonly IEntityQueryService<Ingredient, SearchableIngredient> queryService;
         private readonly IStatisticsService statisticsService;
+        private readonly SuppliedEntityManager<Ingredient> suppliedManager;
 
         public IngredientsGridLogic(IngredientsGridViewModel viewModel) : base(viewModel)
         {
             queryService = ViewModel.Arguments.QueryService;
             statisticsService = ViewModel.Arguments.StatisticsService;
             logger = ViewModel.Arguments.LoggerFactory.CreateLogger<IngredientsGridLogic>();
+
+            suppliedManager = new SuppliedEntityManager<Ingredient>(ViewModel.Arguments.EntitySource, x => x.Id);
 
             ViewModel.SearchChanged += SearchChanged;
         }
@@ -59,7 +63,7 @@ internal sealed partial class IngredientsGrid
         internal async Task<IEnumerable<IngredientGridItem>> GetItems()
         {
             var ingredients = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
-            ingredients = ApplyEntitySource(ingredients);
+            ingredients = suppliedManager.ApplyEntitySource(ingredients);
             var averageDays = await statisticsService.GetIngredientAverageDaysBetweenUsage();
             var items = ingredients.Select(x => new IngredientGridItem(x, averageDays.GetValueOrDefault(x.Id)))
                 .ToList();
@@ -67,45 +71,19 @@ internal sealed partial class IngredientsGrid
             return items;
         }
 
-        private List<Ingredient> ApplyEntitySource(List<Ingredient> ingredients)
-        {
-            if (ViewModel.Arguments.EntitySource == GridEntitySource.ALL)
-            {
-                return ingredients;
-            }
-
-            var suppliedIds = suppliedIngredients.Select(x => x.Id).ToHashSet();
-
-            return ViewModel.Arguments.EntitySource switch
-            {
-                GridEntitySource.SUPPLIED => ingredients.Where(x => suppliedIds.Contains(x.Id)).ToList(),
-
-                GridEntitySource.NOT_SUPPLIED => ingredients.Where(x => !suppliedIds.Contains(x.Id)).ToList(),
-
-                var _ => ingredients,
-            };
-        }
-
-
         #region Implementation of IIngredientsGridApi
 
         /// <inheritdoc />
         public Ingredient? SelectedIngredient => ViewModel.SelectedIngredient;
 
-        private readonly List<Ingredient> suppliedIngredients = [];
-
         /// <inheritdoc />
         public IReadOnlyCollection<Ingredient> SuppliedIngredients =>
-            suppliedIngredients.AsReadOnly();
+            suppliedManager.SuppliedEntities;
 
         /// <inheritdoc />
         public void SetSuppliedIngredients(IEnumerable<Ingredient> ingredients)
         {
-            EnsureSuppliedSource();
-            ArgumentNullException.ThrowIfNull(ingredients);
-
-            suppliedIngredients.Clear();
-            AddUniqueIngredients(ingredients);
+            suppliedManager.Set(ingredients);
 
             _ = RefreshIngredients();
         }
@@ -113,10 +91,7 @@ internal sealed partial class IngredientsGrid
         /// <inheritdoc />
         public void AddSuppliedIngredients(IEnumerable<Ingredient> ingredients)
         {
-            EnsureSuppliedSource();
-            ArgumentNullException.ThrowIfNull(ingredients);
-
-            AddUniqueIngredients(ingredients);
+            suppliedManager.AddRange(ingredients);
 
             _ = RefreshIngredients();
         }
@@ -124,13 +99,7 @@ internal sealed partial class IngredientsGrid
         /// <inheritdoc />
         public void AddSuppliedIngredient(Ingredient ingredient)
         {
-            EnsureSuppliedSource();
-            ArgumentNullException.ThrowIfNull(ingredient);
-
-            if (suppliedIngredients.All(x => x.Id != ingredient.Id))
-            {
-                suppliedIngredients.Add(ingredient);
-            }
+            suppliedManager.Add(ingredient);
 
             _ = RefreshIngredients();
         }
@@ -138,10 +107,7 @@ internal sealed partial class IngredientsGrid
         /// <inheritdoc />
         public void RemoveSuppliedIngredient(Ingredient ingredient)
         {
-            EnsureSuppliedSource();
-            ArgumentNullException.ThrowIfNull(ingredient);
-
-            suppliedIngredients.RemoveAll(x => x.Id == ingredient.Id);
+            suppliedManager.Remove(ingredient);
 
             _ = RefreshIngredients();
         }
@@ -149,9 +115,7 @@ internal sealed partial class IngredientsGrid
         /// <inheritdoc />
         public void ClearSuppliedIngredients()
         {
-            EnsureSuppliedSource();
-
-            suppliedIngredients.Clear();
+            suppliedManager.Clear();
 
             _ = RefreshIngredients();
         }
@@ -160,26 +124,6 @@ internal sealed partial class IngredientsGrid
         public Task Refresh()
         {
             return RefreshIngredients();
-        }
-
-        private void AddUniqueIngredients(IEnumerable<Ingredient> ingredients)
-        {
-            foreach (Ingredient ingredient in ingredients)
-            {
-                if (suppliedIngredients.All(x => x.Id != ingredient.Id))
-                {
-                    suppliedIngredients.Add(ingredient);
-                }
-            }
-        }
-
-        private void EnsureSuppliedSource()
-        {
-            if (ViewModel.Arguments.EntitySource == GridEntitySource.ALL)
-            {
-                throw new InvalidOperationException(
-                    "Supplied ingredients can only be modified when the grid entity source is SUPPLIED or NOT_SUPPLIED.");
-            }
         }
 
         #endregion

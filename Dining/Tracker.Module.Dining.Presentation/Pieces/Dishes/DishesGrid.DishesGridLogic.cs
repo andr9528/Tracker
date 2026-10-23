@@ -1,3 +1,4 @@
+using Tracker.Module.Dining.Services.Managers;
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Model.Entity;
 using Tracker.Module.Dining.Model.Searchable;
@@ -17,12 +18,14 @@ internal sealed partial class DishesGrid
         private readonly ILogger<DishesGridLogic> logger;
         private readonly IEntityQueryService<Dish, SearchableDish> queryService;
 
-        private readonly List<Dish> suppliedDishes = [];
+        private readonly SuppliedEntityManager<Dish> suppliedManager;
 
         public DishesGridLogic(DishesGridViewModel viewModel) : base(viewModel)
         {
             queryService = ViewModel.Arguments.QueryService;
             logger = ViewModel.Arguments.LoggerFactory.CreateLogger<DishesGridLogic>();
+
+            suppliedManager = new SuppliedEntityManager<Dish>(ViewModel.Arguments.EntitySource, x => x.Id);
 
             ViewModel.SearchChanged += SearchChanged;
         }
@@ -47,32 +50,12 @@ internal sealed partial class DishesGrid
         internal async Task<IEnumerable<DishGridItem>> GetItems()
         {
             var dishes = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
-            dishes = ApplyEntitySource(dishes);
+            dishes = suppliedManager.ApplyEntitySource(dishes);
             DateOnly currentDate = DateOnly.FromDateTime(DateTime.Today);
             var items = dishes.Select(x => new DishGridItem(x, currentDate)).ToList();
             logger.LogInformation("Dishes search returned {Count} items.", items.Count);
             return items;
         }
-
-        private List<Dish> ApplyEntitySource(List<Dish> dishes)
-        {
-            if (ViewModel.Arguments.EntitySource == GridEntitySource.ALL)
-            {
-                return dishes;
-            }
-
-            var suppliedIds = suppliedDishes.Select(x => x.Id).ToHashSet();
-
-            return ViewModel.Arguments.EntitySource switch
-            {
-                GridEntitySource.SUPPLIED => dishes.Where(x => suppliedIds.Contains(x.Id)).ToList(),
-
-                GridEntitySource.NOT_SUPPLIED => dishes.Where(x => !suppliedIds.Contains(x.Id)).ToList(),
-
-                var _ => dishes,
-            };
-        }
-
 
         #region Implementation of IDishesGridApi
 
@@ -88,16 +71,12 @@ internal sealed partial class DishesGrid
 
         /// <inheritdoc />
         public IReadOnlyCollection<Dish> SuppliedDishes =>
-            suppliedDishes.AsReadOnly();
+            suppliedManager.SuppliedEntities;
 
         /// <inheritdoc />
         public void SetSuppliedDishes(IEnumerable<Dish> dishes)
         {
-            EnsureSuppliedSource();
-            ArgumentNullException.ThrowIfNull(dishes);
-
-            suppliedDishes.Clear();
-            AddUniqueDishes(dishes);
+            suppliedManager.Set(dishes);
 
             _ = RefreshDishes();
         }
@@ -105,10 +84,7 @@ internal sealed partial class DishesGrid
         /// <inheritdoc />
         public void AddSuppliedDishes(IEnumerable<Dish> dishes)
         {
-            EnsureSuppliedSource();
-            ArgumentNullException.ThrowIfNull(dishes);
-
-            AddUniqueDishes(dishes);
+            suppliedManager.AddRange(dishes);
 
             _ = RefreshDishes();
         }
@@ -116,13 +92,7 @@ internal sealed partial class DishesGrid
         /// <inheritdoc />
         public void AddSuppliedDish(Dish dish)
         {
-            EnsureSuppliedSource();
-            ArgumentNullException.ThrowIfNull(dish);
-
-            if (suppliedDishes.All(x => x.Id != dish.Id))
-            {
-                suppliedDishes.Add(dish);
-            }
+            suppliedManager.Add(dish);
 
             _ = RefreshDishes();
         }
@@ -130,10 +100,7 @@ internal sealed partial class DishesGrid
         /// <inheritdoc />
         public void RemoveSuppliedDish(Dish dish)
         {
-            EnsureSuppliedSource();
-            ArgumentNullException.ThrowIfNull(dish);
-
-            suppliedDishes.RemoveAll(x => x.Id == dish.Id);
+            suppliedManager.Remove(dish);
 
             _ = RefreshDishes();
         }
@@ -141,9 +108,7 @@ internal sealed partial class DishesGrid
         /// <inheritdoc />
         public void ClearSuppliedDishes()
         {
-            EnsureSuppliedSource();
-
-            suppliedDishes.Clear();
+            suppliedManager.Clear();
 
             _ = RefreshDishes();
         }
@@ -152,26 +117,6 @@ internal sealed partial class DishesGrid
         public Task Refresh()
         {
             return RefreshDishes();
-        }
-
-        private void AddUniqueDishes(IEnumerable<Dish> dishes)
-        {
-            foreach (Dish dish in dishes)
-            {
-                if (suppliedDishes.All(x => x.Id != dish.Id))
-                {
-                    suppliedDishes.Add(dish);
-                }
-            }
-        }
-
-        private void EnsureSuppliedSource()
-        {
-            if (ViewModel.Arguments.EntitySource == GridEntitySource.ALL)
-            {
-                throw new InvalidOperationException(
-                    "Supplied dishes can only be modified when the grid entity source is SUPPLIED or NOT_SUPPLIED.");
-            }
         }
 
         #endregion
