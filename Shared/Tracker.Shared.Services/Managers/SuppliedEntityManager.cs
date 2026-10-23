@@ -1,6 +1,6 @@
 using Tracker.Shared.Abstraction.Enums;
 
-namespace Tracker.Module.Dining.Services.Managers;
+namespace Tracker.Shared.Services.Managers;
 
 public sealed class SuppliedEntityManager<T>(GridEntitySource entitySource, Func<T, int> getId) where T : class
 {

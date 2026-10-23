@@ -41,6 +41,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Shared\Tracker.Shared.Frontend\Tracker.Shared.Frontend.csproj" />
+        <ProjectReference Include="..\..\Shared\Tracker.Shared.Services\Tracker.Shared.Services.csproj" />
         <ProjectReference Include="..\Tracker.Module.Dining.Model\Tracker.Module.Dining.Model.csproj" />
         <ProjectReference Include="..\Tracker.Module.Dining.Services\Tracker.Module.Dining.Services.csproj" />
     </ItemGroup>

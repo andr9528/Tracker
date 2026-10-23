@@ -1,4 +1,3 @@
-using Tracker.Module.Dining.Services.Managers;
 using Microsoft.Extensions.Logging;
 using Tracker.Module.Dining.Abstraction.Services;
 using Tracker.Module.Dining.Model.Entity;
@@ -10,6 +9,7 @@ using Tracker.Shared.Extensions;
 using Tracker.Shared.Frontend.Abstraction;
 using Tracker.Shared.Frontend.Core;
 using Tracker.Shared.Frontend.Factory;
+using Tracker.Shared.Services.Managers;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients;
 

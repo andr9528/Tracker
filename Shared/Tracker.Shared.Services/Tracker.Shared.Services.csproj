@@ -15,4 +15,8 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Tracker.Shared.Abstraction\Tracker.Shared.Abstraction.csproj" />
+    </ItemGroup>
+
 </Project>
