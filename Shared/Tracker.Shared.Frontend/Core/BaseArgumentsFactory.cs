@@ -1,11 +1,23 @@
 using Tracker.Shared.Abstraction.Interfaces.Frontend;
 using Tracker.Shared.Abstraction.Interfaces.Persistence;
 using Tracker.Shared.Frontend.Pieces;
+using System.Collections.ObjectModel;
+using Microsoft.UI.Xaml.Data;
 
 namespace Tracker.Shared.Frontend.Core;
 
 public abstract class BaseArgumentsFactory
 {
+    public EntityDataGrid<TItem, TColumn>.EntityDataGridArguments CreateEntityDataGridArguments<TItem, TColumn>(
+        ObservableCollection<TItem> items, Func<TColumn, string> getBindingPath,
+        Func<TColumn, IValueConverter?>? getColumnConverter = null, Func<TColumn, bool>? includeColumn = null)
+        where TItem : class where TColumn : struct, Enum
+    {
+        return new EntityDataGrid<TItem, TColumn>.EntityDataGridArguments(items, getBindingPath, getColumnConverter,
+            includeColumn);
+    }
+
+
     public NullableBooleanOptionBar.NullableBooleanOptionBarArguments CreateNullableBooleanOptionBarArguments(
         string header, bool? initialValue = null)
     {

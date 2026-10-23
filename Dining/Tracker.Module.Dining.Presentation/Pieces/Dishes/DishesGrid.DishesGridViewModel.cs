@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.UI.Controls;
+using Tracker.Shared.Frontend.Pieces;
 using Tracker.Module.Dining.Model.ComplexSearchable;
 using Tracker.Module.Dining.Model.Entity;
 
@@ -19,7 +20,9 @@ internal sealed partial class DishesGrid
         [ObservableProperty] private DishGridItem? selectedDishItem;
         public DishesGridArguments Arguments { get; } = arguments;
 
-        internal DataGrid DataGrid { get; set; } = null!;
+        internal EntityDataGrid<DishGridItem, DishesGridUi.DishGridColumns> EntityDataGrid { get; set; } = null!;
+
+        internal DataGrid DataGrid => EntityDataGrid.Api.DataGrid;
 
         public ComplexSearchableDish Searchable { get; } = new();
 

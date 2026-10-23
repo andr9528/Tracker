@@ -5,6 +5,7 @@ using Tracker.Shared.Frontend.Converters;
 using Tracker.Shared.Frontend.Core;
 using Tracker.Shared.Frontend.Extensions;
 using Tracker.Shared.Frontend.Factory;
+using Tracker.Shared.Frontend.Pieces;
 using BooleanConverter = Tracker.Shared.Frontend.Converters.BooleanConverter;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Ingredients;
@@ -34,8 +35,12 @@ internal sealed partial class IngredientsGrid
 
         private DataGrid CreateIngredientDataGrid()
         {
-            ViewModel.DataGrid = DataGridFactory.Create<IngredientGridColumns>(ViewModel.IngredientItems,
-                GetColumnBindingPath, GetColumnConverter, ShouldIncludeColumn);
+            EntityDataGrid<IngredientGridItem, IngredientGridColumns>.EntityDataGridArguments arguments =
+                ViewModel.Arguments.ArgumentsFactory
+                    .CreateEntityDataGridArguments<IngredientGridItem, IngredientGridColumns>(ViewModel.IngredientItems,
+                        GetColumnBindingPath, GetColumnConverter, ShouldIncludeColumn);
+
+            ViewModel.EntityDataGrid = new EntityDataGrid<IngredientGridItem, IngredientGridColumns>(arguments);
 
             ViewModel.DataGrid.SetBinding(DataGrid.SelectedItemProperty, new Binding
             {
@@ -91,7 +96,7 @@ internal sealed partial class IngredientsGrid
             };
         }
 
-        private enum IngredientGridColumns
+        internal enum IngredientGridColumns
         {
             NAME = 0,
             IN_STOCK = 1,

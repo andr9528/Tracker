@@ -5,6 +5,7 @@ using Tracker.Shared.Extensions;
 using Tracker.Shared.Frontend.Core;
 using Tracker.Shared.Frontend.Extensions;
 using Tracker.Shared.Frontend.Factory;
+using Tracker.Shared.Frontend.Pieces;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Dishes;
 
@@ -39,8 +40,11 @@ internal sealed partial class DishesGrid
 
         private DataGrid CreateDishDataGrid()
         {
-            ViewModel.DataGrid = DataGridFactory.Create<DishGridColumns>(ViewModel.DishItems, GetColumnBindingPath,
-                includeColumn: ShouldIncludeColumn);
+            var arguments =
+                ViewModel.Arguments.ArgumentsFactory.CreateEntityDataGridArguments<DishGridItem, DishGridColumns>(
+                    ViewModel.DishItems, GetColumnBindingPath, includeColumn: ShouldIncludeColumn);
+
+            ViewModel.EntityDataGrid = new EntityDataGrid<DishGridItem, DishGridColumns>(arguments);
 
             ConfigureColumnBindings();
 
@@ -103,7 +107,7 @@ internal sealed partial class DishesGrid
         }
 
 
-        private enum DishGridColumns
+        internal enum DishGridColumns
         {
             NAME = 0,
             DINNER_COUNT = 1,

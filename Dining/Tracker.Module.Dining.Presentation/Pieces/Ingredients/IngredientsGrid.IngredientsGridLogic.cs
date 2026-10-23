@@ -65,7 +65,7 @@ internal sealed partial class IngredientsGrid
             var items = ingredients.Select(x => new IngredientGridItem(x, averageDays.GetValueOrDefault(x.Id)))
                 .ToList();
 
-            items = ViewModel.DataGrid.ApplyCurrentSort(items).ToList();
+            items = ViewModel.EntityDataGrid.Api.ApplyCurrentSort(items).ToList();
 
             logger.LogInformation(
                 "Ingredient search returned {IngredientCount} ingredients. Fuzzy search: {UseFuzzySearch}", items.Count,

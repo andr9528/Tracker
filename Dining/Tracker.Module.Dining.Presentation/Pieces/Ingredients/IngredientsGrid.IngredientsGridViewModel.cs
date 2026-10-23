@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.UI.Controls;
+using Tracker.Shared.Frontend.Pieces;
 using Tracker.Module.Dining.Model.ComplexSearchable;
 using Tracker.Module.Dining.Model.Entity;
 
@@ -16,7 +17,13 @@ internal sealed partial class IngredientsGrid
         [ObservableProperty] private IngredientGridItem? selectedIngredientItem;
         public IngredientsGridArguments Arguments { get; } = arguments;
 
-        internal DataGrid DataGrid { get; set; } = null!;
+        internal EntityDataGrid<IngredientGridItem, IngredientsGridUi.IngredientGridColumns> EntityDataGrid
+        {
+            get;
+            set;
+        } = null!;
+
+        internal DataGrid DataGrid => EntityDataGrid.Api.DataGrid;
 
         public ComplexSearchableIngredient Searchable { get; } = new();
         public ObservableCollection<IngredientGridItem> IngredientItems { get; } = [];

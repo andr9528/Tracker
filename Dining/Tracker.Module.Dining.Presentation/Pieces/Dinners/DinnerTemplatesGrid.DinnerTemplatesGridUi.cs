@@ -6,6 +6,7 @@ using Tracker.Shared.Frontend.Converters;
 using Tracker.Shared.Frontend.Core;
 using Tracker.Shared.Frontend.Extensions;
 using Tracker.Shared.Frontend.Factory;
+using Tracker.Shared.Frontend.Pieces;
 
 namespace Tracker.Module.Dining.Presentation.Pieces.Dinners;
 
@@ -33,8 +34,12 @@ internal sealed partial class DinnerTemplatesGrid
 
         private DataGrid CreateDinnerTemplateDataGrid()
         {
-            ViewModel.DataGrid = DataGridFactory.Create<DinnerTemplateGridColumns>(ViewModel.DinnerTemplates,
-                GetColumnBindingPath, GetColumnConverter, ShouldIncludeColumn);
+            var arguments =
+                ViewModel.Arguments.ArgumentsFactory
+                    .CreateEntityDataGridArguments<DinnerTemplate, DinnerTemplateGridColumns>(ViewModel.DinnerTemplates,
+                        GetColumnBindingPath, GetColumnConverter, ShouldIncludeColumn);
+
+            ViewModel.EntityDataGrid = new EntityDataGrid<DinnerTemplate, DinnerTemplateGridColumns>(arguments);
 
             ViewModel.DataGrid.SetBinding(DataGrid.SelectedItemProperty, new Binding
             {
@@ -105,7 +110,7 @@ internal sealed partial class DinnerTemplatesGrid
             };
         }
 
-        private enum DinnerTemplateGridColumns
+        internal enum DinnerTemplateGridColumns
         {
             TEMPLATE = 0,
             IS_TAKE_AWAY = 1,

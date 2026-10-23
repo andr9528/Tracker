@@ -1,7 +1,7 @@
-using System.Collections;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Data;
+using System.Collections;
 using Tracker.Shared.Extensions;
 
 namespace Tracker.Shared.Frontend.Factory;
@@ -22,8 +22,6 @@ public static class DataGridFactory
             Foreground = new SolidColorBrush(Colors.Black),
         };
 
-        dataGrid.Sorting += SortColumnClicked;
-
         foreach (TColumn column in Enum.GetValues<TColumn>())
         {
             if (includeColumn is not null && !includeColumn(column))
@@ -39,79 +37,6 @@ public static class DataGridFactory
         }
 
         return dataGrid;
-    }
-
-    private static void SortColumnClicked(object? sender, DataGridColumnEventArgs e)
-    {
-        if (sender is not DataGrid dataGrid)
-        {
-            return;
-        }
-
-        e.Column.SortDirection = e.Column.SortDirection switch
-        {
-            null => DataGridSortDirection.Ascending,
-            DataGridSortDirection.Ascending => DataGridSortDirection.Descending,
-            var _ => null,
-        };
-
-        foreach (DataGridColumn column in dataGrid.Columns)
-        {
-            if (column != e.Column)
-            {
-                column.SortDirection = null;
-            }
-        }
-
-        dataGrid.ApplyCurrentSort();
-    }
-
-    private static void ApplyCurrentSort(this DataGrid dataGrid)
-    {
-        if (dataGrid.ItemsSource is not IEnumerable<object> items || dataGrid.ItemsSource is not IList list)
-        {
-            return;
-        }
-
-        var sortedItems = dataGrid.ApplyCurrentSort(items).ToList();
-
-        list.ReplaceItems(sortedItems);
-    }
-
-    public static IEnumerable<T> ApplyCurrentSort<T>(this DataGrid dataGrid, IEnumerable<T> items)
-    {
-        DataGridColumn? sortedColumn = dataGrid.Columns.FirstOrDefault(x => x.SortDirection is not null);
-
-        if (sortedColumn?.Tag is not string bindingPath || sortedColumn.SortDirection is null)
-        {
-            return items;
-        }
-
-        return sortedColumn.SortDirection switch
-        {
-            DataGridSortDirection.Ascending => items.OrderBy(x => GetPropertyValue(x!, bindingPath)),
-
-            DataGridSortDirection.Descending => items.OrderByDescending(x => GetPropertyValue(x!, bindingPath)),
-
-            var _ => items,
-        };
-    }
-
-    private static object? GetPropertyValue(object item, string propertyPath)
-    {
-        object? currentValue = item;
-
-        foreach (string propertyName in propertyPath.Split('.'))
-        {
-            if (currentValue is null)
-            {
-                return null;
-            }
-
-            currentValue = currentValue.GetType().GetProperty(propertyName)?.GetValue(currentValue);
-        }
-
-        return currentValue;
     }
 
     private static DataGridTextColumn CreateTextColumn(

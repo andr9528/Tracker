@@ -55,7 +55,7 @@ internal sealed partial class DinnerTemplatesGrid
 
             var templates = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
 
-            templates = ViewModel.DataGrid.ApplyCurrentSort(templates).ToList();
+            templates = ViewModel.EntityDataGrid.Api.ApplyCurrentSort(templates).ToList();
 
             logger.LogInformation("Dinner Template search returned {DinnerTemplateCount} templates.", templates.Count);
 

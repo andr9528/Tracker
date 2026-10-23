@@ -53,7 +53,7 @@ internal sealed partial class DishesGrid
 
             var items = dishes.Select(x => new DishGridItem(x, currentDate)).ToList();
 
-            items = ViewModel.DataGrid.ApplyCurrentSort(items).ToList();
+            items = ViewModel.EntityDataGrid.Api.ApplyCurrentSort(items).ToList();
 
             logger.LogInformation("Dish search returned {DishCount} dishes. Fuzzy search: {UseFuzzySearch}",
                 items.Count, string.IsNullOrWhiteSpace(ViewModel.Searchable.Searchable.Name));
