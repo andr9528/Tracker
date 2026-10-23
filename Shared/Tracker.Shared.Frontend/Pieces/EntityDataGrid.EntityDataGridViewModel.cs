@@ -9,5 +9,7 @@ public sealed partial class EntityDataGrid<TItem, TColumn>
     {
         public EntityDataGridArguments Arguments { get; } = arguments;
         public DataGrid DataGrid { get; set; } = null!;
+        public int SelectedId { get; set; } = arguments.InitialSelectedId;
+        public bool IsUpdatingItems { get; set; }
     }
 }

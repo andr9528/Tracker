@@ -14,10 +14,6 @@ internal sealed partial class DishesGrid
         [ObservableProperty] private string ingredientSearchText = string.Empty;
 
         [ObservableProperty] private string nameSearchText = string.Empty;
-
-        [ObservableProperty] private int selectedDishId = arguments.SelectedDishId;
-
-        [ObservableProperty] private DishGridItem? selectedDishItem;
         public DishesGridArguments Arguments { get; } = arguments;
 
         internal EntityDataGrid<DishGridItem, DishesGridUi.DishGridColumns> EntityDataGrid { get; set; } = null!;
@@ -28,10 +24,11 @@ internal sealed partial class DishesGrid
 
         public ObservableCollection<DishGridItem> DishItems { get; } = [];
 
+        public DishGridItem? SelectedDishItem => EntityDataGrid.Api.SelectedItem;
         public Dish? SelectedDish => SelectedDishItem?.Dish;
+        public int SelectedDishId => EntityDataGrid.Api.SelectedId;
 
         public event EventHandler? SearchChanged;
-        public event EventHandler? DishSelectionChanged;
 
         partial void OnNameSearchTextChanged(string value)
         {
@@ -57,30 +54,6 @@ internal sealed partial class DishesGrid
         private bool UsesFuzzySearch()
         {
             return string.IsNullOrWhiteSpace(Searchable.Searchable.Name);
-        }
-
-        partial void OnSelectedDishIdChanged(int value)
-        {
-            DishGridItem? item = DishItems.FirstOrDefault(x => x.Id == value);
-
-            if (SelectedDishItem?.Id != item?.Id)
-            {
-                SelectedDishItem = item;
-            }
-
-            DishSelectionChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        partial void OnSelectedDishItemChanged(DishGridItem? value)
-        {
-            int dishId = value?.Id ?? 0;
-
-            if (SelectedDishId == dishId)
-            {
-                return;
-            }
-
-            SelectedDishId = dishId;
         }
 
         partial void OnIngredientSearchTextChanged(string value)

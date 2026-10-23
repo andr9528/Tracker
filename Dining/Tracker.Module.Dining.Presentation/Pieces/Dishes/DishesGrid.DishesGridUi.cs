@@ -42,17 +42,12 @@ internal sealed partial class DishesGrid
         {
             EntityDataGrid<DishGridItem, DishGridColumns>.EntityDataGridArguments arguments =
                 ViewModel.Arguments.ArgumentsFactory.CreateEntityDataGridArguments<DishGridItem, DishGridColumns>(
-                    ViewModel.DishItems, GetColumnBindingPath, Logic.GetItems, includeColumn: ShouldIncludeColumn);
+                    ViewModel.DishItems, GetColumnBindingPath, Logic.GetItems, x => x.Id,
+                    ViewModel.Arguments.SelectedDishId, includeColumn: ShouldIncludeColumn);
 
             ViewModel.EntityDataGrid = new EntityDataGrid<DishGridItem, DishGridColumns>(arguments);
 
             ConfigureColumnBindings();
-
-            ViewModel.DataGrid.SetBinding(DataGrid.SelectedItemProperty, new Binding
-            {
-                Path = new PropertyPath(nameof(DishesGridViewModel.SelectedDishItem)),
-                Mode = BindingMode.TwoWay,
-            });
 
             ViewModel.DataGrid.Margin = new Thickness(4);
 

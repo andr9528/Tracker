@@ -22,6 +22,7 @@ public sealed partial class EntityDataGrid<TItem, TColumn>
                 ViewModel.Arguments.IncludeColumn);
 
             ViewModel.DataGrid.Sorting += Logic.SortColumnClicked;
+            ViewModel.DataGrid.SelectionChanged += Logic.OnGridSelectionChanged;
             grid.Children.Add(ViewModel.DataGrid);
         }
     }

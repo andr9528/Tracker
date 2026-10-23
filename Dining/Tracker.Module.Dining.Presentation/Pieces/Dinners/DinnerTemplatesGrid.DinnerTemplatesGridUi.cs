@@ -37,15 +37,10 @@ internal sealed partial class DinnerTemplatesGrid
             EntityDataGrid<DinnerTemplate, DinnerTemplateGridColumns>.EntityDataGridArguments arguments =
                 ViewModel.Arguments.ArgumentsFactory
                     .CreateEntityDataGridArguments<DinnerTemplate, DinnerTemplateGridColumns>(ViewModel.DinnerTemplates,
-                        GetColumnBindingPath, Logic.GetItems, GetColumnConverter, ShouldIncludeColumn);
+                        GetColumnBindingPath, Logic.GetItems, x => x.Id, ViewModel.Arguments.SelectedDinnerTemplateId,
+                        GetColumnConverter, ShouldIncludeColumn);
 
             ViewModel.EntityDataGrid = new EntityDataGrid<DinnerTemplate, DinnerTemplateGridColumns>(arguments);
-
-            ViewModel.DataGrid.SetBinding(DataGrid.SelectedItemProperty, new Binding
-            {
-                Path = new PropertyPath(nameof(DinnerTemplatesGridViewModel.SelectedDinnerTemplate)),
-                Mode = BindingMode.TwoWay,
-            });
 
             ViewModel.DataGrid.Margin = new Thickness(4);
 

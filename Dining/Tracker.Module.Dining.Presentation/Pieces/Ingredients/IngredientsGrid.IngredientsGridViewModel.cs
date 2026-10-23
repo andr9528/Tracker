@@ -12,9 +12,6 @@ internal sealed partial class IngredientsGrid
     internal sealed partial class IngredientsGridViewModel(IngredientsGridArguments arguments) : ObservableObject
     {
         [ObservableProperty] private string nameSearchText = string.Empty;
-
-        [ObservableProperty] private int selectedIngredientId = arguments.SelectedIngredientId;
-        [ObservableProperty] private IngredientGridItem? selectedIngredientItem;
         public IngredientsGridArguments Arguments { get; } = arguments;
 
         internal EntityDataGrid<IngredientGridItem, IngredientsGridUi.IngredientGridColumns> EntityDataGrid
@@ -28,10 +25,11 @@ internal sealed partial class IngredientsGrid
         public ComplexSearchableIngredient Searchable { get; } = new();
         public ObservableCollection<IngredientGridItem> IngredientItems { get; } = [];
 
+        public IngredientGridItem? SelectedIngredientItem => EntityDataGrid.Api.SelectedItem;
         public Ingredient? SelectedIngredient => SelectedIngredientItem?.Ingredient;
+        public int SelectedIngredientId => EntityDataGrid.Api.SelectedId;
 
         public event EventHandler? SearchChanged;
-        public event EventHandler? IngredientSelectionChanged;
 
         partial void OnNameSearchTextChanged(string value)
         {
@@ -57,30 +55,6 @@ internal sealed partial class IngredientsGrid
         private bool UsesFuzzySearch()
         {
             return string.IsNullOrWhiteSpace(Searchable.Searchable.Name);
-        }
-
-        partial void OnSelectedIngredientIdChanged(int value)
-        {
-            IngredientGridItem? item = IngredientItems.FirstOrDefault(x => x.Id == value);
-
-            if (SelectedIngredientItem?.Id != item?.Id)
-            {
-                SelectedIngredientItem = item;
-            }
-
-            IngredientSelectionChanged?.Invoke(this, EventArgs.Empty);
-        }
-
-        partial void OnSelectedIngredientItemChanged(IngredientGridItem? value)
-        {
-            int ingredientId = value?.Id ?? 0;
-
-            if (SelectedIngredientId == ingredientId)
-            {
-                return;
-            }
-
-            SelectedIngredientId = ingredientId;
         }
     }
 }

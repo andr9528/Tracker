@@ -27,6 +27,8 @@ public sealed partial class EntityDataGrid<TItem, TColumn> : Border where TItem 
         Func<TColumn, string> GetBindingPath,
         Func<Task<IEnumerable<TItem>>> GetItems,
         IUiDispatcher UiDispatcher,
+        Func<TItem, int> GetItemId,
+        int InitialSelectedId = 0,
         Func<TColumn, IValueConverter?>? GetColumnConverter = null,
         Func<TColumn, bool>? IncludeColumn = null);
 
@@ -36,6 +38,12 @@ public sealed partial class EntityDataGrid<TItem, TColumn> : Border where TItem 
 
         IEnumerable<TItem> ApplyCurrentSort(IEnumerable<TItem> items);
 
-        Task Refresh(Action? afterUpdate = null);
+        TItem? SelectedItem { get; }
+
+        int SelectedId { get; set; }
+
+        event EventHandler? SelectionChanged;
+
+        Task Refresh();
     }
 }

@@ -41,8 +41,7 @@ internal sealed partial class DishesGrid
 
         public Task RefreshDishes()
         {
-            RememberSelectedDish();
-            return ViewModel.EntityDataGrid.Api.Refresh(RestoreSelectedDish);
+            return ViewModel.EntityDataGrid.Api.Refresh();
         }
 
         internal async Task<IEnumerable<DishGridItem>> GetItems()
@@ -74,20 +73,6 @@ internal sealed partial class DishesGrid
             };
         }
 
-        private void RememberSelectedDish()
-        {
-            if (ViewModel.SelectedDish is null)
-            {
-                return;
-            }
-
-            ViewModel.SelectedDishId = ViewModel.SelectedDish.Id;
-        }
-
-        private void RestoreSelectedDish()
-        {
-            ViewModel.SelectedDishItem = ViewModel.DishItems.FirstOrDefault(x => x.Id == ViewModel.SelectedDishId);
-        }
 
         #region Implementation of IDishesGridApi
 
@@ -97,8 +82,8 @@ internal sealed partial class DishesGrid
         /// <inheritdoc />
         public event EventHandler? SelectionChanged
         {
-            add => ViewModel.DishSelectionChanged += value;
-            remove => ViewModel.DishSelectionChanged -= value;
+            add => ViewModel.EntityDataGrid.Api.SelectionChanged += value;
+            remove => ViewModel.EntityDataGrid.Api.SelectionChanged -= value;
         }
 
         /// <inheritdoc />

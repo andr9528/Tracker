@@ -13,10 +13,6 @@ internal sealed partial class DinnerTemplatesGrid
         : ObservableObject
     {
         [ObservableProperty] private string nameSearchText = string.Empty;
-
-        [ObservableProperty] private DinnerTemplate? selectedDinnerTemplate;
-
-        [ObservableProperty] private int selectedDinnerTemplateId = arguments.SelectedDinnerTemplateId;
         public DinnerTemplatesGridArguments Arguments { get; } = arguments;
 
         internal EntityDataGrid<DinnerTemplate, DinnerTemplatesGridUi.DinnerTemplateGridColumns> EntityDataGrid
@@ -31,8 +27,10 @@ internal sealed partial class DinnerTemplatesGrid
 
         public ObservableCollection<DinnerTemplate> DinnerTemplates { get; } = [];
 
+        public DinnerTemplate? SelectedDinnerTemplate => EntityDataGrid.Api.SelectedItem;
+        public int SelectedDinnerTemplateId => EntityDataGrid.Api.SelectedId;
+
         public event EventHandler? SearchChanged;
-        public event EventHandler? DinnerTemplateSelectionChanged;
 
         partial void OnNameSearchTextChanged(string value)
         {
@@ -58,28 +56,6 @@ internal sealed partial class DinnerTemplatesGrid
         private bool UsesFuzzySearch()
         {
             return string.IsNullOrWhiteSpace(Searchable.Searchable.Name);
-        }
-
-        partial void OnSelectedDinnerTemplateIdChanged(int value)
-        {
-            DinnerTemplate? template = DinnerTemplates.FirstOrDefault(x => x.Id == value);
-
-            if (SelectedDinnerTemplate?.Id != template?.Id)
-            {
-                SelectedDinnerTemplate = template;
-            }
-        }
-
-        partial void OnSelectedDinnerTemplateChanged(DinnerTemplate? value)
-        {
-            int templateId = value?.Id ?? 0;
-
-            if (SelectedDinnerTemplateId != templateId)
-            {
-                SelectedDinnerTemplateId = templateId;
-            }
-
-            DinnerTemplateSelectionChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

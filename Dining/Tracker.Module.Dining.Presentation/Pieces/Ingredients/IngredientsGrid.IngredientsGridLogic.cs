@@ -53,8 +53,7 @@ internal sealed partial class IngredientsGrid
 
         public Task RefreshIngredients()
         {
-            RememberSelectedIngredient();
-            return ViewModel.EntityDataGrid.Api.Refresh(RestoreSelectedIngredient);
+            return ViewModel.EntityDataGrid.Api.Refresh();
         }
 
         internal async Task<IEnumerable<IngredientGridItem>> GetItems()
@@ -85,22 +84,6 @@ internal sealed partial class IngredientsGrid
 
                 var _ => ingredients,
             };
-        }
-
-        private void RememberSelectedIngredient()
-        {
-            if (ViewModel.SelectedIngredient is null)
-            {
-                return;
-            }
-
-            ViewModel.SelectedIngredientId = ViewModel.SelectedIngredient.Id;
-        }
-
-        private void RestoreSelectedIngredient()
-        {
-            ViewModel.SelectedIngredientItem =
-                ViewModel.IngredientItems.FirstOrDefault(x => x.Id == ViewModel.SelectedIngredientId);
         }
 
 
@@ -209,8 +192,8 @@ internal sealed partial class IngredientsGrid
         /// <inheritdoc />
         public event EventHandler? SelectionChanged
         {
-            add => ViewModel.IngredientSelectionChanged += value;
-            remove => ViewModel.IngredientSelectionChanged -= value;
+            add => ViewModel.EntityDataGrid.Api.SelectionChanged += value;
+            remove => ViewModel.EntityDataGrid.Api.SelectionChanged -= value;
         }
 
         #endregion

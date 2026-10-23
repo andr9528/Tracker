@@ -38,15 +38,10 @@ internal sealed partial class IngredientsGrid
             EntityDataGrid<IngredientGridItem, IngredientGridColumns>.EntityDataGridArguments arguments =
                 ViewModel.Arguments.ArgumentsFactory
                     .CreateEntityDataGridArguments<IngredientGridItem, IngredientGridColumns>(ViewModel.IngredientItems,
-                        GetColumnBindingPath, Logic.GetItems, GetColumnConverter, ShouldIncludeColumn);
+                        GetColumnBindingPath, Logic.GetItems, x => x.Id, ViewModel.Arguments.SelectedIngredientId,
+                        GetColumnConverter, ShouldIncludeColumn);
 
             ViewModel.EntityDataGrid = new EntityDataGrid<IngredientGridItem, IngredientGridColumns>(arguments);
-
-            ViewModel.DataGrid.SetBinding(DataGrid.SelectedItemProperty, new Binding
-            {
-                Path = new PropertyPath(nameof(IngredientsGridViewModel.SelectedIngredientItem)),
-                Mode = BindingMode.TwoWay,
-            });
 
             ViewModel.DataGrid.Margin = new Thickness(4);
 

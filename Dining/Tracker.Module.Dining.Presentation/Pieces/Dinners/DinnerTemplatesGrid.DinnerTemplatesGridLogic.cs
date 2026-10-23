@@ -49,8 +49,7 @@ internal sealed partial class DinnerTemplatesGrid
 
         internal Task RefreshDinnerTemplates()
         {
-            RememberSelectedDinnerTemplate();
-            return ViewModel.EntityDataGrid.Api.Refresh(RestoreSelectedDinnerTemplate);
+            return ViewModel.EntityDataGrid.Api.Refresh();
         }
 
         internal async Task<IEnumerable<DinnerTemplate>> GetItems()
@@ -61,21 +60,6 @@ internal sealed partial class DinnerTemplatesGrid
             return items;
         }
 
-        private void RememberSelectedDinnerTemplate()
-        {
-            if (ViewModel.SelectedDinnerTemplate is null)
-            {
-                return;
-            }
-
-            ViewModel.SelectedDinnerTemplateId = ViewModel.SelectedDinnerTemplate.Id;
-        }
-
-        private void RestoreSelectedDinnerTemplate()
-        {
-            ViewModel.SelectedDinnerTemplate =
-                ViewModel.DinnerTemplates.FirstOrDefault(x => x.Id == ViewModel.SelectedDinnerTemplateId);
-        }
 
         internal void AdvancedSearchClicked(object? sender, EventArgs e)
         {
@@ -96,8 +80,8 @@ internal sealed partial class DinnerTemplatesGrid
         /// <inheritdoc />
         public event EventHandler? SelectionChanged
         {
-            add => ViewModel.DinnerTemplateSelectionChanged += value;
-            remove => ViewModel.DinnerTemplateSelectionChanged -= value;
+            add => ViewModel.EntityDataGrid.Api.SelectionChanged += value;
+            remove => ViewModel.EntityDataGrid.Api.SelectionChanged -= value;
         }
 
         #endregion

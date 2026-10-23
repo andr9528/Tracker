@@ -13,11 +13,12 @@ public abstract class BaseArgumentsFactory(IUiDispatcher uiDispatcher)
 
     public EntityDataGrid<TItem, TColumn>.EntityDataGridArguments CreateEntityDataGridArguments<TItem, TColumn>(
         ObservableCollection<TItem> items, Func<TColumn, string> getBindingPath,
-        Func<Task<IEnumerable<TItem>>> getItems, Func<TColumn, IValueConverter?>? getColumnConverter = null,
-        Func<TColumn, bool>? includeColumn = null) where TItem : class where TColumn : struct, Enum
+        Func<Task<IEnumerable<TItem>>> getItems, Func<TItem, int> getItemId, int initialSelectedId = 0,
+        Func<TColumn, IValueConverter?>? getColumnConverter = null, Func<TColumn, bool>? includeColumn = null)
+        where TItem : class where TColumn : struct, Enum
     {
         return new EntityDataGrid<TItem, TColumn>.EntityDataGridArguments(items, getBindingPath, getItems, uiDispatcher,
-            getColumnConverter, includeColumn);
+            getItemId, initialSelectedId, getColumnConverter, includeColumn);
     }
 
 
