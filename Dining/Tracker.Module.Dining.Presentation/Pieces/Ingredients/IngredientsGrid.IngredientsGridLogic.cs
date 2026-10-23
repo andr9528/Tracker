@@ -19,13 +19,11 @@ internal sealed partial class IngredientsGrid
         private readonly ILogger<IngredientsGridLogic> logger;
         private readonly IEntityQueryService<Ingredient, SearchableIngredient> queryService;
         private readonly IStatisticsService statisticsService;
-        private readonly IUiDispatcher uiDispatcher;
 
         public IngredientsGridLogic(IngredientsGridViewModel viewModel) : base(viewModel)
         {
             queryService = ViewModel.Arguments.QueryService;
             statisticsService = ViewModel.Arguments.StatisticsService;
-            uiDispatcher = ViewModel.Arguments.UiDispatcher;
             logger = ViewModel.Arguments.LoggerFactory.CreateLogger<IngredientsGridLogic>();
 
             ViewModel.SearchChanged += SearchChanged;
@@ -53,40 +51,21 @@ internal sealed partial class IngredientsGrid
             arguments.NavigationService.NavigateTo(page, nameof(IngredientAdvancedSearchPage));
         }
 
-        public async Task RefreshIngredients()
+        public Task RefreshIngredients()
         {
             RememberSelectedIngredient();
+            return ViewModel.EntityDataGrid.Api.Refresh(RestoreSelectedIngredient);
+        }
 
+        internal async Task<IEnumerable<IngredientGridItem>> GetItems()
+        {
             var ingredients = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
-
             ingredients = ApplyEntitySource(ingredients);
-
             var averageDays = await statisticsService.GetIngredientAverageDaysBetweenUsage();
             var items = ingredients.Select(x => new IngredientGridItem(x, averageDays.GetValueOrDefault(x.Id)))
                 .ToList();
-
-            items = ViewModel.EntityDataGrid.Api.ApplyCurrentSort(items).ToList();
-
-            logger.LogInformation(
-                "Ingredient search returned {IngredientCount} ingredients. Fuzzy search: {UseFuzzySearch}", items.Count,
-                string.IsNullOrWhiteSpace(ViewModel.Searchable.Searchable.Name));
-
-
-            uiDispatcher.TryEnqueue(() =>
-            {
-                logger.LogDebug("Updating Ingredients collection. Existing count: {ExistingCount}",
-                    ViewModel.IngredientItems.Count);
-
-                ViewModel.IngredientItems.ReplaceItems(items);
-                ViewModel.DataGrid.Refresh();
-
-                RestoreSelectedIngredient();
-
-                logger.LogDebug(
-                    "Ingredients collection updated. New count: {NewCount}, SelectedIngredientId: {SelectedIngredientId}, SelectedIngredient: '{SelectedIngredientName}'",
-                    ViewModel.IngredientItems.Count, ViewModel.SelectedIngredientId,
-                    ViewModel.SelectedIngredient?.Name);
-            });
+            logger.LogInformation("Ingredients search returned {Count} items.", items.Count);
+            return items;
         }
 
         private List<Ingredient> ApplyEntitySource(List<Ingredient> ingredients)

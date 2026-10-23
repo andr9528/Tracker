@@ -30,7 +30,7 @@ internal sealed partial class IngredientsGrid
         {
             grid.Children.Add(CreateIngredientDataGrid().SetRow(0).SetColumn(0, 2));
             grid.Children.Add(CreateNameSearchTextBox().SetRow(1).SetColumn(0));
-            grid.Children.Add(CreateAdvancedSearchButtonGrid().SetRow(2).SetColumn(1));
+            grid.Children.Add(CreateAdvancedSearchButtonGrid().SetRow(1).SetColumn(1));
         }
 
         private DataGrid CreateIngredientDataGrid()
@@ -38,7 +38,7 @@ internal sealed partial class IngredientsGrid
             EntityDataGrid<IngredientGridItem, IngredientGridColumns>.EntityDataGridArguments arguments =
                 ViewModel.Arguments.ArgumentsFactory
                     .CreateEntityDataGridArguments<IngredientGridItem, IngredientGridColumns>(ViewModel.IngredientItems,
-                        GetColumnBindingPath, GetColumnConverter, ShouldIncludeColumn);
+                        GetColumnBindingPath, Logic.GetItems, GetColumnConverter, ShouldIncludeColumn);
 
             ViewModel.EntityDataGrid = new EntityDataGrid<IngredientGridItem, IngredientGridColumns>(arguments);
 

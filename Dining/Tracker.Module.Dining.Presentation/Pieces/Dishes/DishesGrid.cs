@@ -45,7 +45,6 @@ internal sealed partial class DishesGrid : Border, INavigationRefreshable, ISupp
 
     internal record DishesGridArguments(
         IEntityQueryService<Dish, SearchableDish> QueryService,
-        IUiDispatcher UiDispatcher,
         ILoggerFactory LoggerFactory,
         DiningArgumentsFactory ArgumentsFactory,
         GridEntitySource EntitySource = GridEntitySource.ALL,

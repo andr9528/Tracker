@@ -48,7 +48,6 @@ internal sealed partial class DinnerTemplatesGrid : Border, INavigationRefreshab
 
     internal record DinnerTemplatesGridArguments(
         IEntityQueryService<DinnerTemplate, SearchableDinnerTemplate> QueryService,
-        IUiDispatcher UiDispatcher,
         ILoggerFactory LoggerFactory,
         DiningArgumentsFactory ArgumentsFactory,
         GridDisplayMode DisplayMode = GridDisplayMode.NORMAL,

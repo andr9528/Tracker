@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Data;
+using Tracker.Shared.Frontend.Abstraction;
 
 namespace Tracker.Shared.Frontend.Pieces;
 
@@ -24,6 +25,8 @@ public sealed partial class EntityDataGrid<TItem, TColumn> : Border where TItem 
     public record EntityDataGridArguments(
         ObservableCollection<TItem> Items,
         Func<TColumn, string> GetBindingPath,
+        Func<Task<IEnumerable<TItem>>> GetItems,
+        IUiDispatcher UiDispatcher,
         Func<TColumn, IValueConverter?>? GetColumnConverter = null,
         Func<TColumn, bool>? IncludeColumn = null);
 
@@ -32,5 +35,7 @@ public sealed partial class EntityDataGrid<TItem, TColumn> : Border where TItem 
         DataGrid DataGrid { get; }
 
         IEnumerable<TItem> ApplyCurrentSort(IEnumerable<TItem> items);
+
+        Task Refresh(Action? afterUpdate = null);
     }
 }

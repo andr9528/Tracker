@@ -40,9 +40,9 @@ internal sealed partial class DishesGrid
 
         private DataGrid CreateDishDataGrid()
         {
-            var arguments =
+            EntityDataGrid<DishGridItem, DishGridColumns>.EntityDataGridArguments arguments =
                 ViewModel.Arguments.ArgumentsFactory.CreateEntityDataGridArguments<DishGridItem, DishGridColumns>(
-                    ViewModel.DishItems, GetColumnBindingPath, includeColumn: ShouldIncludeColumn);
+                    ViewModel.DishItems, GetColumnBindingPath, Logic.GetItems, includeColumn: ShouldIncludeColumn);
 
             ViewModel.EntityDataGrid = new EntityDataGrid<DishGridItem, DishGridColumns>(arguments);
 

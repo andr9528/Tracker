@@ -34,10 +34,10 @@ internal sealed partial class DinnerTemplatesGrid
 
         private DataGrid CreateDinnerTemplateDataGrid()
         {
-            var arguments =
+            EntityDataGrid<DinnerTemplate, DinnerTemplateGridColumns>.EntityDataGridArguments arguments =
                 ViewModel.Arguments.ArgumentsFactory
                     .CreateEntityDataGridArguments<DinnerTemplate, DinnerTemplateGridColumns>(ViewModel.DinnerTemplates,
-                        GetColumnBindingPath, GetColumnConverter, ShouldIncludeColumn);
+                        GetColumnBindingPath, Logic.GetItems, GetColumnConverter, ShouldIncludeColumn);
 
             ViewModel.EntityDataGrid = new EntityDataGrid<DinnerTemplate, DinnerTemplateGridColumns>(arguments);
 

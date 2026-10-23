@@ -16,12 +16,10 @@ internal sealed partial class DinnerTemplatesGrid
     {
         private readonly ILogger<DinnerTemplatesGridLogic> logger;
         private readonly IEntityQueryService<DinnerTemplate, SearchableDinnerTemplate> queryService;
-        private readonly IUiDispatcher uiDispatcher;
 
         public DinnerTemplatesGridLogic(DinnerTemplatesGridViewModel viewModel) : base(viewModel)
         {
             queryService = ViewModel.Arguments.QueryService;
-            uiDispatcher = ViewModel.Arguments.UiDispatcher;
             logger = ViewModel.Arguments.LoggerFactory.CreateLogger<DinnerTemplatesGridLogic>();
 
             ViewModel.SearchChanged += SearchChanged;
@@ -49,31 +47,18 @@ internal sealed partial class DinnerTemplatesGrid
             }
         }
 
-        internal async Task RefreshDinnerTemplates()
+        internal Task RefreshDinnerTemplates()
         {
             RememberSelectedDinnerTemplate();
+            return ViewModel.EntityDataGrid.Api.Refresh(RestoreSelectedDinnerTemplate);
+        }
 
+        internal async Task<IEnumerable<DinnerTemplate>> GetItems()
+        {
             var templates = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
-
-            templates = ViewModel.EntityDataGrid.Api.ApplyCurrentSort(templates).ToList();
-
-            logger.LogInformation("Dinner Template search returned {DinnerTemplateCount} templates.", templates.Count);
-
-            uiDispatcher.TryEnqueue(() =>
-            {
-                logger.LogDebug("Updating Dinner Templates collection. Existing count: {ExistingCount}",
-                    ViewModel.DinnerTemplates.Count);
-
-                ViewModel.DinnerTemplates.ReplaceItems(templates);
-                ViewModel.DataGrid.Refresh();
-
-                RestoreSelectedDinnerTemplate();
-
-                logger.LogDebug(
-                    "Dinner Templates collection updated. New count: {NewCount}, SelectedDinnerTemplateId: {SelectedDinnerTemplateId}, SelectedDinnerTemplate: '{SelectedDinnerTemplateName}'",
-                    ViewModel.DinnerTemplates.Count, ViewModel.SelectedDinnerTemplateId,
-                    ViewModel.SelectedDinnerTemplate?.Name);
-            });
+            var items = templates;
+            logger.LogInformation("DinnerTemplates search returned {Count} items.", items.Count);
+            return items;
         }
 
         private void RememberSelectedDinnerTemplate()

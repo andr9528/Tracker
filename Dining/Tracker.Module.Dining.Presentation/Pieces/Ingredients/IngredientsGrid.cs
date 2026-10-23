@@ -43,7 +43,6 @@ internal sealed partial class IngredientsGrid : Border, INavigationRefreshable, 
     internal record IngredientsGridArguments(
         IEntityQueryService<Ingredient, SearchableIngredient> QueryService,
         IStatisticsService StatisticsService,
-        IUiDispatcher UiDispatcher,
         ILoggerFactory LoggerFactory,
         DiningArgumentsFactory ArgumentsFactory,
         GridEntitySource EntitySource = GridEntitySource.ALL,

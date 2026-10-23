@@ -18,12 +18,10 @@ internal sealed partial class DishesGrid
         private readonly IEntityQueryService<Dish, SearchableDish> queryService;
 
         private readonly List<Dish> suppliedDishes = [];
-        private readonly IUiDispatcher uiDispatcher;
 
         public DishesGridLogic(DishesGridViewModel viewModel) : base(viewModel)
         {
             queryService = ViewModel.Arguments.QueryService;
-            uiDispatcher = ViewModel.Arguments.UiDispatcher;
             logger = ViewModel.Arguments.LoggerFactory.CreateLogger<DishesGridLogic>();
 
             ViewModel.SearchChanged += SearchChanged;
@@ -41,37 +39,20 @@ internal sealed partial class DishesGrid
             }
         }
 
-        public async Task RefreshDishes()
+        public Task RefreshDishes()
         {
             RememberSelectedDish();
+            return ViewModel.EntityDataGrid.Api.Refresh(RestoreSelectedDish);
+        }
 
+        internal async Task<IEnumerable<DishGridItem>> GetItems()
+        {
             var dishes = (await queryService.GetEntitiesComplex(ViewModel.Searchable)).ToList();
-
             dishes = ApplyEntitySource(dishes);
-
             DateOnly currentDate = DateOnly.FromDateTime(DateTime.Today);
-
             var items = dishes.Select(x => new DishGridItem(x, currentDate)).ToList();
-
-            items = ViewModel.EntityDataGrid.Api.ApplyCurrentSort(items).ToList();
-
-            logger.LogInformation("Dish search returned {DishCount} dishes. Fuzzy search: {UseFuzzySearch}",
-                items.Count, string.IsNullOrWhiteSpace(ViewModel.Searchable.Searchable.Name));
-
-            uiDispatcher.TryEnqueue(() =>
-            {
-                logger.LogDebug("Updating Dishes collection. Existing count: {ExistingCount}",
-                    ViewModel.DishItems.Count);
-
-                ViewModel.DishItems.ReplaceItems(items);
-                ViewModel.DataGrid.Refresh();
-
-                RestoreSelectedDish();
-
-                logger.LogDebug(
-                    "Dishes collection updated. New count: {NewCount}, SelectedDishId: {SelectedDishId}, SelectedDish: '{SelectedDishName}'",
-                    ViewModel.DishItems.Count, ViewModel.SelectedDishId, ViewModel.SelectedDish?.Name);
-            });
+            logger.LogInformation("Dishes search returned {Count} items.", items.Count);
+            return items;
         }
 
         private List<Dish> ApplyEntitySource(List<Dish> dishes)

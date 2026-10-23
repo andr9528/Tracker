@@ -18,23 +18,40 @@ using Tracker.Shared.Frontend.Core;
 
 namespace Tracker.Module.Dining.Presentation;
 
-public sealed class DiningArgumentsFactory(
-    IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService,
-    IEntityQueryService<DinnerTemplate, SearchableDinnerTemplate> dinnerTemplateQueryService,
-    IEntityQueryService<Dish, SearchableDish> dishQueryService,
-    IUiDispatcher uiDispatcher,
-    ILoggerFactory loggerFactory,
-    INavigationService navigationService,
-    IDiningImportService diningImportService,
-    IStatisticsService statisticsService,
-    IMainWindowAccessor accessor) : BaseArgumentsFactory
+public sealed class DiningArgumentsFactory : BaseArgumentsFactory
 {
+    private readonly IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService;
+    private readonly IEntityQueryService<DinnerTemplate, SearchableDinnerTemplate> dinnerTemplateQueryService;
+    private readonly IEntityQueryService<Dish, SearchableDish> dishQueryService;
+    private readonly ILoggerFactory loggerFactory;
+    private readonly INavigationService navigationService;
+    private readonly IDiningImportService diningImportService;
+    private readonly IStatisticsService statisticsService;
+    private readonly IMainWindowAccessor accessor;
+
+    public DiningArgumentsFactory(
+        IEntityQueryService<Ingredient, SearchableIngredient> ingredientQueryService,
+        IEntityQueryService<DinnerTemplate, SearchableDinnerTemplate> dinnerTemplateQueryService,
+        IEntityQueryService<Dish, SearchableDish> dishQueryService, IUiDispatcher uiDispatcher,
+        ILoggerFactory loggerFactory, INavigationService navigationService, IDiningImportService diningImportService,
+        IStatisticsService statisticsService, IMainWindowAccessor accessor) : base(uiDispatcher)
+    {
+        this.ingredientQueryService = ingredientQueryService;
+        this.dinnerTemplateQueryService = dinnerTemplateQueryService;
+        this.dishQueryService = dishQueryService;
+        this.loggerFactory = loggerFactory;
+        this.navigationService = navigationService;
+        this.diningImportService = diningImportService;
+        this.statisticsService = statisticsService;
+        this.accessor = accessor;
+    }
+
     internal IngredientsGrid.IngredientsGridArguments CreateIngredientsGridArguments(
         GridEntitySource entitySource = GridEntitySource.ALL, GridDisplayMode displayMode = GridDisplayMode.NORMAL,
         int selectedIngredientId = 0)
     {
-        return new IngredientsGrid.IngredientsGridArguments(ingredientQueryService, statisticsService, uiDispatcher,
-            loggerFactory, this, entitySource, displayMode, selectedIngredientId);
+        return new IngredientsGrid.IngredientsGridArguments(ingredientQueryService, statisticsService, loggerFactory,
+            this, entitySource, displayMode, selectedIngredientId);
     }
 
     internal IngredientAdvancedSearchPage.IngredientAdvancedSearchPageArguments
@@ -80,8 +97,8 @@ public sealed class DiningArgumentsFactory(
     internal DinnerTemplatesGrid.DinnerTemplatesGridArguments CreateDinnerTemplatesGridArguments(
         GridDisplayMode displayMode = GridDisplayMode.NORMAL, int selectedDinnerTemplateId = 0)
     {
-        return new DinnerTemplatesGrid.DinnerTemplatesGridArguments(dinnerTemplateQueryService, uiDispatcher,
-            loggerFactory, this, displayMode, selectedDinnerTemplateId);
+        return new DinnerTemplatesGrid.DinnerTemplatesGridArguments(dinnerTemplateQueryService, loggerFactory, this,
+            displayMode, selectedDinnerTemplateId);
     }
 
     internal DinnerTemplatesPage.DinnerTemplatesPageArguments CreateDinnerTemplatesPageArguments()
@@ -118,8 +135,8 @@ public sealed class DiningArgumentsFactory(
         GridEntitySource entitySource = GridEntitySource.ALL, GridDisplayMode displayMode = GridDisplayMode.NORMAL,
         int selectedDishId = 0)
     {
-        return new DishesGrid.DishesGridArguments(dishQueryService, uiDispatcher, loggerFactory, this, entitySource,
-            displayMode, selectedDishId);
+        return new DishesGrid.DishesGridArguments(dishQueryService, loggerFactory, this, entitySource, displayMode,
+            selectedDishId);
     }
 
     internal DishesPage.DishesPageArguments CreateDishesPageArguments()

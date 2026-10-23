@@ -1,6 +1,7 @@
 using CommunityToolkit.WinUI.UI.Controls;
 using Tracker.Shared.Extensions;
 using Tracker.Shared.Frontend.Core;
+using Tracker.Shared.Frontend.Factory;
 
 namespace Tracker.Shared.Frontend.Pieces;
 
@@ -36,6 +37,36 @@ public sealed partial class EntityDataGrid<TItem, TColumn>
         IEnumerable<TItem> IEntityDataGridApi.ApplyCurrentSort(IEnumerable<TItem> items)
         {
             return ApplyCurrentSort(items);
+        }
+
+        /// <inheritdoc />
+        public async Task Refresh(Action? afterUpdate = null)
+        {
+            var items = (await ViewModel.Arguments.GetItems()).ToList();
+            var completion = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            bool enqueued = ViewModel.Arguments.UiDispatcher.TryEnqueue(() =>
+            {
+                try
+                {
+                    var sortedItems = ApplyCurrentSort(items).ToList();
+                    ViewModel.Arguments.Items.ReplaceItems(sortedItems);
+                    ViewModel.DataGrid.Refresh();
+                    afterUpdate?.Invoke();
+                    completion.TrySetResult();
+                }
+                catch (Exception exception)
+                {
+                    completion.TrySetException(exception);
+                }
+            });
+
+            if (!enqueued)
+            {
+                throw new InvalidOperationException("Could not enqueue DataGrid refresh on the UI dispatcher.");
+            }
+
+            await completion.Task;
         }
 
         internal IEnumerable<TItem> ApplyCurrentSort(IEnumerable<TItem> items)
